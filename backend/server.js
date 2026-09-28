@@ -21,8 +21,7 @@ const express =
 const cors =
     require("cors");
 
-const OpenAI =
-    require("openai");
+
 
 
 /* ============================================================

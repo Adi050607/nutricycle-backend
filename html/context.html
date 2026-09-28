@@ -2,6 +2,7 @@
 <html lang="en" dir="ltr">
 
 <head>
+
     <meta charset="UTF-8">
 
     <meta
@@ -12,9 +13,13 @@
     <meta
         name="description"
         content="NutriCycle AI global language and regional setup."
+        data-i18n-attr="content:context.metaDescription"
     >
 
-    <title>NutriCycle AI</title>
+    <title
+        data-i18n="context.pageTitle">
+        NutriCycle AI
+    </title>
 
     <link
         rel="preconnect"
@@ -41,45 +46,88 @@
         rel="stylesheet"
         href="../css/context.css"
     >
+
 </head>
 
 
 <body>
 
-<main class="context-page">
+<main
+    class="context-page"
+>
 
-    <section class="context-card">
+    <section
+        class="context-card"
+    >
 
-        <!-- BRAND -->
+        <!-- ==================================================
+             BRAND
+        =================================================== -->
 
-        <div class="context-brand">
+        <div
+            class="context-brand"
+        >
 
-            <div class="brand-logo">
-                <i class="fa-solid fa-leaf"></i>
+            <div
+                class="brand-logo"
+            >
+
+                <i
+                    class="fa-solid fa-leaf"
+                    aria-hidden="true">
+                </i>
+
             </div>
 
             <div>
-                <h1>NutriCycle AI</h1>
-                <span>Smart Food Rescue</span>
+
+                <h1>
+                    NutriCycle AI
+                </h1>
+
+                <span
+                    data-i18n="context.brandSubtitle">
+                    Smart Food Rescue
+                </span>
+
             </div>
 
         </div>
 
 
-        <!-- HEADER -->
+        <!-- ==================================================
+             HEADER
+        =================================================== -->
 
-        <div class="context-header">
+        <div
+            class="context-header"
+        >
 
-            <span class="eyebrow">
-                <i class="fa-solid fa-globe"></i>
+            <span
+                class="eyebrow"
+                data-i18n="context.globalExperience"
+            >
+
+                <i
+                    class="fa-solid fa-globe"
+                    aria-hidden="true">
+                </i>
+
                 Global Experience
+
             </span>
 
-            <h2 data-i18n="context.welcome">
+
+            <h2
+                data-i18n="context.welcome"
+            >
                 Welcome to NutriCycle AI
             </h2>
 
-            <p data-i18n="context.subtitle">
+
+            <p
+                data-i18n="context.subtitle"
+            >
                 Choose your region and language to personalize
                 your NutriCycle experience.
             </p>
@@ -87,31 +135,44 @@
         </div>
 
 
-        <!-- ERROR -->
+        <!-- ==================================================
+             ERROR
+        =================================================== -->
 
         <div
             id="contextError"
             class="context-error"
             role="alert"
-            aria-live="polite">
+            aria-live="polite"
+            aria-atomic="true">
         </div>
 
 
-        <!-- COUNTRY -->
+        <!-- ==================================================
+             COUNTRY
+        =================================================== -->
 
-        <div class="field-group">
+        <div
+            class="field-group"
+        >
 
             <label
                 for="countrySearch"
-                data-i18n="context.country">
+                data-i18n="context.country"
+            >
                 Country / Region
             </label>
 
-            <div class="country-search-wrapper">
+
+            <div
+                class="country-search-wrapper"
+            >
 
                 <i
-                    class="fa-solid fa-earth-americas country-search-icon">
+                    class="fa-solid fa-earth-americas country-search-icon"
+                    aria-hidden="true">
                 </i>
+
 
                 <input
                     id="countrySearch"
@@ -119,29 +180,41 @@
                     type="text"
                     autocomplete="off"
                     placeholder="Search country or region"
+                    data-i18n-placeholder="context.countryPlaceholder"
                     role="combobox"
                     aria-autocomplete="list"
                     aria-expanded="false"
                     aria-controls="countryResults"
                 >
 
+
                 <button
                     id="countryClear"
                     class="country-clear"
                     type="button"
                     aria-label="Clear country"
-                    hidden>
-                    <i class="fa-solid fa-xmark"></i>
+                    data-i18n-aria-label="context.clearCountry"
+                    hidden
+                >
+
+                    <i
+                        class="fa-solid fa-xmark"
+                        aria-hidden="true">
+                    </i>
+
                 </button>
+
 
                 <div
                     id="countryResults"
                     class="country-results"
                     role="listbox"
-                    hidden>
+                    hidden
+                >
                 </div>
 
             </div>
+
 
             <!-- Internal value -->
 
@@ -151,62 +224,98 @@
                 value=""
             >
 
+
             <small
                 id="countryHint"
-                class="field-hint">
+                class="field-hint"
+            >
             </small>
 
         </div>
 
 
-        <!-- LANGUAGE -->
+        <!-- ==================================================
+             LANGUAGE
+        =================================================== -->
 
-        <div class="field-group">
+        <div
+            class="field-group"
+        >
 
             <label
                 for="languageSelect"
-                data-i18n="context.language">
+                data-i18n="context.language"
+            >
                 Language
             </label>
 
-            <div class="select-wrapper">
 
-                <i class="fa-solid fa-language"></i>
+            <div
+                class="select-wrapper"
+            >
 
-                <select id="languageSelect"></select>
+                <i
+                    class="fa-solid fa-language"
+                    aria-hidden="true">
+                </i>
+
+
+                <select
+                    id="languageSelect"
+                >
+                </select>
 
             </div>
 
+
             <small
                 class="field-hint"
-                data-i18n="context.languageHint">
+                data-i18n="context.languageHint"
+            >
                 Your selected language controls the NutriCycle interface.
             </small>
 
         </div>
 
 
-        <!-- CURRENCY -->
+        <!-- ==================================================
+             CURRENCY
+        =================================================== -->
 
-        <div class="field-group">
+        <div
+            class="field-group"
+        >
 
             <label
                 for="currencySelect"
-                data-i18n="context.currency">
+                data-i18n="context.currency"
+            >
                 Currency
             </label>
 
-            <div class="select-wrapper">
 
-                <i class="fa-solid fa-coins"></i>
+            <div
+                class="select-wrapper"
+            >
 
-                <select id="currencySelect"></select>
+                <i
+                    class="fa-solid fa-coins"
+                    aria-hidden="true">
+                </i>
+
+
+                <select
+                    id="currencySelect"
+                >
+                </select>
 
             </div>
 
+
             <small
                 class="field-hint"
-                data-i18n="context.currencyHint">
+                data-i18n="context.currencyHint"
+            >
                 This is a recommendation based on your selected region.
                 You can change it later.
             </small>
@@ -214,49 +323,80 @@
         </div>
 
 
-        <!-- LOCATION -->
+        <!-- ==================================================
+             LOCATION
+        =================================================== -->
 
         <div
             id="detectedLocation"
             class="detected-location"
-            hidden>
+            hidden
+        >
 
-            <div class="detected-icon">
-                <i class="fa-solid fa-location-crosshairs"></i>
+            <div
+                class="detected-icon"
+            >
+
+                <i
+                    class="fa-solid fa-location-crosshairs"
+                    aria-hidden="true">
+                </i>
+
             </div>
+
 
             <div>
 
-                <strong>
-                    Current location detected
+                <strong
+                    data-i18n="context.detected"
+                >
+                    Region detected
                 </strong>
 
-                <p id="detectedText"></p>
+
+                <p
+                    id="detectedText"
+                >
+                </p>
 
             </div>
 
         </div>
 
 
-        <!-- CONTINUE -->
+        <!-- ==================================================
+             CONTINUE
+        =================================================== -->
 
         <button
             id="continueButton"
             type="button"
-            class="continue-button">
+            class="continue-button"
+        >
 
-            <span data-i18n="common.continue">
+            <span
+                data-i18n="common.continue"
+            >
                 Continue
             </span>
 
-            <i class="fa-solid fa-arrow-right"></i>
+
+            <i
+                class="fa-solid fa-arrow-right"
+                aria-hidden="true">
+            </i>
 
         </button>
 
 
+        <!-- ==================================================
+             PRIVACY
+        =================================================== -->
+
         <p
             class="privacy-note"
-            data-i18n="context.privacy">
+            data-i18n="context.privacy"
+        >
             You can change your language and regional preferences later.
         </p>
 

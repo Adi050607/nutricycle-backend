@@ -1,0 +1,862 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0">
+
+    <title>
+
+        NutriCycle AI • Donor Dashboard
+
+    </title>
+
+    <!-- Google Font -->
+
+    <link
+        rel="preconnect"
+        href="https://fonts.googleapis.com">
+
+    <link
+        rel="preconnect"
+        href="https://fonts.gstatic.com"
+        crossorigin>
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap"
+        rel="stylesheet">
+
+    <!-- Font Awesome -->
+
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+
+    <!-- Dashboard CSS -->
+
+    <link
+        rel="stylesheet"
+        href="../css/user.css">
+
+        <!-- Leaflet Map CSS -->
+<link
+    rel="stylesheet"
+    href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+
+</head>
+
+<body>
+
+    <!-- ==========================================
+         DASHBOARD CONTAINER
+    =========================================== -->
+
+    <div class="dashboard">
+
+        <!-- ==========================================
+             SIDEBAR
+        =========================================== -->
+
+        <aside class="sidebar">
+
+            <div class="brand">
+
+                <div class="brand-logo">
+
+                    <i class="fa-solid fa-leaf"></i>
+
+                </div>
+
+                <div class="brand-text">
+
+                    <h2>
+
+                        NutriCycle AI
+
+                    </h2>
+
+                    <span>
+
+                        Donor Dashboard
+
+                    </span>
+
+                </div>
+
+            </div>
+
+            <nav class="sidebar-menu">
+
+                <button
+                    class="menu active"
+                    data-page="dashboard">
+
+                    <i class="fa-solid fa-house"></i>
+
+                    Dashboard
+
+                </button>
+
+                <button
+                    class="menu"
+                    data-page="donations">
+
+                    <i class="fa-solid fa-hand-holding-heart"></i>
+
+                    My Donations
+
+                </button>
+
+                <button
+                    class="menu"
+                    data-page="rewards">
+
+                    <i class="fa-solid fa-medal"></i>
+
+                    Rewards
+
+                </button>
+
+                <button
+                    class="menu"
+                    data-page="notifications">
+
+                    <i class="fa-solid fa-bell"></i>
+
+                    Notifications
+
+                </button>
+
+                <button
+                    class="menu"
+                    data-page="profile">
+
+                    <i class="fa-solid fa-user"></i>
+
+                    Profile
+
+                </button>
+
+                <button
+                    id="logoutButton"
+                    class="menu logout">
+
+                    <i class="fa-solid fa-right-from-bracket"></i>
+
+                    Logout
+
+                </button>
+
+            </nav>
+
+        </aside>
+
+        <!-- ==========================================
+             MAIN CONTENT
+        =========================================== -->
+
+        <main class="content">
+
+            <!-- ==========================================
+                 TOP BAR
+            =========================================== -->
+
+            <header class="topbar">
+
+                <div>
+
+                    <h1>
+
+                        Welcome,
+
+                        <span id="userName">
+
+                            User
+
+                        </span>
+
+                    </h1>
+
+                    <p>
+
+                        Together we can reduce food waste.
+
+                    </p>
+
+                </div>
+
+                <div class="top-actions">
+
+                    <button
+                        id="notificationButton"
+                        class="circle-btn">
+
+                        <i class="fa-solid fa-bell"></i>
+
+                    </button>
+
+                    <button
+                        id="profileButton"
+                        class="circle-btn">
+
+                        <i class="fa-solid fa-user"></i>
+
+                    </button>
+
+                </div>
+
+            </header>
+
+            <!-- ==========================================
+                 HERO CARD
+            =========================================== -->
+
+            <section class="hero-card">
+
+                <div class="hero-left">
+
+                    <h2>
+
+                        Ready to Donate Food?
+
+                    </h2>
+
+                    <p>
+
+                        Start a new donation in just a few steps.
+                        Our AI will verify the food and help deliver
+                        it to the nearest NGO.
+
+                    </p>
+
+                    <button
+                        id="createDonationButton"
+                        class="primary-btn">
+
+                        <i class="fa-solid fa-plus"></i>
+
+                        Create New Donation
+
+                    </button>
+
+                </div>
+
+                <div class="hero-right">
+
+                    <i class="fa-solid fa-hand-holding-heart"></i>
+
+                </div>
+
+            </section>
+                        <!-- ==========================================
+                 STATISTICS
+            =========================================== -->
+
+            <section class="stats-grid">
+
+                <div class="stat-card">
+
+                    <div class="stat-icon">
+
+                        <i class="fa-solid fa-hand-holding-heart"></i>
+
+                    </div>
+
+                    <div class="stat-info">
+
+                        <h3 id="totalDonations">
+
+                            0
+
+                        </h3>
+
+                        <p>
+
+                            Total Donations
+
+                        </p>
+
+                    </div>
+
+                </div>
+
+                <div class="stat-card">
+
+                    <div class="stat-icon">
+
+                        <i class="fa-solid fa-bowl-food"></i>
+
+                    </div>
+
+                    <div class="stat-info">
+
+                        <h3 id="mealsServed">
+
+                            0
+
+                        </h3>
+
+                        <p>
+
+                            Meals Served
+
+                        </p>
+
+                    </div>
+
+                </div>
+
+                <div class="stat-card">
+
+                    <div class="stat-icon">
+
+                        <i class="fa-solid fa-leaf"></i>
+
+                    </div>
+
+                    <div class="stat-info">
+
+                        <h3 id="co2Saved">
+
+                            0 kg
+
+                        </h3>
+
+                        <p>
+
+                            CO₂ Saved
+
+                        </p>
+
+                    </div>
+
+                </div>
+
+                <div class="stat-card">
+
+                    <div class="stat-icon">
+
+                        <i class="fa-solid fa-coins"></i>
+
+                    </div>
+
+                    <div class="stat-info">
+
+                        <h3 id="rewardPoints">
+
+                            0
+
+                        </h3>
+
+                        <p>
+
+                            Reward Points
+
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+            <!-- ==========================================
+                 ACTIVE DONATION
+            =========================================== -->
+
+            <section class="dashboard-card">
+
+                <div class="card-header">
+
+                    <h2>
+
+                        Active Donation
+
+                    </h2>
+
+                </div>
+
+               <div
+    id="activeDonationContainer"
+    class="active-donation-panel">
+
+    <!-- ===============================
+         TRACKING HEADER
+    ================================ -->
+
+    <div class="tracking-header">
+
+        <div>
+
+            <span class="tracking-label">
+                LIVE DELIVERY TRACKING
+            </span>
+
+            <h3 id="donorTrackingStatus">
+                Waiting for Donation
+            </h3>
+
+            <p id="donorTrackingMessage">
+                Your active donation tracking will appear here.
+            </p>
+
+        </div>
+
+        <div
+            id="donorTrackingVehicle"
+            class="tracking-vehicle-badge">
+
+            🚗
+
+        </div>
+
+    </div>
+
+
+    <!-- ===============================
+         MAP
+    ================================ -->
+
+    <div
+        id="trackingMap"
+        class="donor-tracking-map">
+    </div>
+
+
+    <!-- ===============================
+         TRACKING INFORMATION
+    ================================ -->
+
+    <div class="donor-tracking-info">
+
+        <div class="tracking-info-card">
+
+            <span>
+                Vehicle
+            </span>
+
+            <strong id="donorVehicle">
+                --
+            </strong>
+
+        </div>
+
+
+        <div class="tracking-info-card">
+
+            <span>
+                Driver
+            </span>
+
+            <strong id="donorDriver">
+                --
+            </strong>
+
+        </div>
+
+
+        <div class="tracking-info-card">
+
+            <span>
+                NGO
+            </span>
+
+            <strong id="donorNGO">
+                --
+            </strong>
+
+        </div>
+
+
+        <div class="tracking-info-card">
+
+            <span>
+                ETA
+            </span>
+
+            <strong id="donorETA">
+                --
+            </strong>
+
+        </div>
+
+
+        <div class="tracking-info-card">
+
+            <span>
+                Distance
+            </span>
+
+            <strong id="donorDistance">
+                --
+            </strong>
+
+        </div>
+
+
+        <div class="tracking-info-card">
+
+            <span>
+                GPS Accuracy
+            </span>
+
+            <strong id="donorGPSAccuracy">
+                --
+            </strong>
+
+        </div>
+
+    </div>
+
+
+    <!-- ===============================
+         MAP ACTIONS
+    ================================ -->
+
+    <div class="tracking-actions">
+
+        <button
+            id="recenterTrackingButton"
+            class="secondary-btn">
+
+            <i class="fa-solid fa-location-crosshairs"></i>
+
+            Recenter My Location
+
+        </button>
+
+
+        <button
+            id="refreshTrackingButton"
+            class="secondary-btn">
+
+            <i class="fa-solid fa-rotate"></i>
+
+            Refresh Tracking
+
+        </button>
+
+    </div>
+
+</div>
+
+            </section>
+
+            <!-- ==========================================
+                 RECENT DONATIONS
+            =========================================== -->
+
+            <section class="dashboard-card">
+
+                <div class="card-header">
+
+                    <h2>
+
+                        Recent Donations
+
+                    </h2>
+
+                    <button
+                        id="viewAllDonationsButton"
+                        class="text-btn">
+
+                        View All
+
+                    </button>
+
+                </div>
+
+                <div
+                    id="recentDonationsContainer"
+                    class="empty-card">
+
+                    <i class="fa-solid fa-clock-rotate-left"></i>
+
+                    <h3>
+
+                        No Donation History
+
+                    </h3>
+
+                    <p>
+
+                        Your previous donations will be listed
+                        here after your first successful food
+                        donation.
+
+                    </p>
+
+                </div>
+
+            </section>
+                        <!-- ==========================================
+                 REWARDS PREVIEW
+            =========================================== -->
+
+            <section class="dashboard-card">
+
+                <div class="card-header">
+
+                    <h2>
+
+                        Rewards
+
+                    </h2>
+
+                    <button
+                        id="viewRewardsButton"
+                        class="text-btn">
+
+                        View Rewards
+
+                    </button>
+
+                </div>
+
+                <div class="reward-preview">
+
+                    <div class="reward-box">
+
+                        <i class="fa-solid fa-gift"></i>
+
+                        <h3 id="rewardCount">
+
+                            0
+
+                        </h3>
+
+                        <p>
+
+                            Available Rewards
+
+                        </p>
+
+                    </div>
+
+                    <div class="reward-box">
+
+                        <i class="fa-solid fa-trophy"></i>
+
+                        <h3 id="badgeCount">
+
+                            0
+
+                        </h3>
+
+                        <p>
+
+                            Badges Earned
+
+                        </p>
+
+                    </div>
+
+                    <div class="reward-box">
+
+                        <i class="fa-solid fa-star"></i>
+
+                        <h3 id="levelText">
+
+                            Beginner
+
+                        </h3>
+
+                        <p>
+
+                            Current Level
+
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+            <!-- ==========================================
+                 NOTIFICATIONS
+            =========================================== -->
+
+            <section class="dashboard-card">
+
+                <div class="card-header">
+
+                    <h2>
+
+                        Notifications
+
+                    </h2>
+
+                    <button
+                        id="viewNotificationsButton"
+                        class="text-btn">
+
+                        View All
+
+                    </button>
+
+                </div>
+
+                <div
+                    id="notificationContainer"
+                    class="empty-card">
+
+                    <i class="fa-solid fa-bell"></i>
+
+                    <h3>
+
+                        No Notifications
+
+                    </h3>
+
+                    <p>
+
+                        Updates regarding donations,
+                        delivery agents and NGOs
+                        will appear here.
+
+                    </p>
+
+                </div>
+
+            </section>
+
+            <!-- ==========================================
+                 PROFILE SUMMARY
+            =========================================== -->
+
+            <section class="dashboard-card">
+
+                <div class="card-header">
+
+                    <h2>
+
+                        Account Summary
+
+                    </h2>
+
+                </div>
+
+                <div class="profile-grid">
+
+                    <div class="profile-item">
+
+                        <span>
+
+                            Full Name
+
+                        </span>
+
+                        <strong id="summaryUserName">
+
+                            --
+
+                        </strong>
+
+                    </div>
+
+                    <div class="profile-item">
+
+                        <span>
+
+                            Email
+
+                        </span>
+
+                        <strong id="summaryEmail">
+
+                            --
+
+                        </strong>
+
+                    </div>
+
+                    <div class="profile-item">
+
+                        <span>
+
+                            Mobile Number
+
+                        </span>
+
+                        <strong id="summaryPhone">
+
+                            --
+
+                        </strong>
+
+                    </div>
+
+                    <div class="profile-item">
+
+                        <span>
+
+                            Role
+
+                        </span>
+
+                        <strong id="summaryRole">
+
+                            Donor
+
+                        </strong>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+        </main>
+
+    </div>
+
+    <!-- ==========================================
+         LOADING SCREEN
+    =========================================== -->
+
+    <div
+        id="loadingScreen"
+        class="loading-screen">
+
+        <div class="loader-box">
+
+            <div class="loader"></div>
+
+            <h3>
+
+                Please Wait...
+
+            </h3>
+
+            <p>
+
+                Loading your dashboard.
+
+            </p>
+
+        </div>
+
+    </div>
+<!-- Leaflet Map JS -->
+<script
+    src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js">
+</script>
+    <!-- ==========================================
+         DASHBOARD JAVASCRIPT
+    =========================================== -->
+
+    <script
+    type="module"
+        src="../js/user.js">
+
+    </script>
+
+</body>
+
+</html>

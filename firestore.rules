@@ -1,0 +1,177 @@
+rules_version = '2';
+
+service cloud.firestore {
+
+    match /databases/{database}/documents {
+
+        function signedIn() {
+
+            return request.auth != null;
+
+        }
+
+
+        function currentUser() {
+
+            return get(
+
+                /databases/$(database)/documents/users/$(request.auth.uid)
+
+            );
+
+        }
+
+
+        function isNGO() {
+
+            return signedIn()
+                &&
+                currentUser().data.role == "ngo";
+
+        }
+
+
+        function isAgent() {
+
+            return signedIn()
+                &&
+                currentUser().data.role == "agent";
+
+        }
+
+
+        match /users/{uid} {
+
+            allow create:
+
+                if signedIn()
+                &&
+                request.auth.uid == uid;
+
+
+            allow read:
+
+                if signedIn()
+                &&
+                (
+                    request.auth.uid == uid
+                    ||
+                    isNGO()
+                );
+
+
+            allow update:
+
+                if signedIn()
+                &&
+                request.auth.uid == uid;
+
+        }
+
+
+        match /donations/{donationId} {
+
+            allow create:
+
+                if signedIn()
+                &&
+                request.resource.data.donorUid
+                    == request.auth.uid;
+
+
+            allow read:
+
+                if signedIn()
+                &&
+                (
+                    resource.data.donorUid
+                        == request.auth.uid
+                    ||
+                    isNGO()
+                );
+
+
+            allow update:
+
+                if signedIn()
+                &&
+                (
+                    resource.data.donorUid
+                        == request.auth.uid
+                    ||
+                    isNGO()
+                );
+
+
+            allow delete:
+
+                if signedIn()
+                &&
+                resource.data.donorUid
+                    == request.auth.uid;
+
+        }
+
+
+        match /deliveryTasks/{taskId} {
+
+            allow create:
+
+                if isNGO();
+
+
+            allow read:
+
+                if signedIn()
+                &&
+                (
+                    isNGO()
+                    ||
+                    isAgent()
+                    ||
+                    resource.data.donorUid
+                        == request.auth.uid
+                );
+
+
+            allow update:
+
+                if isNGO()
+                ||
+                (
+                    isAgent()
+                    &&
+                    resource.data.agentUid
+                        == request.auth.uid
+                );
+
+        }
+
+
+        match /notifications/{notificationId} {
+
+            allow read:
+
+                if signedIn()
+                &&
+                resource.data.userUid
+                    == request.auth.uid;
+
+
+            allow create:
+
+                if signedIn();
+
+
+            allow update:
+
+                if signedIn()
+                &&
+                resource.data.userUid
+                    == request.auth.uid;
+
+        }
+
+    }
+
+}

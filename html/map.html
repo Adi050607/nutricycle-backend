@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>NutriCycle AI — Live Delivery Tracking</title>
+
+    <link
+        rel="stylesheet"
+        href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+    >
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: Inter, Arial, sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            overflow: hidden;
+            background: #eef4ef;
+        }
+
+        #trackingMap {
+            width: 100%;
+            height: 100vh;
+        }
+
+        .leaflet-control-attribution {
+            font-size: 10px;
+        }
+
+        .top-card,
+        .bottom-card {
+            position: fixed;
+            z-index: 1000;
+            background: rgba(255,255,255,.96);
+            backdrop-filter: blur(14px);
+            border: 1px solid rgba(20,80,40,.10);
+            box-shadow: 0 18px 45px rgba(16,24,20,.16);
+        }
+
+        .top-card {
+            left: 24px;
+            top: 24px;
+            width: 310px;
+            padding: 20px;
+            border-radius: 24px;
+        }
+
+        .eyebrow {
+            font-size: 11px;
+            font-weight: 800;
+            letter-spacing: .12em;
+            color: #159447;
+            text-transform: uppercase;
+        }
+
+        .top-card h1 {
+            margin-top: 6px;
+            font-size: 21px;
+            color: #102017;
+        }
+
+        .status {
+            margin-top: 14px;
+            padding: 10px 12px;
+            border-radius: 12px;
+            background: #eef9f0;
+            color: #147a39;
+            font-size: 13px;
+            font-weight: 800;
+        }
+
+        .metrics {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-top: 14px;
+        }
+
+        .metric {
+            padding: 12px;
+            border-radius: 14px;
+            background: #f5f8f5;
+        }
+
+        .metric span {
+            display: block;
+            font-size: 11px;
+            color: #718076;
+            margin-bottom: 5px;
+        }
+
+        .metric strong {
+            font-size: 18px;
+            color: #102017;
+        }
+
+        .bottom-card {
+            left: 50%;
+            bottom: 22px;
+            width: min(1180px, calc(100vw - 44px));
+            transform: translateX(-50%);
+            border-radius: 28px;
+            padding: 18px 22px;
+        }
+
+        .bottom-grid {
+            display: grid;
+            grid-template-columns: 1.2fr 1fr 1fr;
+            gap: 18px;
+            align-items: center;
+        }
+
+        .person,
+        .route-info {
+            min-width: 0;
+        }
+
+        .person h2,
+        .route-info h3 {
+            color: #132118;
+            font-size: 17px;
+        }
+
+        .person p,
+        .route-info p {
+            margin-top: 5px;
+            color: #6e7b73;
+            font-size: 13px;
+        }
+
+        .pill-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 11px;
+        }
+
+        .pill {
+            display: inline-flex;
+            align-items: center;
+            min-height: 32px;
+            padding: 7px 10px;
+            border-radius: 11px;
+            background: #f0f4f1;
+            color: #27362d;
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+        .actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 12px;
+        }
+
+        .actions button {
+            border: 0;
+            border-radius: 12px;
+            padding: 10px 14px;
+            font-weight: 800;
+            cursor: pointer;
+        }
+
+        .primary {
+            background: #159447;
+            color: white;
+        }
+
+        .secondary {
+            background: #e9eef1;
+            color: #233127;
+        }
+
+        .floating-error {
+            position: fixed;
+            z-index: 2000;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: min(500px, calc(100vw - 40px));
+            padding: 24px;
+            border-radius: 22px;
+            background: white;
+            box-shadow: 0 25px 70px rgba(0,0,0,.22);
+            text-align: center;
+        }
+
+        .floating-error h2 {
+            color: #b42318;
+            font-size: 21px;
+        }
+
+        .floating-error p {
+            margin-top: 10px;
+            color: #5e6a62;
+            line-height: 1.5;
+        }
+
+        @media (max-width: 850px) {
+            .top-card {
+                width: calc(100vw - 32px);
+                left: 16px;
+                top: 16px;
+            }
+
+            .bottom-card {
+                width: calc(100vw - 32px);
+                bottom: 16px;
+            }
+
+            .bottom-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .actions {
+                flex-wrap: wrap;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div id="trackingMap"></div>
+
+    <section class="top-card">
+        <div class="eyebrow">NutriCycle AI</div>
+        <h1 id="foodTitle">Live Donation Tracking</h1>
+
+        <div class="status" id="trackingStatus">
+            Preparing live route…
+        </div>
+
+        <div class="metrics">
+            <div class="metric">
+                <span>ETA</span>
+                <strong id="etaText">—</strong>
+            </div>
+
+            <div class="metric">
+                <span>Distance</span>
+                <strong id="distanceText">—</strong>
+            </div>
+        </div>
+    </section>
+
+    <section class="bottom-card">
+        <div class="bottom-grid">
+
+            <div class="person">
+                <h2 id="driverName">Delivery Partner</h2>
+                <p id="driverPhone">Contact unavailable</p>
+
+                <div class="pill-row">
+                    <div class="pill" id="vehicleType">Vehicle —</div>
+                    <div class="pill" id="vehicleNumber">Vehicle No. —</div>
+                </div>
+
+                <div class="actions">
+                    <button class="primary" id="callButton">Call</button>
+                    <button class="secondary" id="dashboardButton">Dashboard</button>
+                </div>
+            </div>
+
+            <div class="route-info">
+                <h3>Pickup</h3>
+                <p id="pickupLocation">Your live location</p>
+                <h3 style="margin-top:14px;">Assigned NGO</h3>
+                <p id="ngoLocationText">Loading NGO…</p>
+            </div>
+
+            <div class="route-info">
+                <h3>Donation</h3>
+                <p id="quantityText">Quantity —</p>
+                <p id="donationStatus" style="margin-top:8px;">Status —</p>
+            </div>
+
+        </div>
+    </section>
+
+    <div id="errorBox" class="floating-error" hidden>
+        <h2>Live route unavailable</h2>
+        <p id="errorMessage"></p>
+        <div class="actions" style="justify-content:center;">
+            <button class="primary" id="errorDashboardButton">Back to Dashboard</button>
+        </div>
+    </div>
+
+    <script
+        src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js">
+    </script>
+
+    <script src="../js/tracking.js"></script>
+
+</body>
+</html>

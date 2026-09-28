@@ -1,0 +1,55 @@
+{
+    "common": {
+        "continue": "Continue",
+        "back": "Back",
+        "save": "Save",
+        "cancel": "Cancel",
+        "submit": "Submit",
+        "loading": "Loading...",
+        "select": "Select"
+    },
+
+    "context": {
+        "welcome": "Welcome to NutriCycle AI",
+        "subtitle": "Choose your region and language to personalize your NutriCycle experience.",
+        "country": "Country / Region",
+        "language": "Language",
+        "currency": "Currency",
+        "languageHint": "Your selected language controls the NutriCycle interface.",
+        "currencyHint": "This is a recommendation based on your selected region. You can change it later.",
+        "detected": "Region detected",
+        "privacy": "You can change your language and regional preferences later."
+    },
+
+    "signup": {
+        "createAccount": "Create Your Account",
+        "accountSubtitle": "Set up your secure NutriCycle AI login.",
+        "email": "Email Address",
+        "password": "Password",
+        "confirmPassword": "Confirm Password",
+        "mobileNumber": "Mobile Number",
+        "profile": "Complete Your Profile",
+        "profileSubtitle": "Tell us a little about yourself.",
+        "fullName": "Full Name",
+        "gender": "Gender",
+        "dateOfBirth": "Date of Birth",
+        "preferredLanguage": "Preferred Language",
+        "preferredCurrency": "Preferred Currency",
+        "administrativeArea": "State / Province / Region / Equivalent",
+        "district": "District / County / Equivalent",
+        "municipality": "City / Town / Village",
+        "locality": "Locality / Neighbourhood",
+        "postalCode": "Postal Code",
+
+        "emailPlaceholder": "Enter your email address",
+        "passwordPlaceholder": "Create a strong password",
+        "confirmPasswordPlaceholder": "Re-enter your password",
+        "phonePlaceholder": "Enter mobile number",
+        "fullNamePlaceholder": "Enter your full name",
+        "administrativeAreaPlaceholder": "Enter your state, province, region or equivalent",
+        "districtPlaceholder": "Enter your district, county or equivalent",
+        "municipalityPlaceholder": "Enter city, town or village",
+        "localityPlaceholder": "Enter locality or neighbourhood",
+        "postalCodePlaceholder": "Enter your postal code"
+    }
+}

@@ -1,0 +1,1485 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>NutriCycle AI - Delivery Dashboard</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:'Inter',sans-serif;
+}
+
+body{
+background:#f3f5f9;
+overflow-x:hidden;
+}
+
+.dashboard{
+display:flex;
+min-height:100vh;
+}
+
+/* SIDEBAR */
+
+.sidebar{
+width:300px;
+background:
+linear-gradient(180deg,#021b14,#03251d,#01120d);
+color:white;
+padding:24px;
+display:flex;
+flex-direction:column;
+justify-content:space-between;
+position:fixed;
+left:0;
+top:0;
+height:100vh;
+}
+
+.logo{
+display:flex;
+align-items:center;
+gap:16px;
+margin-bottom:40px;
+}
+
+.logo-circle{
+width:62px;
+height:62px;
+border-radius:18px;
+background:linear-gradient(135deg,#15ff7d,#0ca84f);
+display:flex;
+align-items:center;
+justify-content:center;
+font-size:28px;
+}
+
+.logo h1{
+font-size:40px;
+font-weight:800;
+line-height:1;
+}
+
+.logo p{
+opacity:.8;
+margin-top:6px;
+}
+
+.nav-links{
+display:flex;
+flex-direction:column;
+gap:14px;
+}
+
+.nav-links a{
+text-decoration:none;
+color:white;
+padding:18px 20px;
+border-radius:18px;
+display:flex;
+align-items:center;
+gap:18px;
+font-size:18px;
+transition:.3s;
+font-weight:500;
+}
+
+.nav-links a:hover,
+.nav-links .active{
+background:
+linear-gradient(135deg,#16d85f,#0db44d);
+transform:translateX(4px);
+}
+
+.delivery-profile{
+background:rgba(255,255,255,.06);
+border:1px solid rgba(255,255,255,.08);
+padding:24px;
+border-radius:28px;
+margin-top:30px;
+}
+
+.delivery-profile img{
+width:90px;
+height:90px;
+border-radius:50%;
+object-fit:cover;
+border:4px solid #16d85f;
+margin-bottom:16px;
+}
+
+.delivery-profile h3{
+font-size:24px;
+margin-bottom:6px;
+}
+
+.online-status{
+display:flex;
+align-items:center;
+gap:8px;
+margin-top:10px;
+color:#52ff91;
+}
+
+.dot{
+width:10px;
+height:10px;
+background:#52ff91;
+border-radius:50%;
+}
+
+/* MAIN */
+
+.main{
+margin-left:300px;
+width:calc(100% - 300px);
+padding:34px;
+}
+
+/* TOPBAR */
+
+.topbar{
+display:flex;
+justify-content:space-between;
+align-items:center;
+margin-bottom:34px;
+flex-wrap:wrap;
+gap:20px;
+}
+
+.welcome h2{
+font-size:46px;
+font-weight:800;
+margin-bottom:10px;
+}
+
+.welcome p{
+font-size:20px;
+color:#667085;
+}
+
+.top-actions{
+display:flex;
+align-items:center;
+gap:18px;
+}
+
+.icon-btn{
+width:58px;
+height:58px;
+border-radius:18px;
+background:white;
+display:flex;
+align-items:center;
+justify-content:center;
+font-size:22px;
+position:relative;
+box-shadow:0 6px 18px rgba(0,0,0,.06);
+}
+
+.badge{
+position:absolute;
+top:8px;
+right:8px;
+background:red;
+color:white;
+width:22px;
+height:22px;
+font-size:12px;
+border-radius:50%;
+display:flex;
+align-items:center;
+justify-content:center;
+font-weight:700;
+}
+
+.online-toggle{
+background:white;
+padding:16px 22px;
+border-radius:18px;
+display:flex;
+align-items:center;
+gap:12px;
+font-weight:700;
+box-shadow:0 6px 18px rgba(0,0,0,.06);
+}
+
+/* STAT CARDS */
+
+.stats-grid{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+gap:24px;
+margin-bottom:34px;
+}
+
+.card{
+background:white;
+padding:28px;
+border-radius:30px;
+box-shadow:0 8px 20px rgba(0,0,0,.05);
+}
+
+.stat-top{
+display:flex;
+justify-content:space-between;
+align-items:center;
+margin-bottom:20px;
+}
+
+.stat-icon{
+width:74px;
+height:74px;
+border-radius:24px;
+display:flex;
+align-items:center;
+justify-content:center;
+font-size:32px;
+color:white;
+}
+
+.green{
+background:linear-gradient(135deg,#19db63,#0d9d43);
+}
+
+.blue{
+background:linear-gradient(135deg,#4984ff,#2f57ff);
+}
+
+.orange{
+background:linear-gradient(135deg,#ffb347,#ff7b00);
+}
+
+.purple{
+background:linear-gradient(135deg,#9d57ff,#6d2cff);
+}
+
+.stat-value{
+font-size:54px;
+font-weight:800;
+}
+
+.stat-label{
+font-size:18px;
+color:#667085;
+margin-top:8px;
+}
+
+/* CONTENT GRID */
+
+.content-grid{
+display:grid;
+grid-template-columns:1.5fr 1fr;
+gap:26px;
+margin-bottom:26px;
+}
+
+.delivery-card{
+background:white;
+border-radius:30px;
+padding:28px;
+box-shadow:0 8px 20px rgba(0,0,0,.05);
+}
+
+.section-title{
+display:flex;
+justify-content:space-between;
+align-items:center;
+margin-bottom:28px;
+}
+
+.section-title h3{
+font-size:30px;
+}
+
+.live-badge{
+background:#e9fff1;
+color:#0ba84d;
+padding:10px 16px;
+border-radius:14px;
+font-weight:700;
+}
+
+.route-map{
+height:350px;
+border-radius:24px;
+overflow:hidden;
+margin-top:20px;
+}
+
+.route-map iframe{
+width:100%;
+height:100%;
+border:none;
+}
+
+.delivery-actions{
+display:flex;
+gap:18px;
+margin-top:28px;
+flex-wrap:wrap;
+}
+
+.action-btn{
+flex:1;
+padding:18px;
+border:none;
+border-radius:18px;
+font-size:18px;
+font-weight:700;
+cursor:pointer;
+transition:.3s;
+}
+
+.navigate-btn{
+background:linear-gradient(135deg,#16d85f,#0ca84f);
+color:white;
+}
+
+.call-btn{
+background:#edf1f7;
+}
+
+.action-btn:hover{
+transform:translateY(-3px);
+}
+
+
+
+/* ==========================================================
+   LIVE PICKUP BUTTON
+========================================================== */
+
+.accept-pickup-button{
+    margin-top:16px;
+    width:100%;
+    padding:15px 22px;
+
+    border:none;
+    border-radius:16px;
+
+    background:linear-gradient(
+        135deg,
+        #16d85f,
+        #0ca84f
+    );
+
+    color:white;
+
+    font-size:17px;
+    font-weight:800;
+
+    cursor:pointer;
+
+    box-shadow:
+        0 8px 20px rgba(12,168,79,.28);
+
+    transition:
+        transform .2s ease,
+        box-shadow .2s ease,
+        filter .2s ease;
+
+    position:relative;
+    overflow:hidden;
+}
+
+
+/* subtle moving shine */
+.accept-pickup-button::before{
+
+    content:"";
+
+    position:absolute;
+
+    top:0;
+    left:-120%;
+
+    width:70%;
+    height:100%;
+
+    background:
+        linear-gradient(
+            90deg,
+            transparent,
+            rgba(255,255,255,.28),
+            transparent
+        );
+
+    transform:skewX(-20deg);
+
+    transition:
+        left .6s ease;
+}
+
+
+.accept-pickup-button:hover{
+
+    transform:
+        translateY(-3px);
+
+    box-shadow:
+        0 12px 28px rgba(12,168,79,.38);
+
+    filter:
+        brightness(1.05);
+
+}
+
+
+.accept-pickup-button:hover::before{
+
+    left:140%;
+
+}
+
+
+.accept-pickup-button:active{
+
+    transform:
+        translateY(0)
+        scale(.98);
+
+}
+
+
+.accept-pickup-button:disabled{
+
+    cursor:
+        wait;
+
+    opacity:
+        .75;
+
+    transform:
+        none;
+
+    box-shadow:
+        none;
+
+}
+
+/* LIST */
+
+.delivery-list{
+display:flex;
+flex-direction:column;
+gap:20px;
+}
+
+.delivery-item{
+background:white;
+padding:22px;
+border-radius:24px;
+display:flex;
+justify-content:space-between;
+align-items:center;
+box-shadow:0 6px 18px rgba(0,0,0,.05);
+flex-wrap:wrap;
+gap:20px;
+}
+
+.delivery-left{
+display:flex;
+gap:18px;
+align-items:center;
+}
+
+.delivery-number{
+width:58px;
+height:58px;
+border-radius:18px;
+background:#e9fff1;
+display:flex;
+align-items:center;
+justify-content:center;
+font-size:24px;
+font-weight:800;
+color:#11af4d;
+}
+
+.delivery-status{
+padding:10px 16px;
+border-radius:14px;
+font-weight:700;
+}
+
+.pending{
+background:#fff2df;
+color:#ff9300;
+}
+
+.completed{
+background:#e7fff0;
+color:#08a647;
+}
+
+/* RESPONSIVE */
+
+@media(max-width:1200px){
+
+.content-grid{
+grid-template-columns:1fr;
+}
+
+}
+
+@media(max-width:900px){
+
+.sidebar{
+position:relative;
+width:100%;
+height:auto;
+}
+
+.main{
+margin-left:0;
+width:100%;
+}
+
+.dashboard{
+flex-direction:column;
+}
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="dashboard">
+
+<!-- SIDEBAR -->
+
+<div class="sidebar">
+
+<div>
+
+<div class="logo">
+
+<div class="logo-circle">
+<i class="fa-solid fa-motorcycle"></i>
+</div>
+
+<div>
+<h1>NutriCycle AI</h1>
+<p>Delivery Dashboard</p>
+</div>
+
+</div>
+
+<div class="nav-links">
+
+<a href="#" class="active">
+<i class="fa-solid fa-house"></i>
+Dashboard
+</a>
+
+<a href="#">
+<i class="fa-solid fa-truck-fast"></i>
+My Deliveries
+</a>
+
+<a href="#">
+<i class="fa-solid fa-box"></i>
+Pickup Requests
+</a>
+
+<a href="#">
+<i class="fa-solid fa-clock-rotate-left"></i>
+Delivery History
+</a>
+
+<a href="#">
+<i class="fa-solid fa-wallet"></i>
+Earnings
+</a>
+
+<a href="#"
+onclick="openProfile()">
+
+<i class="fa-solid fa-user"></i>
+
+Profile
+
+</a>
+
+<a href="#">
+<i class="fa-solid fa-bell"></i>
+Notifications
+</a>
+
+<a href="#"
+onclick="openSettings()">
+
+<i class="fa-solid fa-gear"></i>
+
+Settings
+
+</a>
+<a href="#"
+onclick="logout()">
+
+<i class="fa-solid fa-right-from-bracket"></i>
+
+Logout
+
+</a>
+</div>
+
+</div>
+
+<div class="delivery-profile">
+
+<img src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png">
+
+<h3 id="agentName">Agent Name</h3>
+
+<p>Delivery Partner</p>
+
+<div class="online-status">
+<div class="dot"></div>
+Online
+</div>
+
+</div>
+
+</div>
+
+<!-- MAIN -->
+
+<div class="main">
+
+<div class="topbar">
+
+<div class="welcome">
+
+<h2 id="welcomeText">
+Welcome Agent 👋
+</h2>
+
+<p>
+Ready to deliver impact today?
+</p>
+
+</div>
+
+<div class="top-actions">
+
+<div class="icon-btn">
+<i class="fa-regular fa-bell"></i>
+<div class="badge">3</div>
+</div>
+
+<div class="icon-btn">
+<i class="fa-regular fa-message"></i>
+</div>
+
+<div class="online-toggle">
+<div class="dot"></div>
+Online
+</div>
+
+</div>
+
+</div>
+
+<!-- STATS -->
+
+<div class="stats-grid">
+
+<div class="card">
+
+<div class="stat-top">
+
+<div class="stat-icon green">
+<i class="fa-solid fa-truck"></i>
+</div>
+
+</div>
+
+<div class="stat-value">
+5
+</div>
+
+<div class="stat-label">
+Today's Deliveries
+</div>
+
+</div>
+
+<div class="card">
+
+<div class="stat-top">
+
+<div class="stat-icon blue">
+<i class="fa-solid fa-route"></i>
+</div>
+
+</div>
+
+<div class="stat-value">
+32 KM
+</div>
+
+<div class="stat-label">
+Total Distance
+</div>
+
+</div>
+
+<div class="card">
+
+<div class="stat-top">
+
+<div class="stat-icon purple">
+₹
+</div>
+
+</div>
+
+<div class="stat-value">
+850
+</div>
+
+<div class="stat-label">
+Today's Earnings
+</div>
+
+</div>
+
+<div class="card">
+
+<div class="stat-top">
+
+<div class="stat-icon orange">
+<i class="fa-solid fa-star"></i>
+</div>
+
+</div>
+
+<div class="stat-value">
+4.9
+</div>
+
+<div class="stat-label">
+Agent Rating
+</div>
+
+</div>
+
+</div>
+<div class="stats-grid" style="margin-bottom:26px;">
+
+<div class="card">
+
+<h3 style="margin-bottom:20px;">
+Quick Actions
+</h3>
+
+<div style="
+display:grid;
+grid-template-columns:repeat(2,1fr);
+gap:15px;
+">
+
+<button
+    id="quickAcceptPickupButton"
+    class="action-btn navigate-btn"
+    type="button">
+    Accept Pickup
+</button>
+
+<button class="action-btn call-btn">
+Open Route
+</button>
+
+<button class="action-btn call-btn">
+Call NGO
+</button>
+
+<button class="action-btn call-btn">
+View Earnings
+</button>
+
+</div>
+
+</div>
+
+</div>
+<!-- ======================================================
+     PICKUP REQUESTS
+======================================================= -->
+
+<div
+    class="delivery-card"
+    id="pickupRequestsSection"
+    style="margin-bottom:26px;"
+>
+
+    <div class="section-title">
+
+        <h3>
+            Pickup Requests
+        </h3>
+
+        <div class="live-badge">
+            LIVE
+        </div>
+
+    </div>
+
+
+    <div
+        id="requestContainer"
+    >
+
+        <div
+            style="
+                padding:20px;
+                text-align:center;
+                color:#667085;
+            "
+        >
+            Loading pickup requests...
+        </div>
+
+    </div>
+
+</div>
+<!-- GRID -->
+
+<div class="content-grid">
+
+<!-- CURRENT DELIVERY -->
+
+<div class="delivery-card">
+
+<div class="section-title">
+
+<h3>
+Current Delivery
+</h3>
+
+<div class="live-badge">
+LIVE
+</div>
+
+</div>
+
+<h2 style="margin-bottom:20px;">
+Hotel Sunshine
+</h2>
+
+<p style="font-size:18px;color:#667085;margin-bottom:10px;">
+Pickup: Shivajinagar, Pune
+</p>
+
+<p style="font-size:18px;color:#667085;margin-bottom:26px;">
+Drop: Helping Hands NGO
+</p>
+
+<div class="route-map">
+
+<iframe
+src="https://maps.google.com/maps?q=pune&t=&z=13&ie=UTF8&iwloc=&output=embed">
+</iframe>
+
+</div>
+
+<div class="delivery-actions">
+
+<button class="action-btn navigate-btn">
+<i class="fa-solid fa-location-arrow"></i>
+Navigate
+</button>
+
+<button class="action-btn call-btn">
+<i class="fa-solid fa-phone"></i>
+Call NGO
+</button>
+
+</div>
+
+</div>
+
+<!-- PROGRESS -->
+
+<div class="delivery-card">
+
+<div class="section-title">
+
+<h3>
+Today's Progress
+</h3>
+
+</div>
+
+<div style="
+width:240px;
+height:240px;
+margin:auto;
+border-radius:50%;
+background:
+conic-gradient(
+#11af4d 0% 68%,
+#edf1f7 68% 100%);
+display:flex;
+align-items:center;
+justify-content:center;
+margin-bottom:30px;
+">
+
+<div style="
+width:180px;
+height:180px;
+background:white;
+border-radius:50%;
+display:flex;
+align-items:center;
+justify-content:center;
+flex-direction:column;
+">
+
+<h1 style="font-size:52px;">
+68%
+</h1>
+
+<p style="color:#667085;">
+Completed
+</p>
+
+</div>
+
+</div>
+
+<div style="
+display:flex;
+flex-direction:column;
+gap:18px;
+font-size:18px;
+">
+
+<div style="
+display:flex;
+justify-content:space-between;
+">
+
+<span>Assigned</span>
+<strong>5</strong>
+
+</div>
+
+<div style="
+display:flex;
+justify-content:space-between;
+">
+
+<span>Completed</span>
+<strong>3</strong>
+
+</div>
+
+<div style="
+display:flex;
+justify-content:space-between;
+">
+
+<span>Pending</span>
+<strong>2</strong>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+<!-- UPCOMING -->
+
+<div class="delivery-card">
+
+<div class="section-title">
+
+<h3>
+Upcoming Deliveries
+</h3>
+
+</div>
+
+<div class="delivery-list">
+
+<div class="delivery-item">
+
+<div class="delivery-left">
+
+<div class="delivery-number">
+1
+</div>
+
+<div>
+
+<h3>Green Leaf Restaurant</h3>
+
+<p style="color:#667085;">
+Viman Nagar → Hope Shelter
+</p>
+
+</div>
+
+</div>
+
+<div class="delivery-status pending">
+Pending
+</div>
+
+</div>
+
+<div class="delivery-item">
+
+<div class="delivery-left">
+
+<div class="delivery-number">
+2
+</div>
+
+<div>
+
+<h3>Spice Garden Hotel</h3>
+
+<p style="color:#667085;">
+Baner → Food Relief NGO
+</p>
+
+</div>
+
+</div>
+
+<div class="delivery-status completed">
+Assigned
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+<div
+id="profileModal"
+style="
+display:none;
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+background:rgba(0,0,0,.6);
+z-index:999;
+justify-content:center;
+align-items:center;
+">
+
+<div style="
+background:white;
+padding:35px;
+border-radius:25px;
+width:500px;
+max-width:95%;
+">
+
+<h2>
+Agent Profile
+</h2>
+
+<hr style="margin:20px 0;">
+
+<p>
+<strong>Name:</strong>
+<span id="profileName"></span>
+</p>
+
+<br>
+
+<p>
+<strong>Email:</strong>
+<span id="profileEmail"></span>
+</p>
+
+<br>
+
+<button
+class="action-btn navigate-btn"
+onclick="closeProfile()">
+
+Close
+
+</button>
+
+</div>
+
+</div>
+<script>
+
+const storedName =
+localStorage.getItem("userName");
+
+if(storedName){
+
+document.getElementById(
+"agentName"
+).innerText =
+storedName;
+
+document.getElementById(
+"welcomeText"
+).innerText =
+"Welcome, " +
+storedName +
+" 👋";
+
+}
+
+function logout(){
+
+localStorage.removeItem(
+"userLoggedIn"
+);
+
+window.location.href =
+"home.html";
+
+}
+function deleteAccount(){
+
+const confirm1 = confirm(
+"Are you sure you want to delete your account?"
+);
+
+if(!confirm1){
+return;
+}
+
+const confirm2 = confirm(
+"This action is permanent and cannot be undone."
+);
+
+if(!confirm2){
+return;
+}
+
+localStorage.clear();
+
+alert(
+"Your account has been deleted."
+);
+
+window.location.href =
+"home.html";
+
+}
+
+function openProfile(){
+
+document.getElementById(
+"profileModal"
+).style.display =
+"flex";
+
+document.getElementById(
+"profileName"
+).innerText =
+localStorage.getItem(
+"userName"
+) || "Unknown";
+
+document.getElementById(
+"profileEmail"
+).innerText =
+localStorage.getItem(
+"userEmail"
+) || "Unknown";
+
+}
+
+function closeProfile(){
+
+document.getElementById(
+"profileModal"
+).style.display =
+"none";
+
+}
+
+function openSettings(){
+
+document.getElementById(
+"settingsModal"
+).style.display =
+"flex";
+
+}
+function closeSettings(){
+
+document.getElementById(
+"settingsModal"
+).style.display =
+"none";
+
+}
+
+</script>
+<div
+id="settingsModal"
+style="
+display:none;
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+background:rgba(0,0,0,.6);
+z-index:999;
+justify-content:center;
+align-items:center;
+">
+
+<div style="
+background:white;
+width:600px;
+max-width:95%;
+padding:35px;
+border-radius:30px;
+">
+
+<h2 style="margin-bottom:25px;">
+Settings
+</h2>
+
+<div style="
+display:flex;
+flex-direction:column;
+gap:15px;
+">
+
+<button
+class="action-btn call-btn">
+🔔 Notifications
+</button>
+
+<button
+class="action-btn call-btn"
+onclick="toggleStatus()">
+🟢 Online / Offline
+</button>
+
+<button
+class="action-btn call-btn">
+🔒 Privacy Settings
+</button>
+
+<button
+class="action-btn call-btn">
+🌐 Language
+</button>
+
+<button
+class="action-btn call-btn"
+onclick="logout()">
+🚪 Logout
+</button>
+
+<button
+class="action-btn"
+style="
+background:#dc2626;
+color:white;
+"
+onclick="deleteAccount()">
+
+🗑 Delete Account
+
+</button>
+
+<button
+class="action-btn call-btn"
+onclick="closeSettings()">
+
+Close
+
+</button>
+
+</div>
+
+</div>
+
+</div>
+<script>
+
+let isOnline = true;
+
+function toggleStatus(){
+
+isOnline = !isOnline;
+
+const statusText =
+document.querySelector(".online-toggle");
+
+if(isOnline){
+
+statusText.innerHTML =
+'<div class="dot"></div> Online';
+
+}else{
+
+statusText.innerHTML =
+'<div class="dot" style="background:red"></div> Offline';
+
+}
+
+}
+
+function closeSettings(){
+
+document.getElementById(
+"settingsModal"
+).style.display =
+"none";
+
+}
+
+setInterval(()=>{
+
+const clock =
+document.getElementById(
+"liveClock"
+);
+
+if(clock){
+
+clock.innerHTML =
+new Date().toLocaleTimeString();
+
+}
+
+},1000);
+
+</script>
+
+<div
+id="settingsModal"
+style="
+display:none;
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+background:rgba(0,0,0,.6);
+z-index:9999;
+justify-content:center;
+align-items:center;
+">
+
+<div style="
+background:white;
+width:600px;
+max-width:95%;
+padding:35px;
+border-radius:30px;
+">
+
+<h2>Settings</h2>
+
+<br>
+
+<button class="action-btn call-btn">
+🔔 Notifications
+</button>
+
+<br><br>
+
+<button
+class="action-btn call-btn"
+onclick="toggleStatus()">
+
+🟢 Online / Offline
+
+</button>
+
+<br><br>
+
+<button class="action-btn call-btn">
+🔒 Privacy Settings
+</button>
+
+<br><br>
+
+<button class="action-btn call-btn">
+🌐 Language
+</button>
+
+<br><br>
+
+<button
+class="action-btn call-btn"
+onclick="logout()">
+
+🚪 Logout
+
+</button>
+
+<br><br>
+
+<button
+class="action-btn"
+style="
+background:#dc2626;
+color:white;
+"
+onclick="deleteAccount()">
+
+🗑 Delete Account
+
+</button>
+
+<br><br>
+
+<button
+class="action-btn call-btn"
+onclick="closeSettings()">
+
+Close
+
+</button>
+
+</div>
+
+</div>
+<script
+    type="module"
+    src="../js/agent.js">
+</script>
+</body>
+</html>

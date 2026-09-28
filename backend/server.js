@@ -1,3 +1,18 @@
+const OpenAI =
+    require("openai");
+    const {
+    AGENT_NAME:
+        FOOD_SAFETY_AGENT_NAME,
+
+    AGENT_VERSION:
+        FOOD_SAFETY_AGENT_VERSION,
+
+    runFoodSafetyAgent
+
+} =
+    require(
+        "./js/food-safety-agent"
+    );
 require("dotenv").config();
 
 const express =
@@ -60,6 +75,9 @@ const TRUST_AI_MODEL =
 
 const GUARDIAN_AI_MODEL =
     process.env.GUARDIAN_AI_MODEL ||
+    "gpt-5.6-luna";
+    const FOOD_SAFETY_AI_MODEL =
+    process.env.FOOD_SAFETY_AI_MODEL ||
     "gpt-5.6-luna";
 
 
@@ -1072,7 +1090,9 @@ app.get(
                     "enabled",
 
                 dataGuardian:
-                    "enabled"
+                    "enabled",
+                    foodSafety:
+    "enabled"
 
             },
 
@@ -1088,7 +1108,10 @@ app.get(
                     TRUST_AI_MODEL,
 
                 dataGuardian:
-                    GUARDIAN_AI_MODEL
+                    GUARDIAN_AI_MODEL,
+
+                foodSafety:
+    FOOD_SAFETY_AI_MODEL
 
             },
 
@@ -1182,26 +1205,50 @@ app.get(
 
                 },
 
-                {
+              {
+    id:
+        "data-guardian",
 
-                    id:
-                        "data-guardian",
+    name:
+        "Data Guardian",
 
-                    name:
-                        "Data Guardian",
+    endpoint:
+        "/guardian",
 
-                    endpoint:
-                        "/guardian",
+    model:
+        GUARDIAN_AI_MODEL,
 
-                    model:
-                        GUARDIAN_AI_MODEL,
+    status:
+        client
+            ? "enabled"
+            : "unavailable"
 
-                    status:
-                        client
-                            ? "enabled"
-                            : "unavailable"
+},
 
-                }
+{
+    id:
+        "food-safety",
+
+    name:
+        FOOD_SAFETY_AGENT_NAME,
+
+    endpoint:
+        "/scan",
+
+    model:
+        FOOD_SAFETY_AI_MODEL,
+
+    version:
+        FOOD_SAFETY_AGENT_VERSION,
+
+    status:
+        client &&
+        typeof runFoodSafetyAgent ===
+            "function"
+            ? "enabled"
+            : "unavailable"
+
+}
 
             ]
 
@@ -1245,12 +1292,21 @@ app.post(
 
         try {
 
-            const {
-                image,
-                foodName
-            } =
-                req.body ||
-                {};
+           const {
+    image,
+    foodName,
+
+    preparationTime,
+    storageMethod,
+    storageTemperatureC,
+    packaging,
+    transportMethod,
+    donorNotes,
+
+    runFoodSafety
+} =
+    req.body ||
+    {};
 
 
             if (
@@ -1476,34 +1532,153 @@ Rules:
 
 
             const result =
-                normalizeFoodResult(
-                    parsed
-                );
+    normalizeFoodResult(
+        parsed
+    );
 
 
-            console.log(
-                "NutriCycle AI — Food Analysis:",
-                {
+let safetyAssessment =
+    null;
 
-                    detectedName:
-                        result.detectedName,
 
-                    confidence:
-                        result.confidence,
+/*
+   The Food Safety & Risk Agent runs
+   after the Food Analysis Agent.
 
-                    matches:
-                        result.matches,
+   Food Analysis answers:
+   "What is visibly present?"
 
-                    requiresHumanReview:
-                        result.requiresHumanReview
+   Food Safety answers:
+   "What additional safety information
+    or review may be required?"
+*/
+
+const shouldRunFoodSafety =
+    runFoodSafety !==
+    false;
+
+
+if (
+    shouldRunFoodSafety &&
+    typeof runFoodSafetyAgent ===
+        "function"
+) {
+
+    try {
+
+        safetyAssessment =
+            await runFoodSafetyAgent({
+
+                client,
+
+                model:
+                    FOOD_SAFETY_AI_MODEL,
+
+                image,
+
+                foodAnalysis:
+                    result,
+
+                handling: {
+
+                    preparationTime:
+                        typeof preparationTime ===
+                        "string"
+                            ? preparationTime
+                            : "",
+
+                    storageMethod:
+                        typeof storageMethod ===
+                        "string"
+                            ? storageMethod
+                            : "",
+
+                    storageTemperatureC:
+                        storageTemperatureC,
+
+                    packaging:
+                        typeof packaging ===
+                        "string"
+                            ? packaging
+                            : "",
+
+                    transportMethod:
+                        typeof transportMethod ===
+                        "string"
+                            ? transportMethod
+                            : "",
+
+                    donorNotes:
+                        typeof donorNotes ===
+                        "string"
+                            ? donorNotes
+                            : ""
 
                 }
-            );
+
+            });
+
+    }
+    catch (
+        safetyError
+    ) {
+
+        console.warn(
+            "NutriCycle AI — Food Safety Agent failed; preserving Food Analysis result:",
+            safetyError
+        );
+
+        safetyAssessment = {
+
+            success:
+                false,
+
+            agent:
+                FOOD_SAFETY_AGENT_NAME,
+
+            analysisVersion:
+                FOOD_SAFETY_AGENT_VERSION,
+
+            error:
+                "Food Safety Agent temporarily unavailable.",
+
+            requiresHumanReview:
+                true
+
+        };
+
+    }
+
+}
 
 
-            return res.json(
-                result
-            );
+console.log(
+    "NutriCycle AI — Food Analysis:",
+    {
+
+        detectedName:
+            result.detectedName,
+
+        confidence:
+            result.confidence,
+
+        matches:
+            result.matches,
+
+        requiresHumanReview:
+            result.requiresHumanReview
+
+    }
+);
+
+
+return res.json({
+
+    ...result,
+
+    safetyAssessment
+
+});
 
         }
 

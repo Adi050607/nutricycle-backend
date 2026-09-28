@@ -1,0 +1,1259 @@
+/* ==========================================================
+   NUTRICYCLE AI
+   DONOR DASHBOARD
+========================================================== */
+
+/* ==========================================================
+   RESET
+========================================================== */
+
+*{
+
+    margin:0;
+
+    padding:0;
+
+    box-sizing:border-box;
+
+}
+
+html{
+
+    scroll-behavior:smooth;
+
+}
+
+body{
+
+    font-family:"Inter",sans-serif;
+
+    background:#edf5f0;
+
+    color:#16241d;
+
+    overflow-x:hidden;
+
+}
+
+/* ==========================================================
+   ROOT VARIABLES
+========================================================== */
+
+:root{
+
+    --primary:#16d85f;
+
+    --primary-dark:#0fa94b;
+
+    --secondary:#06281d;
+
+    --background:#edf5f0;
+
+    --card:#ffffff;
+
+    --border:#dde8e2;
+
+    --text:#16241d;
+
+    --text-light:#667085;
+
+    --danger:#ef4444;
+
+    --shadow:0 18px 40px rgba(0,0,0,.08);
+
+    --radius:22px;
+
+}
+
+/* ==========================================================
+   DASHBOARD LAYOUT
+========================================================== */
+
+.dashboard{
+
+    display:flex;
+
+    min-height:100vh;
+
+    background:var(--background);
+
+}
+
+/* ==========================================================
+   SIDEBAR
+========================================================== */
+
+.sidebar{
+
+    width:250px;
+
+    background:linear-gradient(
+        180deg,
+        #06281d,
+        #041b13
+    );
+
+    color:#ffffff;
+
+    display:flex;
+
+    flex-direction:column;
+
+    padding:28px 22px;
+
+}
+
+.brand{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:16px;
+
+    margin-bottom:40px;
+
+}
+
+.brand-logo{
+
+    width:60px;
+
+    height:60px;
+
+    border-radius:18px;
+
+    background:linear-gradient(
+        135deg,
+        var(--primary),
+        var(--primary-dark)
+    );
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    font-size:28px;
+
+    color:white;
+
+}
+
+.brand-text h2{
+
+    font-size:22px;
+
+    font-weight:800;
+
+}
+
+.brand-text span{
+
+    display:block;
+
+    margin-top:6px;
+
+    font-size:13px;
+
+    color:#bfd3c8;
+
+}
+
+.sidebar-menu{
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:10px;
+
+}
+
+.menu{
+
+    border:none;
+
+    background:transparent;
+
+    color:white;
+
+    display:flex;
+
+    align-items:center;
+
+    gap:14px;
+
+    padding:15px 18px;
+
+    border-radius:14px;
+
+    cursor:pointer;
+
+    font-size:15px;
+
+    font-weight:600;
+
+    transition:.25s;
+
+}
+
+.menu:hover{
+
+    background:rgba(255,255,255,.08);
+
+}
+
+.menu.active{
+
+    background:var(--primary);
+
+}
+
+.menu.logout{
+
+    margin-top:auto;
+
+    color:#ffb8b8;
+
+}
+
+/* ==========================================================
+   MAIN CONTENT
+========================================================== */
+
+.content{
+
+    flex:1;
+
+    padding:35px;
+
+}
+
+/* ==========================================================
+   TOP BAR
+========================================================== */
+
+.topbar{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    margin-bottom:35px;
+
+}
+
+.topbar h1{
+
+    font-size:34px;
+
+    font-weight:800;
+
+    margin-bottom:8px;
+
+    color:var(--text);
+
+}
+
+.topbar p{
+
+    color:var(--text-light);
+
+}
+
+.top-actions{
+
+    display:flex;
+
+    gap:14px;
+
+}
+
+.circle-btn{
+
+    width:52px;
+
+    height:52px;
+
+    border:none;
+
+    border-radius:50%;
+
+    background:white;
+
+    cursor:pointer;
+
+    font-size:18px;
+
+    box-shadow:var(--shadow);
+
+    transition:.25s;
+
+}
+
+.circle-btn:hover{
+
+    transform:translateY(-2px);
+
+}
+/* ==========================================================
+   HERO CARD
+========================================================== */
+
+.hero-card{
+
+    background:var(--card);
+
+    border-radius:var(--radius);
+
+    box-shadow:var(--shadow);
+
+    padding:40px;
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    gap:40px;
+
+    margin-bottom:30px;
+
+}
+
+.hero-left{
+
+    flex:1;
+
+}
+
+.hero-left h2{
+
+    font-size:36px;
+
+    font-weight:800;
+
+    color:var(--text);
+
+    margin-bottom:18px;
+
+}
+
+.hero-left p{
+
+    color:var(--text-light);
+
+    line-height:1.8;
+
+    max-width:650px;
+
+    margin-bottom:30px;
+
+}
+
+.hero-right{
+
+    width:220px;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+}
+
+.hero-right i{
+
+    font-size:140px;
+
+    color:var(--primary);
+
+    opacity:.15;
+
+}
+
+.primary-btn{
+
+    border:none;
+
+    outline:none;
+
+    background:linear-gradient(
+        135deg,
+        var(--primary),
+        var(--primary-dark)
+    );
+
+    color:white;
+
+    padding:16px 30px;
+
+    border-radius:14px;
+
+    font-size:16px;
+
+    font-weight:700;
+
+    cursor:pointer;
+
+    display:inline-flex;
+
+    align-items:center;
+
+    gap:10px;
+
+    transition:.25s;
+
+}
+
+.primary-btn:hover{
+
+    transform:translateY(-2px);
+
+    box-shadow:0 15px 30px rgba(22,216,95,.25);
+
+}
+
+.secondary-btn{
+
+    border:2px solid var(--primary);
+
+    background:white;
+
+    color:var(--primary);
+
+    padding:14px 28px;
+
+    border-radius:14px;
+
+    font-size:15px;
+
+    font-weight:700;
+
+    cursor:pointer;
+
+    transition:.25s;
+
+}
+
+.secondary-btn:hover{
+
+    background:var(--primary);
+
+    color:white;
+
+}
+
+.text-btn{
+
+    border:none;
+
+    background:transparent;
+
+    color:var(--primary);
+
+    font-size:15px;
+
+    font-weight:700;
+
+    cursor:pointer;
+
+}
+
+/* ==========================================================
+   STATISTICS
+========================================================== */
+
+.stats-grid{
+
+    display:grid;
+
+    grid-template-columns:repeat(4,1fr);
+
+    gap:22px;
+
+    margin-bottom:30px;
+
+}
+
+.stat-card{
+
+    background:var(--card);
+
+    border-radius:var(--radius);
+
+    padding:28px;
+
+    box-shadow:var(--shadow);
+
+    display:flex;
+
+    align-items:center;
+
+    gap:20px;
+
+    transition:.25s;
+
+}
+
+.stat-card:hover{
+
+    transform:translateY(-4px);
+
+}
+
+.stat-icon{
+
+    width:70px;
+
+    height:70px;
+
+    border-radius:18px;
+
+    background:linear-gradient(
+        135deg,
+        var(--primary),
+        var(--primary-dark)
+    );
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    color:white;
+
+    font-size:28px;
+
+}
+
+.stat-info h3{
+
+    font-size:30px;
+
+    font-weight:800;
+
+    margin-bottom:8px;
+
+    color:var(--text);
+
+}
+
+.stat-info p{
+
+    color:var(--text-light);
+
+    font-size:15px;
+
+}
+
+/* ==========================================================
+   COMMON DASHBOARD CARD
+========================================================== */
+
+.dashboard-card{
+
+    background:var(--card);
+
+    border-radius:var(--radius);
+
+    box-shadow:var(--shadow);
+
+    padding:30px;
+
+    margin-bottom:30px;
+
+}
+
+.card-header{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    margin-bottom:24px;
+
+}
+
+.card-header h2{
+
+    font-size:26px;
+
+    font-weight:800;
+
+    color:var(--text);
+
+}
+
+.empty-card{
+
+    min-height:220px;
+
+    display:flex;
+
+    flex-direction:column;
+
+    justify-content:center;
+
+    align-items:center;
+
+    text-align:center;
+
+    gap:16px;
+
+}
+
+.empty-card i{
+
+    font-size:60px;
+
+    color:var(--primary);
+
+    opacity:.35;
+
+}
+
+.empty-card h3{
+
+    font-size:24px;
+
+    color:var(--text);
+
+}
+
+.empty-card p{
+
+    max-width:520px;
+
+    color:var(--text-light);
+
+    line-height:1.8;
+
+}
+/* ==========================================================
+   REWARDS PREVIEW
+========================================================== */
+
+.reward-preview{
+
+    display:grid;
+
+    grid-template-columns:repeat(3,1fr);
+
+    gap:22px;
+
+}
+
+.reward-box{
+
+    background:#f8fcf9;
+
+    border:1px solid var(--border);
+
+    border-radius:18px;
+
+    padding:28px;
+
+    text-align:center;
+
+    transition:.25s;
+
+}
+
+.reward-box:hover{
+
+    transform:translateY(-4px);
+
+    box-shadow:0 10px 25px rgba(0,0,0,.06);
+
+}
+
+.reward-box i{
+
+    font-size:34px;
+
+    color:var(--primary);
+
+    margin-bottom:16px;
+
+}
+
+.reward-box h3{
+
+    font-size:28px;
+
+    color:var(--text);
+
+    margin-bottom:10px;
+
+}
+
+.reward-box p{
+
+    color:var(--text-light);
+
+}
+
+/* ==========================================================
+   PROFILE
+========================================================== */
+
+.profile-grid{
+
+    display:grid;
+
+    grid-template-columns:repeat(2,1fr);
+
+    gap:20px;
+
+}
+
+.profile-item{
+
+    background:#f8fcf9;
+
+    border:1px solid var(--border);
+
+    border-radius:18px;
+
+    padding:22px;
+
+}
+
+.profile-item span{
+
+    display:block;
+
+    color:var(--text-light);
+
+    font-size:14px;
+
+    margin-bottom:8px;
+
+}
+
+.profile-item strong{
+
+    font-size:18px;
+
+    color:var(--text);
+
+    word-break:break-word;
+
+}
+
+/* ==========================================================
+   LOADING SCREEN
+========================================================== */
+
+.loading-screen{
+
+    position:fixed;
+
+    inset:0;
+
+    display:none;
+
+    justify-content:center;
+
+    align-items:center;
+
+    background:rgba(255,255,255,.90);
+
+    backdrop-filter:blur(8px);
+
+    z-index:9999;
+
+}
+
+.loading-screen.active{
+
+    display:flex;
+
+}
+
+.loader-box{
+
+    text-align:center;
+
+}
+
+.loader{
+
+    width:70px;
+
+    height:70px;
+
+    margin:0 auto 24px;
+
+    border-radius:50%;
+
+    border:7px solid #dce8df;
+
+    border-top:7px solid var(--primary);
+
+    animation:spin .8s linear infinite;
+
+}
+
+.loader-box h3{
+
+    font-size:24px;
+
+    margin-bottom:10px;
+
+}
+
+.loader-box p{
+
+    color:var(--text-light);
+
+}
+
+@keyframes spin{
+
+    to{
+
+        transform:rotate(360deg);
+
+    }
+
+}
+
+/* ==========================================================
+   RESPONSIVE
+========================================================== */
+
+@media(max-width:1200px){
+
+    .stats-grid{
+
+        grid-template-columns:repeat(2,1fr);
+
+    }
+
+    .reward-preview{
+
+        grid-template-columns:1fr;
+
+    }
+
+}
+
+@media(max-width:992px){
+
+    .dashboard{
+
+        flex-direction:column;
+
+    }
+
+    .sidebar{
+
+        width:100%;
+
+    }
+
+    .hero-card{
+
+        flex-direction:column;
+
+        text-align:center;
+
+    }
+
+    .hero-right{
+
+        width:100%;
+
+    }
+
+    .hero-right i{
+
+        font-size:100px;
+
+    }
+
+}
+
+@media(max-width:768px){
+
+    .content{
+
+        padding:20px;
+
+    }
+
+    .topbar{
+
+        flex-direction:column;
+
+        align-items:flex-start;
+
+        gap:20px;
+
+    }
+
+    .stats-grid{
+
+        grid-template-columns:1fr;
+
+    }
+
+    .profile-grid{
+
+        grid-template-columns:1fr;
+
+    }
+
+}
+
+@media(max-width:576px){
+
+    .brand{
+
+        justify-content:center;
+
+    }
+
+    .brand-text{
+
+        display:none;
+
+    }
+
+    .menu{
+
+        justify-content:center;
+
+    }
+
+    .menu i{
+
+        margin:0;
+
+    }
+
+}
+/* ============================================================
+   DONOR LIVE TRACKING
+============================================================ */
+
+.active-donation-panel{
+
+    background:#ffffff;
+
+    border:1px solid #ececec;
+
+    border-radius:28px;
+
+    padding:28px;
+
+}
+
+
+.tracking-header{
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:space-between;
+
+    gap:20px;
+
+    margin-bottom:22px;
+
+}
+
+
+.tracking-label{
+
+    display:inline-block;
+
+    font-size:11px;
+
+    font-weight:800;
+
+    letter-spacing:1.4px;
+
+    color:#16b84e;
+
+    margin-bottom:8px;
+
+}
+
+
+.tracking-header h3{
+
+    font-size:28px;
+
+    font-weight:800;
+
+    color:#081c15;
+
+}
+
+
+.tracking-header p{
+
+    margin-top:6px;
+
+    color:#6b7280;
+
+}
+
+
+.tracking-vehicle-badge{
+
+    width:64px;
+
+    height:64px;
+
+    border-radius:20px;
+
+    background:#eaf8ef;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    font-size:34px;
+
+    flex-shrink:0;
+
+}
+
+
+/* ==========================
+   MAP
+========================== */
+
+.donor-tracking-map{
+
+    width:100%;
+
+    height:480px;
+
+    min-height:420px;
+
+    border-radius:22px;
+
+    overflow:hidden;
+
+    background:#eef3ef;
+
+    border:1px solid #e5e7eb;
+
+}
+
+
+.donor-tracking-map .leaflet-container{
+
+    width:100%;
+
+    height:100%;
+
+    min-height:420px;
+
+}
+
+
+.donor-tracking-map .leaflet-control-attribution{
+
+    font-size:10px;
+
+}
+
+
+/* ==========================
+   INFORMATION
+========================== */
+
+.donor-tracking-info{
+
+    display:grid;
+
+    grid-template-columns:
+        repeat(
+            6,
+            1fr
+        );
+
+    gap:14px;
+
+    margin-top:18px;
+
+}
+
+
+.tracking-info-card{
+
+    background:#f7faf7;
+
+    border:1px solid #e7ece8;
+
+    border-radius:18px;
+
+    padding:17px;
+
+    min-width:0;
+
+}
+
+
+.tracking-info-card span{
+
+    display:block;
+
+    font-size:12px;
+
+    color:#7a8380;
+
+    margin-bottom:7px;
+
+}
+
+
+.tracking-info-card strong{
+
+    display:block;
+
+    font-size:15px;
+
+    color:#17221d;
+
+    white-space:nowrap;
+
+    overflow:hidden;
+
+    text-overflow:ellipsis;
+
+}
+
+
+/* ==========================
+   ACTIONS
+========================== */
+
+.tracking-actions{
+
+    display:flex;
+
+    gap:12px;
+
+    flex-wrap:wrap;
+
+    margin-top:18px;
+
+}
+
+
+@media(max-width:1200px){
+
+    .donor-tracking-info{
+
+        grid-template-columns:
+            repeat(
+                3,
+                1fr
+            );
+
+    }
+
+}
+
+
+@media(max-width:700px){
+
+    .active-donation-panel{
+
+        padding:18px;
+
+    }
+
+
+    .tracking-header{
+
+        align-items:flex-start;
+
+    }
+
+
+    .donor-tracking-map{
+
+        height:380px;
+
+        min-height:380px;
+
+    }
+
+
+    .donor-tracking-info{
+
+        grid-template-columns:
+            repeat(
+                2,
+                1fr
+            );
+
+    }
+
+}
+
+
+@media(max-width:480px){
+
+    .donor-tracking-info{
+
+        grid-template-columns:
+            1fr;
+
+    }
+
+}
+/* ==========================================================
+   DONOR LEAFLET MAP — REQUIRED DIMENSIONS
+========================================================== */
+
+.donor-tracking-map{
+
+    width:100%;
+
+    height:480px;
+
+    min-height:480px;
+
+    position:relative;
+
+    overflow:hidden;
+
+    border-radius:22px;
+
+    background:#eef3ef;
+
+}
+
+
+.donor-tracking-map .leaflet-container{
+
+    width:100% !important;
+
+    height:100% !important;
+
+    min-height:480px;
+
+    position:relative;
+
+}

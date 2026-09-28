@@ -1,0 +1,1323 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>NutriCycle AI Ecosystem</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:'Inter',sans-serif;
+}
+
+html{
+scroll-behavior:smooth;
+}
+
+body{
+background:#f7fbf8;
+color:#081c15;
+overflow-x:hidden;
+}
+
+/* ===========================
+NAVBAR
+=========================== */
+
+.navbar{
+
+height:90px;
+
+background:white;
+
+display:flex;
+
+align-items:center;
+
+justify-content:space-between;
+
+padding:0 60px;
+
+border-bottom:1px solid #ececec;
+
+position:sticky;
+
+top:0;
+
+z-index:1000;
+
+}
+
+.logo{
+
+display:flex;
+
+align-items:center;
+
+gap:15px;
+
+}
+
+.logo-icon{
+
+width:55px;
+height:55px;
+
+background:#16b84e;
+
+border-radius:16px;
+
+display:flex;
+
+align-items:center;
+
+justify-content:center;
+
+color:white;
+
+font-size:24px;
+
+}
+
+.logo h2{
+
+font-size:32px;
+font-weight:900;
+
+}
+
+.logo span{
+
+color:#16b84e;
+
+}
+
+.nav-buttons{
+
+display:flex;
+gap:15px;
+
+}
+
+.nav-btn{
+
+height:48px;
+
+padding:0 24px;
+
+border:none;
+
+border-radius:14px;
+
+font-weight:700;
+
+cursor:pointer;
+
+transition:.3s;
+
+}
+
+.home-btn{
+
+background:#eefaf2;
+
+color:#081c15;
+
+}
+
+.login-btn{
+
+background:#16b84e;
+
+color:white;
+
+}
+
+.nav-btn:hover{
+
+transform:translateY(-2px);
+
+}
+
+/* ===========================
+HERO
+=========================== */
+
+.hero{
+
+padding:100px 60px 80px;
+
+text-align:center;
+
+}
+
+.hero-badge{
+
+display:inline-flex;
+
+align-items:center;
+
+gap:10px;
+
+background:#eaf8ef;
+
+color:#16b84e;
+
+padding:12px 24px;
+
+border-radius:100px;
+
+font-weight:700;
+
+margin-bottom:30px;
+
+}
+
+.hero h1{
+
+font-size:78px;
+
+font-weight:900;
+
+line-height:1.05;
+
+margin-bottom:25px;
+
+}
+
+.hero h1 span{
+
+color:#16b84e;
+
+}
+
+.hero p{
+
+max-width:950px;
+
+margin:auto;
+
+font-size:22px;
+
+line-height:1.8;
+
+color:#5d6673;
+
+}
+
+/* ===========================
+LIVE STATUS
+=========================== */
+
+.status-section{
+
+width:90%;
+
+margin:auto;
+
+display:grid;
+
+grid-template-columns:
+repeat(4,1fr);
+
+gap:25px;
+
+margin-bottom:90px;
+
+}
+
+.status-card{
+
+background:white;
+
+padding:30px;
+
+border-radius:24px;
+
+text-align:center;
+
+box-shadow:
+0 12px 30px rgba(0,0,0,.05);
+
+}
+
+.status-card h2{
+
+font-size:42px;
+
+color:#16b84e;
+
+margin-bottom:10px;
+
+}
+
+.status-card p{
+
+color:#66707d;
+
+font-size:16px;
+
+}
+
+/* ===========================
+SECTION
+=========================== */
+
+.section{
+
+padding:0 60px 90px;
+
+}
+
+.section-title{
+
+text-align:center;
+
+font-size:58px;
+
+font-weight:900;
+
+margin-bottom:20px;
+
+}
+
+.section-desc{
+
+max-width:1000px;
+
+margin:auto;
+
+text-align:center;
+
+font-size:20px;
+
+line-height:1.8;
+
+color:#66707d;
+
+margin-bottom:60px;
+
+}
+
+/* ===========================
+ECOSYSTEM FLOW
+=========================== */
+
+.flow-container{
+
+background:white;
+
+padding:60px;
+
+border-radius:35px;
+
+box-shadow:
+0 15px 35px rgba(0,0,0,.05);
+
+}
+
+.flow-grid{
+
+display:grid;
+
+grid-template-columns:
+1fr auto 1fr auto 1fr;
+
+align-items:center;
+
+gap:20px;
+
+}
+
+.flow-node{
+
+text-align:center;
+
+}
+
+.flow-icon{
+
+width:120px;
+height:120px;
+
+background:#eefaf2;
+
+border-radius:35px;
+
+display:flex;
+
+align-items:center;
+
+justify-content:center;
+
+font-size:52px;
+
+margin:auto auto 20px;
+
+}
+
+.flow-node h3{
+
+font-size:24px;
+
+font-weight:800;
+
+}
+
+.flow-node p{
+
+margin-top:10px;
+
+color:#66707d;
+
+}
+
+.flow-line{
+
+height:6px;
+
+background:#16b84e;
+
+border-radius:100px;
+
+}
+
+/* ===========================
+WHY SECTION
+=========================== */
+
+.features-grid{
+
+display:grid;
+
+grid-template-columns:
+repeat(4,1fr);
+
+gap:25px;
+
+}
+
+.feature-card{
+
+background:white;
+
+padding:35px;
+
+border-radius:28px;
+
+box-shadow:
+0 12px 30px rgba(0,0,0,.05);
+
+text-align:center;
+
+transition:.3s;
+
+}
+
+.feature-card:hover{
+
+transform:translateY(-8px);
+
+}
+
+.feature-icon{
+
+font-size:48px;
+
+margin-bottom:20px;
+
+color:#16b84e;
+
+}
+
+.feature-card h3{
+
+margin-bottom:15px;
+
+}
+
+.feature-card p{
+
+color:#66707d;
+
+line-height:1.8;
+
+}
+/* ===========================
+ROLE SECTION
+=========================== */
+
+.roles-grid{
+
+display:grid;
+
+grid-template-columns:
+repeat(4,1fr);
+
+gap:25px;
+
+}
+
+.role-card{
+
+background:white;
+
+padding:35px;
+
+border-radius:30px;
+
+box-shadow:
+0 12px 30px rgba(0,0,0,.05);
+
+cursor:pointer;
+
+transition:.3s;
+
+border:3px solid transparent;
+
+}
+
+.role-card:hover{
+
+transform:translateY(-8px);
+
+}
+
+.role-card.active{
+
+border:3px solid #16b84e;
+
+background:#eefaf2;
+
+}
+
+.role-icon{
+
+font-size:60px;
+
+margin-bottom:20px;
+
+}
+
+.role-card h3{
+
+font-size:28px;
+
+margin-bottom:15px;
+
+}
+
+.role-card p{
+
+color:#66707d;
+
+line-height:1.8;
+
+margin-bottom:20px;
+
+}
+
+.role-features{
+
+display:flex;
+
+flex-direction:column;
+
+gap:10px;
+
+font-weight:700;
+
+color:#16b84e;
+
+}
+
+/* ===========================
+DASHBOARD PREVIEW
+=========================== */
+
+.preview-container{
+
+display:grid;
+
+grid-template-columns:
+repeat(4,1fr);
+
+gap:25px;
+
+}
+
+.preview-card{
+
+background:white;
+
+padding:25px;
+
+border-radius:28px;
+
+box-shadow:
+0 12px 30px rgba(0,0,0,.05);
+
+}
+
+.preview-image{
+
+height:180px;
+
+background:#eefaf2;
+
+border-radius:18px;
+
+display:flex;
+
+align-items:center;
+
+justify-content:center;
+
+font-size:60px;
+
+margin-bottom:20px;
+
+}
+
+.preview-card h3{
+
+margin-bottom:10px;
+
+}
+
+.preview-card p{
+
+color:#66707d;
+
+line-height:1.8;
+
+}
+
+/* ===========================
+IMPACT SECTION
+=========================== */
+
+.impact-grid{
+
+display:grid;
+
+grid-template-columns:
+repeat(4,1fr);
+
+gap:25px;
+
+}
+
+.impact-card{
+
+background:white;
+
+padding:35px;
+
+border-radius:28px;
+
+text-align:center;
+
+box-shadow:
+0 12px 30px rgba(0,0,0,.05);
+
+}
+
+.impact-card h2{
+
+font-size:52px;
+
+color:#16b84e;
+
+margin-bottom:10px;
+
+}
+
+/* ===========================
+ROLE PREVIEW PANEL
+=========================== */
+
+.role-preview{
+
+background:white;
+
+padding:50px;
+
+border-radius:35px;
+
+box-shadow:
+0 15px 35px rgba(0,0,0,.05);
+
+display:none;
+
+}
+
+.hero-buttons{
+
+    margin-top:45px;
+
+    display:flex;
+
+    justify-content:center;
+
+}
+
+.role-preview h2{
+
+font-size:42px;
+
+margin-bottom:20px;
+
+}
+
+.role-preview p{
+
+font-size:18px;
+
+line-height:1.9;
+
+color:#66707d;
+
+}
+
+/* ===========================
+CONTINUE
+=========================== */
+
+.continue-wrap{
+
+text-align:center;
+
+margin-top:50px;
+
+}
+
+.continue-btn{
+
+width:280px;
+
+height:65px;
+
+border:none;
+
+border-radius:18px;
+
+background:#16b84e;
+
+color:white;
+
+font-size:20px;
+
+font-weight:800;
+
+cursor:pointer;
+
+transition:.3s;
+
+box-shadow:
+0 15px 35px rgba(22,184,78,.25);
+
+}
+
+.continue-btn:hover{
+
+transform:translateY(-4px);
+
+}
+
+/* ===========================
+FOOTER
+=========================== */
+
+.footer{
+
+background:white;
+
+padding:60px;
+
+text-align:center;
+
+border-top:1px solid #ececec;
+
+}
+
+.footer h2{
+
+font-size:36px;
+
+margin-bottom:15px;
+
+}
+
+.footer p{
+
+color:#66707d;
+
+line-height:1.8;
+
+}
+
+/* ===========================
+RESPONSIVE
+=========================== */
+
+@media(max-width:1200px){
+
+.features-grid,
+.roles-grid,
+.preview-container,
+.impact-grid{
+
+grid-template-columns:
+repeat(2,1fr);
+
+}
+
+}
+
+@media(max-width:900px){
+
+.flow-grid{
+
+grid-template-columns:1fr;
+
+}
+
+.flow-line{
+
+display:none;
+
+}
+
+.hero h1{
+
+font-size:52px;
+
+}
+
+.status-section{
+
+grid-template-columns:
+1fr 1fr;
+
+}
+
+}
+
+@media(max-width:768px){
+
+.navbar{
+
+padding:0 20px;
+
+}
+
+.hero{
+
+padding:70px 20px;
+
+}
+
+.section{
+
+padding:0 20px 70px;
+
+}
+
+.features-grid,
+.roles-grid,
+.preview-container,
+.impact-grid,
+.status-section{
+
+grid-template-columns:1fr;
+
+}
+
+.hero h1{
+
+font-size:42px;
+
+}
+
+.hero p{
+
+font-size:18px;
+
+}
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+<nav class="navbar">
+
+<div class="logo">
+
+<div class="logo-icon">
+
+<i class="fa-solid fa-heart-circle-check"></i>
+
+</div>
+
+<h2>
+NutriCycle <span>AI</span>
+</h2>
+
+</div>
+
+<div class="nav-buttons">
+
+<button
+class="nav-btn home-btn"
+onclick="window.location.href='home.html'">
+
+Home
+
+</button>
+
+<button
+class="nav-btn home-btn"
+onclick="window.location.href='login.html'">
+
+Login
+
+</button>
+
+<button
+class="nav-btn login-btn"
+onclick="window.location.href='signup.html'">
+
+Create Account
+
+</button>
+
+</div>
+
+</nav>
+
+<section class="hero">
+
+<div class="hero-badge">
+
+<i class="fa-solid fa-sparkles"></i>
+
+Premium Food Rescue Ecosystem
+
+</div>
+
+<h1>
+
+One Platform.
+<span>Every Role.</span>
+
+</h1>
+
+<div class="hero-buttons">
+
+    <button
+        class="continue-btn"
+        onclick="window.location.href='signup.html'">
+
+        Get Started
+
+    </button>
+
+</div>
+
+<p>
+
+NutriCycle AI connects food donors,
+NGOs, delivery agents and administrators
+into one intelligent food rescue network.
+
+</p>
+
+</section>
+
+<section class="status-section">
+
+<div class="status-card">
+<h2>12,450+</h2>
+<p>Food Donations</p>
+</div>
+
+<div class="status-card">
+<h2>560+</h2>
+<p>Partner NGOs</p>
+</div>
+
+<div class="status-card">
+<h2>8,200+</h2>
+<p>Lives Impacted</p>
+</div>
+
+<div class="status-card">
+<h2>24.5</h2>
+<p>Tons CO₂ Saved</p>
+</div>
+
+</section>
+<section class="section">
+
+<h2 class="section-title">
+How NutriCycle Works
+</h2>
+
+<p class="section-desc">
+
+Food moves through a smart AI-powered workflow
+that ensures fast, reliable and transparent
+distribution to people who need it.
+
+</p>
+
+<div class="flow-container">
+
+<div class="flow-grid">
+
+<div class="flow-node">
+
+<div class="flow-icon">
+🍴
+</div>
+
+<h3>
+Food Donor
+</h3>
+
+<p>
+Donates surplus food
+</p>
+
+</div>
+
+<div class="flow-line"></div>
+
+<div class="flow-node">
+
+<div class="flow-icon">
+🤖
+</div>
+
+<h3>
+AI Verification
+</h3>
+
+<p>
+Food quality check
+</p>
+
+</div>
+
+<div class="flow-line"></div>
+
+<div class="flow-node">
+
+<div class="flow-icon">
+🏢
+</div>
+
+<h3>
+NGO Matching
+</h3>
+
+<p>
+Nearest NGO selected
+</p>
+
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+<section class="section">
+
+<h2 class="section-title">
+Why Choose NutriCycle AI
+</h2>
+
+<p class="section-desc">
+
+Built for transparency, speed and impact.
+
+</p>
+
+<div class="features-grid">
+
+<div class="feature-card">
+
+<div class="feature-icon">
+🤖
+</div>
+
+<h3>
+AI Verification
+</h3>
+
+<p>
+Automatically verify food items before donation.
+</p>
+
+</div>
+
+<div class="feature-card">
+
+<div class="feature-icon">
+🚚
+</div>
+
+<h3>
+Live Tracking
+</h3>
+
+<p>
+Track deliveries from pickup to destination.
+</p>
+
+</div>
+
+<div class="feature-card">
+
+<div class="feature-icon">
+🏢
+</div>
+
+<h3>
+NGO Network
+</h3>
+
+<p>
+Connect with verified NGOs instantly.
+</p>
+
+</div>
+
+<div class="feature-card">
+
+<div class="feature-icon">
+🎁
+</div>
+
+<h3>
+Rewards
+</h3>
+
+<p>
+Earn impact points and community rewards.
+</p>
+
+</div>
+
+</div>
+
+</section>
+
+
+
+<section class="section">
+
+<h2 class="section-title">
+Platform Preview
+</h2>
+
+<div class="preview-container">
+
+<div class="preview-card">
+
+<div class="preview-image">
+🍴
+</div>
+
+<h3>
+Donor Dashboard
+</h3>
+
+<p>
+Food donation, rewards and impact tracking.
+</p>
+
+</div>
+
+<div class="preview-card">
+
+<div class="preview-image">
+🏢
+</div>
+
+<h3>
+NGO Dashboard
+</h3>
+
+<p>
+Manage incoming food and inventory.
+</p>
+
+</div>
+
+<div class="preview-card">
+
+<div class="preview-image">
+🚚
+</div>
+
+<h3>
+Agent Dashboard
+</h3>
+
+<p>
+Delivery assignments and route management.
+</p>
+
+</div>
+
+<div class="preview-card">
+
+<div class="preview-image">
+👨‍💼
+</div>
+
+<h3>
+Admin Dashboard
+</h3>
+
+<p>
+Platform-wide analytics and supervision.
+</p>
+
+</div>
+
+</div>
+
+</section>
+
+<section class="section">
+
+<h2 class="section-title">
+Our Impact
+</h2>
+
+<div class="impact-grid">
+
+<div class="impact-card">
+
+<h2>
+12K+
+</h2>
+
+<p>
+Food Donations
+</p>
+
+</div>
+
+<div class="impact-card">
+
+<h2>
+560+
+</h2>
+
+<p>
+Partner NGOs
+</p>
+
+</div>
+
+<div class="impact-card">
+
+<h2>
+8K+
+</h2>
+
+<p>
+Lives Impacted
+</p>
+
+</div>
+
+<div class="impact-card">
+
+<h2>
+24.5
+</h2>
+
+<p>
+Tons CO₂ Saved
+</p>
+
+</div>
+
+</div>
+
+</section>
+
+
+
+<footer class="footer">
+
+<h2>
+NutriCycle AI
+</h2>
+
+<p>
+
+Reducing Food Waste.
+Feeding Communities.
+
+</p>
+
+<section class="section">
+
+    <h2 class="section-title">
+
+        Ready to Make an Impact?
+
+    </h2>
+
+    <p class="section-desc">
+
+        Join thousands of individuals and organizations working together to reduce food waste and feed communities.
+
+        During account creation, you'll choose whether you're registering as a Food Donor, NGO Member, or Delivery Agent.
+
+    </p>
+
+    <div class="continue-wrap">
+
+        <button
+            class="continue-btn"
+            onclick="window.location.href='signup.html'">
+
+            Create Your Account
+
+        </button>
+
+    </div>
+
+</section>
+
+</footer>
+</body>
+</html>

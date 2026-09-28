@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <meta
+        name="description"
+        content="NutriCycle AI global language and regional setup."
+    >
+
+    <title>NutriCycle AI</title>
+
+    <link
+        rel="preconnect"
+        href="https://fonts.googleapis.com"
+    >
+
+    <link
+        rel="preconnect"
+        href="https://fonts.googleapis.com"
+        crossorigin
+    >
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap"
+        rel="stylesheet"
+    >
+
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
+    >
+
+    <link
+        rel="stylesheet"
+        href="../css/context.css"
+    >
+</head>
+
+
+<body>
+
+<main class="context-page">
+
+    <section class="context-card">
+
+        <!-- BRAND -->
+
+        <div class="context-brand">
+
+            <div class="brand-logo">
+                <i class="fa-solid fa-leaf"></i>
+            </div>
+
+            <div>
+                <h1>NutriCycle AI</h1>
+                <span>Smart Food Rescue</span>
+            </div>
+
+        </div>
+
+
+        <!-- HEADER -->
+
+        <div class="context-header">
+
+            <span class="eyebrow">
+                <i class="fa-solid fa-globe"></i>
+                Global Experience
+            </span>
+
+            <h2 data-i18n="context.welcome">
+                Welcome to NutriCycle AI
+            </h2>
+
+            <p data-i18n="context.subtitle">
+                Choose your region and language to personalize
+                your NutriCycle experience.
+            </p>
+
+        </div>
+
+
+        <!-- ERROR -->
+
+        <div
+            id="contextError"
+            class="context-error"
+            role="alert"
+            aria-live="polite">
+        </div>
+
+
+        <!-- COUNTRY -->
+
+        <div class="field-group">
+
+            <label
+                for="countrySearch"
+                data-i18n="context.country">
+                Country / Region
+            </label>
+
+            <div class="country-search-wrapper">
+
+                <i
+                    class="fa-solid fa-earth-americas country-search-icon">
+                </i>
+
+                <input
+                    id="countrySearch"
+                    class="country-search"
+                    type="text"
+                    autocomplete="off"
+                    placeholder="Search country or region"
+                    role="combobox"
+                    aria-autocomplete="list"
+                    aria-expanded="false"
+                    aria-controls="countryResults"
+                >
+
+                <button
+                    id="countryClear"
+                    class="country-clear"
+                    type="button"
+                    aria-label="Clear country"
+                    hidden>
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+
+                <div
+                    id="countryResults"
+                    class="country-results"
+                    role="listbox"
+                    hidden>
+                </div>
+
+            </div>
+
+            <!-- Internal value -->
+
+            <input
+                id="countrySelect"
+                type="hidden"
+                value=""
+            >
+
+            <small
+                id="countryHint"
+                class="field-hint">
+            </small>
+
+        </div>
+
+
+        <!-- LANGUAGE -->
+
+        <div class="field-group">
+
+            <label
+                for="languageSelect"
+                data-i18n="context.language">
+                Language
+            </label>
+
+            <div class="select-wrapper">
+
+                <i class="fa-solid fa-language"></i>
+
+                <select id="languageSelect"></select>
+
+            </div>
+
+            <small
+                class="field-hint"
+                data-i18n="context.languageHint">
+                Your selected language controls the NutriCycle interface.
+            </small>
+
+        </div>
+
+
+        <!-- CURRENCY -->
+
+        <div class="field-group">
+
+            <label
+                for="currencySelect"
+                data-i18n="context.currency">
+                Currency
+            </label>
+
+            <div class="select-wrapper">
+
+                <i class="fa-solid fa-coins"></i>
+
+                <select id="currencySelect"></select>
+
+            </div>
+
+            <small
+                class="field-hint"
+                data-i18n="context.currencyHint">
+                This is a recommendation based on your selected region.
+                You can change it later.
+            </small>
+
+        </div>
+
+
+        <!-- LOCATION -->
+
+        <div
+            id="detectedLocation"
+            class="detected-location"
+            hidden>
+
+            <div class="detected-icon">
+                <i class="fa-solid fa-location-crosshairs"></i>
+            </div>
+
+            <div>
+
+                <strong>
+                    Current location detected
+                </strong>
+
+                <p id="detectedText"></p>
+
+            </div>
+
+        </div>
+
+
+        <!-- CONTINUE -->
+
+        <button
+            id="continueButton"
+            type="button"
+            class="continue-button">
+
+            <span data-i18n="common.continue">
+                Continue
+            </span>
+
+            <i class="fa-solid fa-arrow-right"></i>
+
+        </button>
+
+
+        <p
+            class="privacy-note"
+            data-i18n="context.privacy">
+            You can change your language and regional preferences later.
+        </p>
+
+    </section>
+
+</main>
+
+
+<script
+    type="module"
+    src="../js/context.js">
+</script>
+
+</body>
+
+</html>

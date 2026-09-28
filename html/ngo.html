@@ -1,0 +1,663 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0">
+
+    <title>
+        NutriCycle AI • NGO Dashboard
+    </title>
+
+    <!-- Google Font -->
+
+    <link
+        rel="preconnect"
+        href="https://fonts.googleapis.com">
+
+    <link
+        rel="preconnect"
+        href="https://fonts.gstatic.com"
+        crossorigin>
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap"
+        rel="stylesheet">
+
+    <!-- Font Awesome -->
+
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+
+    <!-- NGO CSS -->
+
+    <link
+        rel="stylesheet"
+        href="../css/ngo.css">
+
+</head>
+
+<body>
+
+    <!-- ==========================================
+         NGO DASHBOARD
+    =========================================== -->
+
+    <div class="dashboard-container">
+
+        <!-- ==========================================
+             SIDEBAR
+        =========================================== -->
+
+        <aside
+            id="sidebar"
+            class="sidebar">
+
+            <!-- Logo -->
+
+            <div class="sidebar-logo">
+
+                <div class="logo-icon">
+
+                    <i class="fa-solid fa-hand-holding-heart"></i>
+
+                </div>
+
+                <div class="logo-text">
+
+                    <h2>
+
+                        NutriCycle AI
+
+                    </h2>
+
+                    <p>
+
+                        NGO Dashboard
+
+                    </p>
+
+                </div>
+
+            </div>
+
+            <!-- Navigation -->
+
+            <nav class="sidebar-menu">
+
+                <button
+                    id="dashboardButton"
+                    class="menu-item active">
+
+                    <i class="fa-solid fa-house"></i>
+
+                    <span>
+
+                        Dashboard
+
+                    </span>
+
+                </button>
+
+                <button
+                    id="incomingButton"
+                    class="menu-item">
+
+                    <i class="fa-solid fa-box-open"></i>
+
+                    <span>
+
+                        Incoming Donations
+
+                    </span>
+
+                </button>
+
+                <button
+                    id="pickupButton"
+                    class="menu-item">
+
+                    <i class="fa-solid fa-truck-fast"></i>
+
+                    <span>
+
+                        Assigned Pickups
+
+                    </span>
+
+                </button>
+
+                <button
+                    id="inventoryButton"
+                    class="menu-item">
+
+                    <i class="fa-solid fa-warehouse"></i>
+
+                    <span>
+
+                        Inventory
+
+                    </span>
+
+                </button>
+
+                <button
+                    id="analyticsButton"
+                    class="menu-item">
+
+                    <i class="fa-solid fa-chart-line"></i>
+
+                    <span>
+
+                        Analytics
+
+                    </span>
+
+                </button>
+
+                <button
+                    id="notificationButton"
+                    class="menu-item">
+
+                    <i class="fa-solid fa-bell"></i>
+
+                    <span>
+
+                        Notifications
+
+                    </span>
+
+                </button>
+
+                <button
+                    id="profileButton"
+                    class="menu-item">
+
+                    <i class="fa-solid fa-user"></i>
+
+                    <span>
+
+                        Profile
+
+                    </span>
+
+                </button>
+
+            </nav>
+
+            <!-- Logout -->
+
+            <div class="sidebar-footer">
+
+                <button
+                    id="logoutButton"
+                    class="logout-button">
+
+                    <i class="fa-solid fa-right-from-bracket"></i>
+
+                    <span>
+
+                        Logout
+
+                    </span>
+
+                </button>
+
+            </div>
+
+        </aside>
+
+        <!-- ==========================================
+             MAIN CONTENT
+        =========================================== -->
+
+        <main class="main-content">
+
+            <!-- ==========================================
+                 TOPBAR
+            =========================================== -->
+
+            <header
+                id="topbar"
+                class="topbar">
+
+                <div class="topbar-left">
+
+                    <h1>
+
+                        NGO Command Center
+
+                    </h1>
+
+                    <p>
+
+                        Manage food donations, pickups and inventory efficiently.
+
+                    </p>
+
+                </div>
+
+                <div class="topbar-right">
+
+                    <input
+                        type="text"
+                        id="searchBar"
+                        placeholder="Search donations...">
+
+                    <button
+                        id="notificationBell"
+                        class="icon-button">
+
+                        <i class="fa-solid fa-bell"></i>
+
+                    </button>
+
+                    <div class="profile-card">
+
+                        <div class="profile-avatar">
+
+                            NGO
+
+                        </div>
+
+                        <div class="profile-details">
+
+                            <h4>
+
+                                Helping Hands NGO
+
+                            </h4>
+
+                            <p>
+
+                                Verified Organization
+
+                            </p>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </header>
+                        <!-- ==========================================
+                 DASHBOARD STATISTICS
+            =========================================== -->
+
+            <section
+                id="statsSection"
+                class="stats-section">
+
+                <div
+                    id="totalDonations"
+                    class="stat-card">
+
+                    <div class="stat-icon">
+
+                        <i class="fa-solid fa-box-open"></i>
+
+                    </div>
+
+                    <div class="stat-content">
+
+                        <h3>
+
+                            Total Donations
+
+                        </h3>
+
+                        <h2>
+
+                            0
+
+                        </h2>
+
+                        <p>
+
+                            Donations received today
+
+                        </p>
+
+                    </div>
+
+                </div>
+
+                <div
+                    id="activePickups"
+                    class="stat-card">
+
+                    <div class="stat-icon">
+
+                        <i class="fa-solid fa-truck-fast"></i>
+
+                    </div>
+
+                    <div class="stat-content">
+
+                        <h3>
+
+                            Active Pickups
+
+                        </h3>
+
+                        <h2>
+
+                            0
+
+                        </h2>
+
+                        <p>
+
+                            Deliveries in progress
+
+                        </p>
+
+                    </div>
+
+                </div>
+
+                <div
+                    id="foodSaved"
+                    class="stat-card">
+
+                    <div class="stat-icon">
+
+                        <i class="fa-solid fa-leaf"></i>
+
+                    </div>
+
+                    <div class="stat-content">
+
+                        <h3>
+
+                            Food Saved
+
+                        </h3>
+
+                        <h2>
+
+                            0 kg
+
+                        </h2>
+
+                        <p>
+
+                            Total rescued food
+
+                        </p>
+
+                    </div>
+
+                </div>
+
+                <div
+                    id="mealsServed"
+                    class="stat-card">
+
+                    <div class="stat-icon">
+
+                        <i class="fa-solid fa-utensils"></i>
+
+                    </div>
+
+                    <div class="stat-content">
+
+                        <h3>
+
+                            Meals Served
+
+                        </h3>
+
+                        <h2>
+
+                            0
+
+                        </h2>
+
+                        <p>
+
+                            People helped
+
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+            <!-- ==========================================
+                 INCOMING DONATIONS
+            =========================================== -->
+
+            <section
+                id="incomingSection"
+                class="dashboard-section">
+
+                <div class="section-header">
+
+                    <h2>
+
+                        Incoming Donations
+
+                    </h2>
+
+                    <button
+                        id="viewAllIncoming"
+                        class="section-button">
+
+                        View All
+
+                    </button>
+
+                </div>
+
+                <div
+                    id="incomingContainer"
+                    class="empty-container">
+
+                    <i class="fa-solid fa-inbox"></i>
+
+                    <h3>
+
+                        No Incoming Donations
+
+                    </h3>
+
+                    <p>
+
+                        New food donation requests will appear here.
+
+                    </p>
+
+                </div>
+
+            </section>
+
+            <!-- ==========================================
+                 ASSIGNED PICKUPS
+            =========================================== -->
+
+            <section
+                id="pickupSection"
+                class="dashboard-section">
+
+                <div class="section-header">
+
+                    <h2>
+
+                        Assigned Pickups
+
+                    </h2>
+
+                    <button
+                        id="viewAllPickups"
+                        class="section-button">
+
+                        View All
+
+                    </button>
+
+                </div>
+
+                <div
+                    id="pickupContainer"
+                    class="empty-container">
+
+                    <i class="fa-solid fa-truck"></i>
+
+                    <h3>
+
+                        No Active Pickups
+
+                    </h3>
+
+                    <p>
+
+                        Accepted donations awaiting pickup will appear here.
+
+                    </p>
+
+                </div>
+
+            </section>
+                        <!-- ==========================================
+                 INVENTORY
+            =========================================== -->
+
+            <section
+                id="inventorySection"
+                class="dashboard-section">
+
+                <div class="section-header">
+
+                    <h2>
+
+                        Inventory
+
+                    </h2>
+
+                    <button
+                        id="manageInventory"
+                        class="section-button">
+
+                        Manage
+
+                    </button>
+
+                </div>
+
+                <div
+                    id="inventoryContainer"
+                    class="empty-container">
+
+                    <i class="fa-solid fa-warehouse"></i>
+
+                    <h3>
+
+                        Inventory Empty
+
+                    </h3>
+
+                    <p>
+
+                        Accepted food donations will appear here after successful delivery.
+
+                    </p>
+
+                </div>
+
+            </section>
+
+            <!-- ==========================================
+                 RECENT ACTIVITY
+            =========================================== -->
+
+            <section
+                id="activitySection"
+                class="dashboard-section">
+
+                <div class="section-header">
+
+                    <h2>
+
+                        Recent Activity
+
+                    </h2>
+
+                    <button
+                        id="viewActivity"
+                        class="section-button">
+
+                        View History
+
+                    </button>
+
+                </div>
+
+                <div
+                    id="activityContainer"
+                    class="empty-container">
+
+                    <i class="fa-solid fa-clock-rotate-left"></i>
+
+                    <h3>
+
+                        No Recent Activity
+
+                    </h3>
+
+                    <p>
+
+                        Accepted donations, deliveries and inventory updates will appear here.
+
+                    </p>
+
+                </div>
+
+            </section>
+
+            <!-- ==========================================
+                 FOOTER
+            =========================================== -->
+
+            <footer
+                id="footer"
+                class="dashboard-footer">
+
+                <p>
+
+                    © 2027 NutriCycle AI • NGO Dashboard
+
+                </p>
+
+                <span>
+
+                    Reducing Food Waste • Feeding Communities
+
+                </span>
+
+            </footer>
+
+        </main>
+
+    </div>
+
+    <!-- ==========================================
+         NGO JAVASCRIPT
+    =========================================== -->
+
+    <script
+    type="module"
+    src="../js/ngo.js">
+</script>
+
+</body>
+
+</html>

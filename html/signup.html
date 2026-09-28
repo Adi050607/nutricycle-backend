@@ -1,0 +1,1582 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0">
+
+    <meta
+        name="description"
+        content="Create your NutriCycle AI account and join the smart hyperlocal food rescue ecosystem.">
+
+    <meta
+        name="keywords"
+        content="NutriCycle AI, Food Rescue, NGO, Sustainability">
+
+    <meta
+        name="author"
+        content="NutriCycle AI">
+
+    <title>NutriCycle AI | Create Account</title>
+
+
+    <!-- =====================================================
+         GOOGLE FONTS
+    ====================================================== -->
+
+    <link
+        rel="preconnect"
+        href="https://fonts.googleapis.com">
+
+    <link
+        rel="preconnect"
+        href="https://fonts.gstatic.com"
+        crossorigin>
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap"
+        rel="stylesheet">
+
+
+    <!-- =====================================================
+         FONT AWESOME
+    ====================================================== -->
+
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+
+
+    <!-- =====================================================
+         PROJECT CSS
+    ====================================================== -->
+
+    <link
+        rel="stylesheet"
+        href="../css/common.css">
+
+    <link
+        rel="stylesheet"
+        href="../css/theme.css">
+
+    <link
+        rel="stylesheet"
+        href="../css/signup.css">
+
+</head>
+
+
+<body>
+
+
+    <!-- =====================================================
+         BACKGROUND
+    ====================================================== -->
+
+    <div class="background-glow">
+
+        <div class="glow glow-left"></div>
+
+        <div class="glow glow-right"></div>
+
+    </div>
+
+
+    <!-- =====================================================
+         LOADING SCREEN
+    ====================================================== -->
+
+    <div
+        id="loadingScreen"
+        class="loading-screen">
+
+        <div class="loader-container">
+
+            <div class="loader"></div>
+
+            <h2>Please Wait</h2>
+
+            <p>
+                Preparing your NutriCycle AI account...
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <!-- =====================================================
+         MAIN CONTAINER
+    ====================================================== -->
+
+    <div class="signup-container">
+
+
+        <!-- =================================================
+             HEADER
+        ================================================== -->
+
+        <header class="signup-header">
+
+            <div class="header-content">
+
+                <div class="brand">
+
+                    <div class="brand-logo">
+
+                        <i class="fa-solid fa-leaf"></i>
+
+                    </div>
+
+                    <div class="brand-text">
+
+                        <h1>
+                            NutriCycle AI
+                        </h1>
+
+                        <p>
+                            Smart Hyperlocal Food Rescue Ecosystem
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </header>
+
+
+        <!-- =================================================
+             PROGRESS
+        ================================================== -->
+
+        <section class="progress-section">
+
+            <div class="progress-bar-container">
+
+
+                <div class="progress-track">
+
+                    <div
+                        id="progressFill"
+                        class="progress-fill">
+                    </div>
+
+                </div>
+
+
+                <div
+                    id="stepIndicator1"
+                    class="progress-step active">
+
+                    <div class="step-circle">
+                        1
+                    </div>
+
+                    <span>
+                        Account
+                    </span>
+
+                </div>
+
+
+                <div
+                    id="stepIndicator2"
+                    class="progress-step">
+
+                    <div class="step-circle">
+                        2
+                    </div>
+
+                    <span>
+                        Profile
+                    </span>
+
+                </div>
+
+
+                <div
+                    id="stepIndicator3"
+                    class="progress-step">
+
+                    <div class="step-circle">
+                        3
+                    </div>
+
+                    <span>
+                        Role
+                    </span>
+
+                </div>
+
+
+                <div
+                    id="stepIndicator4"
+                    class="progress-step">
+
+                    <div class="step-circle">
+                        4
+                    </div>
+
+                    <span>
+                        Review
+                    </span>
+
+                </div>
+
+
+                <div
+                    id="stepIndicator5"
+                    class="progress-step">
+
+                    <div class="step-circle">
+                        5
+                    </div>
+
+                    <span>
+                        Finish
+                    </span>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =================================================
+             MAIN CONTENT
+        ================================================== -->
+
+        <main class="signup-main">
+
+            <div class="form-container">
+
+
+                <!-- =================================================
+                     STEP 1 — ACCOUNT
+                ================================================== -->
+
+                <section
+                    id="step1"
+                    class="form-step active">
+
+
+                    <div class="step-header">
+
+                        <h2 
+                        data-i18n="signup.createAccount">
+                    </h2>
+
+                       <p
+                        data-i18n="signup.accountSubtitle">
+                    </p>
+
+                    </div>
+
+
+                    <form
+                        id="accountForm"
+                        autocomplete="off"
+                        novalidate>
+
+
+                        <!-- EMAIL -->
+
+                        <div class="input-group">
+
+                           <label
+    for="email"
+    data-i18n="signup.email">
+</label>
+
+                            <div class="input-wrapper">
+
+                                <i class="fa-solid fa-envelope"></i>
+
+                                <input
+    type="email"
+    id="email"
+    name="email"
+    class="input-field"
+    data-i18n-placeholder="signup.emailPlaceholder"
+    autocomplete="email">
+
+                            </div>
+
+                            <small
+                                id="emailError"
+                                class="error-message">
+                            </small>
+
+                        </div>
+
+
+                        <!-- PASSWORD -->
+
+                        <div class="input-group">
+
+                            <label
+    for="password"
+    data-i18n="signup.password">
+</label>
+
+                            <div class="input-wrapper">
+
+                                <i class="fa-solid fa-lock"></i>
+
+                                <input
+                                    type="password"
+                                    id="password"
+                                    name="password"
+                                    class="input-field"
+                                    data-i18n-placeholder="signup.passwordPlaceholder"
+                                    autocomplete="new-password">
+
+                            </div>
+
+
+                            <div class="password-strength">
+
+                                <div
+                                    id="passwordStrengthBar"
+                                    class="password-strength-bar">
+                                </div>
+
+                            </div>
+
+                            <small id="passwordStrengthText">
+                                Password strength
+                            </small>
+
+                            <small
+                                id="passwordError"
+                                class="error-message">
+                            </small>
+
+                        </div>
+
+
+                        <!-- CONFIRM PASSWORD -->
+
+                        <div class="input-group">
+
+                            <label
+    for="confirmPassword"
+    data-i18n="signup.confirmPassword">
+</label>
+
+                            <div class="input-wrapper">
+
+                                <i class="fa-solid fa-shield-halved"></i>
+
+                                <input
+                                    type="password"
+                                    id="confirmPassword"
+                                    name="confirmPassword"
+                                    class="input-field"
+                                    data-i18n-placeholder="signup.confirmPasswordPlaceholder"
+                                    autocomplete="new-password">
+
+                            </div>
+
+                            <small
+                                id="confirmPasswordError"
+                                class="error-message">
+                            </small>
+
+                        </div>
+
+
+                        <!-- MOBILE NUMBER -->
+
+                        <!-- =====================================================
+     INTERNATIONAL MOBILE NUMBER
+====================================================== -->
+
+<div class="input-group">
+
+    <label
+    for="phoneNumber"
+    data-i18n="signup.mobileNumber">
+</label>
+
+    <div class="phone-input-container">
+
+        <div class="phone-country">
+
+            <span
+                id="countryFlag"
+                class="country-flag">
+                🌍
+            </span>
+
+            <select
+                id="countryCode"
+                name="countryCode"
+                class="country-code-select">
+
+                <option
+                    value=""
+                    selected
+                    disabled>
+                    Select Country
+                </option>
+
+            </select>
+
+        </div>
+
+
+        <input
+            type="tel"
+            id="phoneNumber"
+            name="phoneNumber"
+            class="input-field phone-number-field"
+            inputmode="tel"
+            autocomplete="tel"
+            data-i18n-placeholder="signup.phonePlaceholder"
+
+    </div>
+
+
+    <small
+        id="phoneError"
+        class="error-message">
+    </small>
+
+
+    <small class="input-help">
+        Your number is used for account security,
+        OTP verification and important NutriCycle
+        notifications.
+    </small>
+
+</div>
+
+
+                        <!-- NEXT -->
+
+                        <div class="navigation-buttons">
+
+                            <button
+                                type="button"
+                                id="step1NextButton"
+                                class="primary-button">
+
+                                <span>
+                                    Continue
+                                </span>
+
+                                <i class="fa-solid fa-arrow-right"></i>
+
+                            </button>
+
+                        </div>
+
+                    </form>
+
+                </section>
+
+
+                <!-- =================================================
+                     STEP 2 — PROFILE
+                ================================================== -->
+
+                <section
+                    id="step2"
+                    class="form-step">
+
+
+                    <div class="step-header">
+
+                       <h2 
+                       data-i18n="signup.profile">
+                    </h2>
+
+<p 
+data-i18n="signup.profileSubtitle">
+</p>
+
+                    </div>
+
+
+                    <form
+                        id="profileForm"
+                        autocomplete="off"
+                        novalidate>
+
+
+                        <!-- FULL NAME -->
+
+                        <div class="input-group">
+
+                            <label
+    for="fullName"
+    data-i18n="signup.fullName">
+</label>
+
+                            <div class="input-wrapper">
+
+                                <i class="fa-solid fa-user"></i>
+
+                                <input
+                                    type="text"
+                                    id="fullName"
+                                    name="fullName"
+                                    class="input-field"
+                                    data-i18n-placeholder="signup.fullNamePlaceholder"
+                                    autocomplete="name">
+
+                            </div>
+
+                            <small
+                                id="fullNameError"
+                                class="error-message">
+                            </small>
+
+                        </div>
+
+
+                        <!-- GENDER -->
+
+                        <div class="input-group">
+
+                            <label
+    for="gender"
+    data-i18n="signup.gender">
+</label>
+
+                            <div class="input-wrapper">
+
+                                <i class="fa-solid fa-venus-mars"></i>
+
+                                <select
+                                    id="gender"
+                                    name="gender"
+                                    class="input-field">
+
+                                    <option value="">
+                                        Select Gender
+                                    </option>
+
+                                    <option value="male">
+                                        Male
+                                    </option>
+
+                                    <option value="female">
+                                        Female
+                                    </option>
+
+                                    <option value="other">
+                                        Other
+                                    </option>
+
+                                    <option value="prefer-not-to-say">
+                                        Prefer not to say
+                                    </option>
+
+                                </select>
+
+                            </div>
+
+                            <small
+                                id="genderError"
+                                class="error-message">
+                            </small>
+
+                        </div>
+
+
+                        <!-- DATE OF BIRTH -->
+
+                        <div class="input-group">
+
+                            <label
+    for="dateOfBirth"
+    data-i18n="signup.dateOfBirth">
+</label>
+
+                            <div class="input-wrapper">
+
+                                <i class="fa-solid fa-calendar-days"></i>
+
+                                <input
+                                    type="date"
+                                    id="dateOfBirth"
+                                    name="dateOfBirth"
+                                    class="input-field">
+
+                            </div>
+
+                            <small
+                                id="dateOfBirthError"
+                                class="error-message">
+                            </small>
+
+                        </div>
+
+
+                       <!-- =====================================================
+     LANGUAGE + CURRENCY PREFERENCES
+====================================================== -->
+
+<div class="double-input-row">
+
+    <!-- PREFERRED LANGUAGE -->
+
+    <div class="input-group">
+
+       <label
+    for="language"
+    data-i18n="signup.preferredLanguage">
+</label>
+
+        <div class="input-wrapper">
+
+            <i class="fa-solid fa-language"></i>
+
+            <select
+                id="language"
+                name="language"
+                class="input-field">
+
+                <option
+                    value="">
+                    Select Language
+                </option>
+
+            </select>
+
+        </div>
+
+    </div>
+
+
+    <!-- PREFERRED CURRENCY -->
+
+    <div class="input-group">
+
+       <label
+    for="currency"
+    data-i18n="signup.preferredCurrency">
+</label>
+
+        <div class="input-wrapper">
+
+            <i class="fa-solid fa-coins"></i>
+
+            <select
+                id="currency"
+                name="currency"
+                class="input-field">
+
+                <option
+                    value="">
+                    Select Currency
+                </option>
+
+            </select>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<div class="preference-hint">
+
+    <i class="fa-solid fa-circle-info"></i>
+
+    <span>
+        These preferences are recommended based on your
+        selected country. You can change them anytime.
+    </span>
+
+</div>
+
+
+<!-- =====================================================
+     GLOBAL LOCATION
+====================================================== -->
+
+<div class="input-group">
+
+    <label
+    for="administrativeArea"
+    data-i18n="signup.administrativeArea">
+</label>
+
+    <div class="input-wrapper">
+
+        <i class="fa-solid fa-map-location-dot"></i>
+
+        <input
+            type="text"
+            id="administrativeArea"
+            name="administrativeArea"
+            class="input-field"
+           data-i18n-placeholder="signup.administrativeAreaPlaceholder"
+            autocomplete="address-level1">
+
+    </div>
+
+    <small
+        id="administrativeAreaError"
+        class="error-message">
+    </small>
+
+</div>
+
+
+<div class="input-group">
+
+    <label
+    for="district"
+    data-i18n="signup.district">
+</label>
+
+    <div class="input-wrapper">
+
+        <i class="fa-solid fa-map"></i>
+
+        <input
+            type="text"
+            id="district"
+            name="district"
+            class="input-field"
+            data-i18n-placeholder="signup.districtPlaceholder"
+            autocomplete="address-level2">
+
+    </div>
+
+    <small
+        id="districtError"
+        class="error-message">
+    </small>
+
+</div>
+
+
+<div class="double-input-row">
+
+    <!-- CITY / TOWN / VILLAGE -->
+
+    <div class="input-group">
+
+        <label
+    for="municipalityOrCity"
+    data-i18n="signup.municipality">
+</label>
+
+        <div class="input-wrapper">
+
+            <i class="fa-solid fa-city"></i>
+
+            <input
+                type="text"
+                id="municipalityOrCity"
+                name="municipalityOrCity"
+                class="input-field"
+                data-i18n-placeholder="signup.municipalityPlaceholder"
+
+        </div>
+
+        <small
+            id="municipalityOrCityError"
+            class="error-message">
+        </small>
+
+    </div>
+
+
+    <!-- LOCALITY -->
+
+    <div class="input-group">
+
+        <label
+    for="locality"
+    data-i18n="signup.locality">
+</label>
+
+        <div class="input-wrapper">
+
+            <i class="fa-solid fa-location-dot"></i>
+
+            <input
+                type="text"
+                id="locality"
+                name="locality"
+                class="input-field"
+                data-i18n-placeholder="signup.localityPlaceholder"
+                autocomplete="address-line2">
+
+        </div>
+
+        <small
+            id="localityError"
+            class="error-message">
+        </small>
+
+    </div>
+
+</div>
+
+
+<!-- =====================================================
+     POSTAL CODE
+====================================================== -->
+
+<div class="input-group">
+
+    <label
+    for="postalCode"
+    data-i18n="signup.postalCode">
+</label>
+
+    <div class="input-wrapper">
+
+        <i class="fa-solid fa-envelopes-bulk"></i>
+
+        <input
+            type="text"
+            id="postalCode"
+            name="postalCode"
+            class="input-field"
+            inputmode="numeric"
+            autocomplete="postal-code"
+            data-i18n-placeholder="signup.postalCodePlaceholder"
+
+    </div>
+
+    <small
+        id="postalCodeError"
+        class="error-message">
+    </small>
+
+</div>
+
+
+                        <!-- NAVIGATION -->
+
+                        <div class="navigation-buttons">
+
+                            <button
+                                type="button"
+                                id="step2PreviousButton"
+                                class="secondary-button">
+
+                                <i class="fa-solid fa-arrow-left"></i>
+
+                                <span>
+                                    Back
+                                </span>
+
+                            </button>
+
+
+                            <button
+                                type="button"
+                                id="step2NextButton"
+                                class="primary-button">
+
+                               <span 
+                               data-i18n="common.continue">
+                            </span>
+
+                                <i class="fa-solid fa-arrow-right"></i>
+
+                            </button>
+
+                        </div>
+
+                    </form>
+
+                </section>
+
+
+                <!-- =================================================
+                     STEP 3 — ROLE
+                ================================================== -->
+
+                <section
+                    id="step3"
+                    class="form-step">
+
+
+                    <div class="step-header">
+
+                        <h2>
+                            Choose Your Role
+                        </h2>
+
+                        <p>
+                            Select how you want to participate in the
+                            NutriCycle AI ecosystem.
+                        </p>
+
+                    </div>
+
+
+                    <form
+                        id="roleForm"
+                        autocomplete="off"
+                        novalidate>
+
+
+                        <input
+                            type="hidden"
+                            id="selectedRole"
+                            name="selectedRole">
+
+
+                        <!-- ROLE CARDS -->
+
+                        <div class="role-grid">
+
+
+                            <!-- DONOR -->
+
+                            <article
+                                class="role-card"
+                                data-role="donor">
+
+                                <div class="role-icon">
+
+                                    <i class="fa-solid fa-hand-holding-heart"></i>
+
+                                </div>
+
+                                <h3>
+                                    Food Donor
+                                </h3>
+
+                                <p>
+                                    Donate surplus food from homes,
+                                    restaurants, hotels, events,
+                                    canteens and businesses.
+                                </p>
+
+                            </article>
+
+
+                            <!-- NGO -->
+
+                            <article
+                                class="role-card"
+                                data-role="ngo">
+
+                                <div class="role-icon">
+
+                                    <i class="fa-solid fa-building-user"></i>
+
+                                </div>
+
+                                <h3>
+                                    NGO
+                                </h3>
+
+                                <p>
+                                    Receive donated food and distribute
+                                    it safely to people in need.
+                                </p>
+
+                            </article>
+
+
+                            <!-- DELIVERY AGENT -->
+
+                            <article
+                                class="role-card"
+                                data-role="agent">
+
+                                <div class="role-icon">
+
+                                    <i class="fa-solid fa-truck-fast"></i>
+
+                                </div>
+
+                                <h3>
+                                    Delivery Agent
+                                </h3>
+
+                                <p>
+                                    Collect food from donors and deliver
+                                    it safely to NGOs.
+                                </p>
+
+                            </article>
+
+                        </div>
+
+
+                        <small
+                            id="roleError"
+                            class="error-message">
+                        </small>
+
+
+                        <!-- DONOR DETAILS -->
+
+                       <!-- ===========================
+     DONOR DETAILS
+============================ -->
+
+<div
+    id="donorSection"
+    class="role-section">
+
+    <!-- Donation Source -->
+
+    <div class="input-group">
+
+        <label for="donorType">
+            What is your primary food source?
+        </label>
+
+        <select
+            id="donorType"
+            name="donorType"
+            class="input-field">
+
+            <option value="">
+                Select Food Source
+            </option>
+
+            <option value="Home">
+                Household / Home
+            </option>
+
+            <option value="Restaurant">
+                Restaurant / Cafe
+            </option>
+
+            <option value="Hotel">
+                Hotel
+            </option>
+
+            <option value="Banquet">
+                Banquet / Wedding Hall
+            </option>
+
+            <option value="Catering">
+                Catering Business
+            </option>
+
+            <option value="Bakery">
+                Bakery / Food Shop
+            </option>
+
+            <option value="Grocery">
+                Grocery / Supermarket
+            </option>
+
+            <option value="Corporate">
+                Corporate / Office
+            </option>
+
+            <option value="College">
+                College / School / Institution
+            </option>
+
+            <option value="Canteen">
+                Canteen / Mess
+            </option>
+
+            <option value="Event">
+                Event / Function
+            </option>
+
+            <option value="FoodManufacturer">
+                Food Manufacturer
+            </option>
+
+            <option value="Other">
+                Other
+            </option>
+
+        </select>
+
+    </div>
+
+
+    <!-- Primary Operating Area -->
+
+    <div class="input-group">
+
+        <label for="donorOperatingArea">
+            Where do you primarily operate?
+        </label>
+
+        <input
+            type="text"
+            id="donorOperatingArea"
+            name="donorOperatingArea"
+            class="input-field"
+            placeholder="e.g. Wakad, Hinjawadi, Pimpri">
+
+        <small class="field-hint">
+            This helps NutriCycle AI find nearby NGOs
+            and plan efficient pickups.
+        </small>
+
+    </div>
+
+</div>
+
+
+                        <!-- NGO DETAILS -->
+
+                        <div
+                            id="ngoSection"
+                            class="role-section">
+
+                            <div class="input-group">
+
+                                <label for="ngoName">
+                                    NGO Name
+                                </label>
+
+                                <input
+                                    type="text"
+                                    id="ngoName"
+                                    name="ngoName"
+                                    class="input-field"
+                                    placeholder="Enter NGO name">
+
+                            </div>
+
+
+                            <div class="input-group">
+
+                                <label for="ngoRegistration">
+                                    Registration Number
+                                </label>
+
+                                <input
+                                    type="text"
+                                    id="ngoRegistration"
+                                    name="ngoRegistration"
+                                    class="input-field"
+                                    placeholder="Enter registration number">
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- AGENT DETAILS -->
+
+                        <div
+                            id="agentSection"
+                            class="role-section">
+
+                            <div class="input-group">
+
+                                <label for="vehicleType">
+                                    Vehicle Type
+                                </label>
+
+                                <select
+                                    id="vehicleType"
+                                    name="vehicleType"
+                                    class="input-field">
+
+                                    <option value="">
+                                        Select Vehicle
+                                    </option>
+
+                                    <option value="Bike">
+                                        Bike
+                                    </option>
+
+                                    <option value="Scooter">
+                                        Scooter
+                                    </option>
+
+                                    <option value="Car">
+                                        Car
+                                    </option>
+
+                                    <option value="Tempo">
+                                        Tempo
+                                    </option>
+
+                                    <option value="Mini Truck">
+                                        Mini Truck
+                                    </option>
+
+                                </select>
+
+                            </div>
+
+
+                            <div class="input-group">
+
+                                <label for="licenseNumber">
+                                    Driving License Number
+                                </label>
+
+                                <input
+                                    type="text"
+                                    id="licenseNumber"
+                                    name="licenseNumber"
+                                    class="input-field"
+                                    placeholder="Enter driving license number">
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- NAVIGATION -->
+
+                        <div class="navigation-buttons">
+
+                            <button
+                                type="button"
+                                id="step3PreviousButton"
+                                class="secondary-button">
+
+                                <i class="fa-solid fa-arrow-left"></i>
+
+                                <span 
+                                data-i18n="common.back">
+                            </span>
+
+                            </button>
+
+
+                            <button
+                                type="button"
+                                id="step3NextButton"
+                                class="primary-button">
+
+                                <span>
+                                    Continue
+                                </span>
+
+                                <i class="fa-solid fa-arrow-right"></i>
+
+                            </button>
+
+                        </div>
+
+                    </form>
+
+                </section>
+
+
+                <!-- =================================================
+                     STEP 4 — REVIEW
+                ================================================== -->
+
+                <section
+                    id="step4"
+                    class="form-step">
+
+
+                    <div class="step-header">
+
+                        <h2>
+                            Review Your Information
+                        </h2>
+
+                        <p>
+                            Check your details before creating your account.
+                        </p>
+
+                    </div>
+
+
+                    <div
+                        id="reviewContainer"
+                        class="review-container">
+
+
+                        <div class="review-card">
+
+                            <h3>
+                                Account
+                            </h3>
+
+                            <div class="review-item">
+
+                                <span>
+                                    Email
+                                </span>
+
+                                <strong id="reviewEmail">
+                                    —
+                                </strong>
+
+                            </div>
+
+                            <div class="review-item">
+
+                                <span>
+                                    Mobile
+                                </span>
+
+                                <strong id="reviewPhone">
+                                    —
+                                </strong>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="review-card">
+
+                            <h3>
+                                Profile
+                            </h3>
+
+                            <div class="review-item">
+
+                                <span>
+                                    Name
+                                </span>
+
+                                <strong id="reviewName">
+                                    —
+                                </strong>
+
+                            </div>
+
+                            <div class="review-item">
+
+                                <span>
+                                    Gender
+                                </span>
+
+                                <strong id="reviewGender">
+                                    —
+                                </strong>
+
+                            </div>
+
+                            <div class="review-item">
+
+                                <span>
+                                    Date of Birth
+                                </span>
+
+                                <strong id="reviewDateOfBirth">
+                                    —
+                                </strong>
+
+                            </div>
+
+                            <div class="review-item">
+
+                                <span>
+                                    Location
+                                </span>
+
+                                <strong id="reviewLocation">
+                                    —
+                                </strong>
+
+                            </div>
+
+                            <div class="review-item">
+
+                                <span>
+                                    Pincode
+                                </span>
+
+                                <strong id="reviewPincode">
+                                    —
+                                </strong>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="review-card">
+
+                            <h3>
+                                Participation
+                            </h3>
+
+                            <div class="review-item">
+
+                                <span>
+                                    Role
+                                </span>
+
+                                <strong id="reviewRole">
+                                    —
+                                </strong>
+
+                            </div>
+
+                            <div
+                                id="reviewRoleDetails"
+                                class="review-role-details">
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- NAVIGATION -->
+
+                    <div class="navigation-buttons">
+
+                        <button
+                            type="button"
+                            id="step4PreviousButton"
+                            class="secondary-button">
+
+                            <i class="fa-solid fa-arrow-left"></i>
+
+                            <span>
+                                Back
+                            </span>
+
+                        </button>
+
+
+                        <button
+                            type="button"
+                            id="createAccountButton"
+                            class="primary-button">
+
+                            <span>
+                                Create Account
+                            </span>
+
+                            <i class="fa-solid fa-user-plus"></i>
+
+                        </button>
+
+                    </div>
+
+                </section>
+
+
+                <!-- =================================================
+                     STEP 5 — SUCCESS
+                ================================================== -->
+
+                <section
+                    id="step5"
+                    class="form-step">
+
+
+                    <div class="success-container">
+
+
+                        <div class="success-animation">
+
+                            <div class="success-circle">
+
+                                <i class="fa-solid fa-circle-check"></i>
+
+                            </div>
+
+                        </div>
+
+
+                        <h2>
+                            Welcome to NutriCycle AI!
+                        </h2>
+
+
+                        <p>
+                            Your account has been created successfully.
+                            You can now access your dashboard and begin
+                            making an impact by reducing food waste.
+                        </p>
+
+
+                        <div class="success-card">
+
+
+                            <div class="success-item">
+
+                                <i class="fa-solid fa-user-check"></i>
+
+                                <span>
+                                    Profile Completed
+                                </span>
+
+                            </div>
+
+
+                            <div class="success-item">
+
+                                <i class="fa-solid fa-shield-halved"></i>
+
+                                <span>
+                                    Account Secured
+                                </span>
+
+                            </div>
+
+
+                            <div class="success-item">
+
+                                <i class="fa-solid fa-heart"></i>
+
+                                <span>
+                                    Ready to Reduce Food Waste
+                                </span>
+
+                            </div>
+
+                        </div>
+
+
+                        <button
+                            type="button"
+                            id="goToDashboardButton"
+                            class="primary-button">
+
+                            <i class="fa-solid fa-arrow-right"></i>
+
+                            <span>
+                                Go To Dashboard
+                            </span>
+
+                        </button>
+
+
+                    </div>
+
+                </section>
+
+
+            </div>
+
+        </main>
+
+    </div>
+
+
+    <!-- =====================================================
+         JAVASCRIPT
+    ====================================================== -->
+
+    <script
+        type="module"
+        src="../js/signup.js">
+    </script>
+
+
+</body>
+
+</html>

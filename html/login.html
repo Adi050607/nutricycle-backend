@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0">
+
+    <title>
+
+        NutriCycle AI • Login
+
+    </title>
+
+    <!-- Google Font -->
+
+    <link
+        rel="preconnect"
+        href="https://fonts.googleapis.com">
+
+    <link
+        rel="preconnect"
+        href="https://fonts.gstatic.com"
+        crossorigin>
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap"
+        rel="stylesheet">
+
+    <!-- Font Awesome -->
+
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+
+    <!-- CSS -->
+
+    <link
+        rel="stylesheet"
+        href="../css/login.css">
+
+</head>
+
+<body>
+
+    <!-- ==========================================
+         BACKGROUND
+    =========================================== -->
+
+    <div class="background-glow">
+
+        <div class="glow glow-left"></div>
+
+        <div class="glow glow-right"></div>
+
+    </div>
+
+    <!-- ==========================================
+         MAIN CONTAINER
+    =========================================== -->
+
+    <div class="login-container">
+
+        <!-- Header -->
+
+        <header class="login-header">
+
+            <div class="brand">
+
+                <div class="brand-logo">
+
+                    <i class="fa-solid fa-leaf"></i>
+
+                </div>
+
+                <div class="brand-text">
+
+                    <h1>
+
+                        NutriCycle AI
+
+                    </h1>
+
+                    <p>
+
+                        Welcome Back
+
+                    </p>
+
+                </div>
+
+            </div>
+
+        </header>
+
+        <!-- Login Body -->
+
+        <main class="login-main">
+
+            <div class="login-card">
+                                <!-- ==========================================
+                     LOGIN TITLE
+                =========================================== -->
+
+                <div class="login-heading">
+
+                    <h2>
+
+                        Sign In
+
+                    </h2>
+
+                    <p>
+
+                        Login to continue your food rescue journey.
+
+                    </p>
+
+                </div>
+
+                <!-- ==========================================
+                     LOGIN FORM
+                =========================================== -->
+
+                <form
+                    id="loginForm"
+                    autocomplete="off">
+
+                    <!-- Email / Phone -->
+
+                    <div class="input-group">
+
+                        <label for="loginCredential">
+
+                            Email Address or Mobile Number
+
+                        </label>
+
+                        <div class="input-wrapper">
+
+                            <i class="fa-solid fa-user"></i>
+
+                            <input
+                                type="text"
+                                id="loginCredential"
+                                class="input-field"
+                                placeholder="Enter email or mobile number"
+                                autocomplete="username">
+
+                        </div>
+
+                        <small
+                            id="credentialError"
+                            class="error-message">
+
+                        </small>
+
+                    </div>
+
+                    <!-- Password -->
+
+                    <div class="input-group">
+
+                        <label for="loginPassword">
+
+                            Password
+
+                        </label>
+
+                        <div class="input-wrapper">
+
+                            <i class="fa-solid fa-lock"></i>
+
+                            <input
+                                type="password"
+                                id="loginPassword"
+                                class="input-field"
+                                placeholder="Enter your password"
+                                autocomplete="current-password">
+
+                            <button
+                                type="button"
+                                id="togglePassword"
+                                class="password-toggle">
+
+                                <i
+                                    id="togglePasswordIcon"
+                                    class="fa-solid fa-eye">
+
+                                </i>
+
+                            </button>
+
+                        </div>
+
+                        <small
+                            id="passwordError"
+                            class="error-message">
+
+                        </small>
+
+                    </div>
+
+                    <!-- Remember Me -->
+
+                    <div class="login-options">
+
+                        <label class="remember-me">
+
+                            <input
+                                type="checkbox"
+                                id="rememberMe">
+
+                            <span>
+
+                                Remember Me
+
+                            </span>
+
+                        </label>
+
+                        <button
+                            type="button"
+                            id="forgotPasswordButton"
+                            class="forgot-password">
+
+                            Forgot Password?
+
+                        </button>
+
+                    </div>
+
+                    <!-- Login Button -->
+
+                    <button
+                        type="submit"
+                        id="loginButton"
+                        class="primary-button">
+
+                        <i class="fa-solid fa-right-to-bracket"></i>
+
+                        <span>
+
+                            Login
+
+                        </span>
+
+                    </button>
+
+                    <!-- Divider -->
+
+                    <div class="login-divider">
+
+                        <span>
+
+                            OR
+
+                        </span>
+
+                    </div>
+
+                    <!-- Signup -->
+
+                    <div class="signup-link">
+
+                        <p>
+
+                            Don't have an account?
+
+                        </p>
+
+                        <a
+                            href="signup.html">
+
+                            Create Account
+
+                        </a>
+
+                    </div>
+
+                </form>
+                                <!-- ==========================================
+                     LOGIN SUCCESS PANEL
+                =========================================== -->
+
+                <section
+                    id="loginSuccess"
+                    class="login-success">
+
+                    <div class="success-icon">
+
+                        <i class="fa-solid fa-circle-check"></i>
+
+                    </div>
+
+                    <h2>
+
+                        Login Successful
+
+                    </h2>
+
+                    <p>
+
+                        Redirecting you to your dashboard...
+
+                    </p>
+
+                </section>
+
+            </div>
+
+        </main>
+
+        <!-- ==========================================
+             FOOTER
+        =========================================== -->
+
+        <footer class="login-footer">
+
+            <p>
+
+                © 2027 NutriCycle AI. All Rights Reserved.
+
+            </p>
+
+        </footer>
+
+    </div>
+
+    <!-- ==========================================
+         LOADING SCREEN
+    =========================================== -->
+
+    <div
+        id="loadingScreen"
+        class="loading-screen">
+
+        <div class="loader-container">
+
+            <div class="loader"></div>
+
+            <h3>
+
+                Signing You In...
+
+            </h3>
+
+            <p>
+
+                Please wait while we verify your credentials.
+
+            </p>
+
+        </div>
+
+    </div>
+
+    <!-- ==========================================
+         JAVASCRIPT
+    =========================================== -->
+
+    <script
+        type="module"
+        src="../js/login.js">
+
+    </script>
+
+</body>
+
+</html>

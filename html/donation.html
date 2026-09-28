@@ -1,0 +1,2496 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>
+        NutriCycle AI • Create Donation
+    </title>
+
+
+    <!-- Original font -->
+    <link
+        rel="preconnect"
+        href="https://fonts.googleapis.com"
+    >
+
+    <link
+        rel="preconnect"
+        href="https://fonts.gstatic.com"
+        crossorigin
+    >
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap"
+        rel="stylesheet"
+    >
+
+
+    <!-- Original icon library -->
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
+    >
+
+
+    <!-- Donation stylesheet -->
+    <link
+        rel="stylesheet"
+        href="../css/donation.css"
+    >
+<link
+    rel="stylesheet"
+    href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+>
+<style>
+
+/* ==========================================================
+   DONATION AMOUNT BOX
+========================================================== */
+
+.donation-amount-box{
+    margin-bottom:25px;
+}
+
+.donation-amount-box label{
+    display:block;
+    margin-bottom:10px;
+    font-size:16px;
+    font-weight:700;
+    color:#10231b;
+}
+
+.amount-input-wrap{
+    display:flex;
+    align-items:center;
+    gap:8px;
+
+    width:100%;
+
+    padding:12px 16px;
+
+    background:#ffffff;
+
+    border:1px solid #d9e4df;
+
+    border-radius:14px;
+
+    transition:
+        border-color .2s ease,
+        box-shadow .2s ease;
+}
+
+.amount-input-wrap:focus-within{
+    border-color:#16d85f;
+
+    box-shadow:
+        0 0 0 3px rgba(22,216,95,.12);
+}
+
+.amount-input-wrap span{
+    font-size:22px;
+    font-weight:800;
+    color:#10231b;
+}
+
+.amount-input-wrap input{
+    width:100%;
+
+    border:none;
+    outline:none;
+
+    background:transparent;
+
+    font-size:22px;
+    font-weight:800;
+
+    color:#10231b;
+}
+
+.amount-hint{
+    margin-top:7px;
+
+    font-size:13px;
+
+    color:#667085;
+}
+
+.quick-amounts{
+    display:flex;
+
+    flex-wrap:wrap;
+
+    gap:9px;
+
+    margin-top:12px;
+}
+
+.quick-amounts button{
+    padding:8px 15px;
+
+    border:1px solid #d9e4df;
+
+    border-radius:999px;
+
+    background:#ffffff;
+
+    color:#10231b;
+
+    font-weight:700;
+
+    cursor:pointer;
+
+    transition:
+        transform .2s ease,
+        border-color .2s ease,
+        background .2s ease;
+}
+
+.quick-amounts button:hover{
+    transform:translateY(-2px);
+
+    border-color:#16d85f;
+
+    background:#f1fff5;
+}
+
+.quick-amounts button:active{
+    transform:scale(.97);
+}
+
+</style>
+</head>
+
+
+<body>
+
+
+<div class="donation-page">
+
+
+    <!-- ======================================================
+         HEADER
+    ======================================================= -->
+
+    <header class="page-header">
+
+
+        <button
+            id="backButton"
+            class="back-button"
+            type="button"
+        >
+
+            <i class="fa-solid fa-arrow-left"></i>
+
+        </button>
+
+
+        <div>
+
+            <h1>
+                Create Food Donation
+            </h1>
+
+
+            <p>
+                Donate surplus food in just a few guided steps.
+            </p>
+
+        </div>
+
+
+    </header>
+
+
+
+    <!-- ======================================================
+         PROGRESS
+    ======================================================= -->
+
+    <section class="progress-container">
+
+
+        <div class="progress-bar">
+
+            <div
+                id="progressFill"
+                class="progress-fill"
+            ></div>
+
+        </div>
+
+
+
+        <div class="steps">
+
+
+            <!-- CAPTURE -->
+
+            <div
+                class="step active"
+                data-step="0"
+            >
+
+                <div class="step-icon">
+
+                    <i class="fa-solid fa-camera"></i>
+
+                </div>
+
+
+                <span>
+                    Capture
+                </span>
+
+            </div>
+
+
+
+            <!-- AI -->
+
+            <div
+                class="step"
+                data-step="1"
+            >
+
+                <div class="step-icon">
+
+                    <i class="fa-solid fa-microchip"></i>
+
+                </div>
+
+
+                <span>
+                    AI Scan
+                </span>
+
+            </div>
+
+
+
+            <!-- DETAILS -->
+
+            <div
+                class="step"
+                data-step="2"
+            >
+
+                <div class="step-icon">
+
+                    <i class="fa-solid fa-utensils"></i>
+
+                </div>
+
+
+                <span>
+                    Details
+                </span>
+
+            </div>
+
+
+
+            <!-- FOOD CARD -->
+
+            <div
+                class="step"
+                data-step="3"
+            >
+
+                <div class="step-icon">
+
+                    <i class="fa-solid fa-id-card"></i>
+
+                </div>
+
+
+                <span>
+                    Food Card
+                </span>
+
+            </div>
+
+
+
+            <!-- PAYMENT -->
+
+            <div
+                class="step"
+                data-step="4"
+            >
+
+                <div class="step-icon">
+
+                    <i class="fa-solid fa-credit-card"></i>
+
+                </div>
+
+
+                <span>
+                    Payment
+                </span>
+
+            </div>
+
+
+
+            <!-- REWARD -->
+
+            <div
+                class="step"
+                data-step="5"
+            >
+
+                <div class="step-icon">
+
+                    <i class="fa-solid fa-gift"></i>
+
+                </div>
+
+
+                <span>
+                    Reward
+                </span>
+
+            </div>
+
+
+
+            <!-- DELIVERY -->
+
+            <div
+                class="step"
+                data-step="6"
+            >
+
+                <div class="step-icon">
+
+                    <i class="fa-solid fa-motorcycle"></i>
+
+                </div>
+
+
+                <span>
+                    Delivery
+                </span>
+
+            </div>
+
+
+        </div>
+
+    </section>
+
+
+
+    <!-- ======================================================
+         WORKFLOW
+    ======================================================= -->
+
+    <div
+        id="workflowContainer"
+    >
+
+
+
+        <!-- ==================================================
+             SCREEN 1 — CAMERA
+        =================================================== -->
+
+        <section
+            id="cameraScreen"
+            class="workflow-screen active"
+        >
+
+            <div class="screen-card">
+
+
+                <!-- HEADER -->
+
+                <div class="screen-header">
+
+                    <h2>
+                        Capture Food
+                    </h2>
+
+
+                    <p>
+                        Place the food inside the frame
+                        and capture a clear image.
+                    </p>
+
+                </div>
+
+
+
+                <!-- CAMERA STATUS -->
+
+                <div class="camera-status">
+
+                    <div class="status-left">
+
+                        <span
+                            id="cameraDot"
+                            class="offline-dot"
+                        ></span>
+
+
+                        <span
+                            id="cameraStatus"
+                        >
+                            Camera Offline
+                        </span>
+
+                    </div>
+
+
+                    <div
+                        id="cameraResolution"
+                    >
+                        --
+                    </div>
+
+                </div>
+
+
+
+                <!-- CAMERA VIEW -->
+
+                <div class="camera-view">
+
+
+                    <video
+                        id="cameraVideo"
+                        autoplay
+                        playsinline
+                        muted
+                    ></video>
+
+
+                    <img
+                        id="capturedImage"
+                        alt="Captured Food"
+                    >
+
+
+                    <!-- CAMERA OVERLAY -->
+
+                    <div
+                        id="cameraOverlay"
+                        class="camera-overlay"
+                    >
+
+                        <div class="overlay-content">
+
+
+                            <i
+                                class="fa-solid fa-camera"
+                            ></i>
+
+
+                            <h3>
+                                Ready to Capture
+                            </h3>
+
+
+                            <p>
+                                Press Start Camera to begin.
+                            </p>
+
+
+                        </div>
+
+                    </div>
+
+
+
+                    <!-- GUIDE FRAME -->
+
+                    <div
+                        class="guide-frame"
+                    ></div>
+
+
+                </div>
+
+
+
+                <!-- CAMERA CONTROLS -->
+
+                <div class="camera-controls">
+
+
+                    <!-- START -->
+
+                    <button
+                        id="startCameraButton"
+                        class="camera-btn start"
+                        type="button"
+                    >
+
+                        <i class="fa-solid fa-video"></i>
+
+
+                        <span>
+                            Start Camera
+                        </span>
+
+                    </button>
+
+
+
+                    <!-- CAPTURE -->
+
+                    <button
+                        id="captureButton"
+                        class="camera-btn capture"
+                        type="button"
+                        disabled
+                    >
+
+                        <i class="fa-solid fa-camera"></i>
+
+
+                        <span>
+                            Capture
+                        </span>
+
+                    </button>
+
+
+
+                    <!-- RETAKE -->
+
+                    <button
+                        id="retakeButton"
+                        class="camera-btn retake"
+                        type="button"
+                        disabled
+                    >
+
+                        <i class="fa-solid fa-rotate-left"></i>
+
+
+                        <span>
+                            Retake
+                        </span>
+
+                    </button>
+
+
+
+                    <!-- STOP -->
+
+                    <button
+                        id="stopCameraButton"
+                        class="camera-btn stop"
+                        type="button"
+                        disabled
+                    >
+
+                        <i class="fa-solid fa-video-slash"></i>
+
+
+                        <span>
+                            Stop Camera
+                        </span>
+
+                    </button>
+
+
+                </div>
+
+
+
+                <!-- HIDDEN CAPTURE CANVAS -->
+
+                <canvas
+                    id="captureCanvas"
+                    hidden
+                ></canvas>
+
+
+
+                <!-- CAMERA ERROR -->
+
+                <div
+                    id="cameraError"
+                    class="error-message"
+                    role="alert"
+                    aria-live="polite"
+                ></div>
+
+
+
+                <!-- FOOTER -->
+
+                <div class="screen-footer">
+
+
+                    <div class="privacy-note">
+
+                        <i
+                            class="fa-solid fa-shield-heart"
+                        ></i>
+
+
+                        <span>
+                            Your image is processed
+                            only for food analysis.
+                        </span>
+
+                    </div>
+
+
+                    <button
+                        id="cameraNextButton"
+                        class="next-button"
+                        type="button"
+                        disabled
+                    >
+
+                        Continue
+
+                        <i
+                            class="fa-solid fa-arrow-right"
+                        ></i>
+
+                    </button>
+
+
+                </div>
+
+
+            </div>
+
+        </section>
+        <!-- ======================================
+     SCREEN 2
+     AI ANALYSIS
+======================================= -->
+
+<section
+    id="aiScreen"
+    class="workflow-screen"
+>
+
+    <div class="screen-card">
+
+
+        <div class="screen-header">
+
+            <h2>
+                NutriCycle AI Analysis
+            </h2>
+
+            <p>
+                Please wait while our AI analyzes your captured food image.
+            </p>
+
+        </div>
+
+
+        <div class="ai-layout">
+
+
+            <!-- ==============================
+                 FOOD PREVIEW
+            =============================== -->
+
+            <div class="ai-preview">
+
+                <img
+                    id="aiPreviewImage"
+                    alt="Captured Food Preview"
+                >
+
+            </div>
+
+
+
+            <!-- ==============================
+                 AI ANALYSIS
+            =============================== -->
+
+            <div class="ai-analysis">
+
+
+                <div class="ai-loader">
+
+                    <div class="brain-loader">
+
+                        <i class="fa-solid fa-brain"></i>
+
+                    </div>
+
+
+                    <h3>
+                        Analyzing Food...
+                    </h3>
+
+                </div>
+
+
+
+                <div class="analysis-list">
+
+
+                    <!-- FOOD DETECTION -->
+
+                    <div class="analysis-item">
+
+                        <span>
+                            Food Detection
+                        </span>
+
+
+                        <div
+                            id="detectProgress"
+                            class="analysis-progress"
+                        ></div>
+
+                    </div>
+
+
+
+                    <!-- FRESHNESS -->
+
+                    <div class="analysis-item">
+
+                        <span>
+                            Freshness Analysis
+                        </span>
+
+
+                        <div
+                            id="freshnessProgress"
+                            class="analysis-progress"
+                        ></div>
+
+                    </div>
+
+
+
+                    <!-- SHELF LIFE -->
+
+                    <div class="analysis-item">
+
+                        <span>
+                            Shelf Life Prediction
+                        </span>
+
+
+                        <div
+                            id="shelfProgress"
+                            class="analysis-progress"
+                        ></div>
+
+                    </div>
+
+
+
+                    <!-- CONFIDENCE -->
+
+                    <div class="analysis-item">
+
+                        <span>
+                            Confidence Score
+                        </span>
+
+
+                        <div
+                            id="confidenceProgress"
+                            class="analysis-progress"
+                        ></div>
+
+                    </div>
+
+
+                </div>
+
+
+
+                <!-- AI STATUS -->
+
+                <div
+                    id="aiStatusMessage"
+                    class="status-message"
+                >
+                    Preparing AI...
+                </div>
+
+
+            </div>
+
+        </div>
+
+
+
+        <!-- FOOTER -->
+
+        <div class="screen-footer">
+
+            <button
+                id="aiNextButton"
+                class="next-button"
+                type="button"
+                disabled
+            >
+
+                Continue
+
+                <i
+                    class="fa-solid fa-arrow-right"
+                ></i>
+
+            </button>
+
+        </div>
+
+
+    </div>
+
+</section>
+
+
+
+<!-- ======================================
+     SCREEN 3
+     FOOD DETAILS
+======================================= -->
+
+<section
+    id="detailsScreen"
+    class="workflow-screen"
+>
+
+    <div class="screen-card">
+
+
+        <!-- HEADER -->
+
+        <div class="screen-header">
+
+            <h2>
+                Confirm Food Details
+            </h2>
+
+
+            <p>
+                AI has completed the analysis.
+                Please verify the information before continuing.
+            </p>
+
+        </div>
+
+
+
+        <!-- DETAILS GRID -->
+
+        <div class="details-grid">
+
+
+            <!-- ==============================
+                 FOOD IMAGE
+            =============================== -->
+
+            <div class="image-column">
+
+                <div class="food-preview-card">
+
+                    <img
+                        id="detailsFoodImage"
+                        alt="Food"
+                    >
+
+                </div>
+
+            </div>
+
+
+
+            <!-- ==============================
+                 DETAILS FORM
+            =============================== -->
+
+            <div class="form-column">
+
+
+                <!-- FOOD NAME -->
+
+                <div class="input-group">
+
+                    <label>
+                        Food Name
+                    </label>
+
+
+                    <input
+                        id="foodName"
+                        type="text"
+                        readonly
+                    >
+
+                </div>
+
+
+
+                <!-- FRESHNESS -->
+
+                <div class="input-group">
+
+                    <label>
+                        Freshness
+                    </label>
+
+
+                    <input
+                        id="freshness"
+                        type="text"
+                        readonly
+                    >
+
+                </div>
+
+
+
+                <!-- SHELF LIFE -->
+
+                <div class="input-group">
+
+                    <label>
+                        Shelf Life
+                    </label>
+
+
+                    <input
+                        id="shelfLife"
+                        type="text"
+                        readonly
+                    >
+
+                </div>
+
+
+
+                <!-- AI CONFIDENCE -->
+
+                <div class="input-group">
+
+                    <label>
+                        AI Confidence
+                    </label>
+
+
+                    <input
+                        id="confidence"
+                        type="text"
+                        readonly
+                    >
+
+                </div>
+
+
+
+                <!-- QUANTITY -->
+
+                <div class="input-group">
+
+                    <label>
+                        Quantity
+                    </label>
+
+
+                    <input
+                        id="foodQuantity"
+                        type="number"
+                        placeholder="Enter quantity"
+                    >
+
+                </div>
+
+
+
+                <!-- UNIT -->
+
+                <div class="input-group">
+
+                    <label>
+                        Unit
+                    </label>
+
+
+                    <select
+                        id="foodUnit"
+                    >
+
+                        <option>
+                            kg
+                        </option>
+
+                        <option>
+                            g
+                        </option>
+
+                        <option>
+                            L
+                        </option>
+
+                        <option>
+                            ml
+                        </option>
+
+                        <option>
+                            Pieces
+                        </option>
+
+                        <option>
+                            Plates
+                        </option>
+
+                        <option>
+                            Packets
+                        </option>
+
+                        <option>
+                            Boxes
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+
+                <!-- PREPARATION TIME -->
+
+                <div class="input-group">
+
+                    <label>
+                        Preparation Time
+                    </label>
+
+
+                    <input
+                        id="preparedTime"
+                        type="datetime-local"
+                    >
+
+                </div>
+
+
+
+                <!-- EXPIRY TIME -->
+
+                <div class="input-group">
+
+                    <label>
+                        Expiry Time
+                    </label>
+
+
+                    <input
+                        id="expiryTime"
+                        type="datetime-local"
+                    >
+
+                </div>
+
+
+
+                <!-- ADDITIONAL NOTES -->
+
+                <div class="input-group full-width">
+
+                    <label>
+                        Additional Notes
+                    </label>
+
+
+                    <textarea
+                        id="foodNotes"
+                        rows="4"
+                        placeholder="Optional notes for NGO..."
+                    ></textarea>
+
+                </div>
+
+
+            </div>
+
+        </div>
+
+
+
+        <!-- FOOTER -->
+
+        <div class="screen-footer">
+
+
+            <button
+                id="detailsBackButton"
+                class="secondary-button"
+                type="button"
+            >
+
+                <i
+                    class="fa-solid fa-arrow-left"
+                ></i>
+
+                Back
+
+            </button>
+
+
+
+            <button
+                id="detailsNextButton"
+                class="next-button"
+                type="button"
+            >
+
+                Continue
+
+                <i
+                    class="fa-solid fa-arrow-right"
+                ></i>
+
+            </button>
+
+
+        </div>
+
+
+    </div>
+
+</section>
+<!-- ======================================
+     SCREEN 4
+     GENERATED FOOD CARD
+======================================= -->
+
+<section
+    id="foodCardScreen"
+    class="workflow-screen"
+>
+
+    <div class="screen-card">
+
+
+        <div class="screen-header">
+
+            <h2>
+                Donation Food Card
+            </h2>
+
+
+            <p>
+                Review the automatically generated
+                donation card before proceeding.
+            </p>
+
+        </div>
+
+
+
+        <div class="food-card-layout">
+
+
+            <!-- FOOD IMAGE -->
+
+            <div class="food-card-image">
+
+                <img
+                    id="foodCardImage"
+                    alt="Food"
+                >
+
+            </div>
+
+
+
+            <!-- FOOD DETAILS -->
+
+            <div class="food-card-details">
+
+
+                <div class="card-row">
+
+                    <span>
+                        Food ID
+                    </span>
+
+                    <strong id="foodID">
+                        NCA-000001
+                    </strong>
+
+                </div>
+
+
+
+                <div class="card-row">
+
+                    <span>
+                        Food Name
+                    </span>
+
+                    <strong id="cardFoodName">
+                        --
+                    </strong>
+
+                </div>
+
+
+
+                <div class="card-row">
+
+                    <span>
+                        Quantity
+                    </span>
+
+                    <strong id="cardQuantity">
+                        --
+                    </strong>
+
+                </div>
+
+
+
+                <div class="card-row">
+
+                    <span>
+                        Freshness
+                    </span>
+
+                    <strong id="cardFreshness">
+                        --
+                    </strong>
+
+                </div>
+
+
+
+                <div class="card-row">
+
+                    <span>
+                        Shelf Life
+                    </span>
+
+                    <strong id="cardShelfLife">
+                        --
+                    </strong>
+
+                </div>
+
+
+
+                <div class="card-row">
+
+                    <span>
+                        AI Confidence
+                    </span>
+
+                    <strong id="cardConfidence">
+                        --
+                    </strong>
+
+                </div>
+
+
+
+                <div class="card-row">
+
+                    <span>
+                        Verification
+                    </span>
+
+                    <strong class="verified">
+                        AI VERIFIED ✓
+                    </strong>
+
+                </div>
+
+
+            </div>
+
+        </div>
+
+
+
+        <div class="screen-footer">
+
+
+            <button
+                id="foodCardBackButton"
+                class="secondary-button"
+                type="button"
+            >
+
+                <i class="fa-solid fa-arrow-left"></i>
+
+                Back
+
+            </button>
+
+
+
+            <button
+                id="foodCardNextButton"
+                class="next-button"
+                type="button"
+            >
+
+                Continue
+
+                <i class="fa-solid fa-arrow-right"></i>
+
+            </button>
+
+
+        </div>
+
+
+    </div>
+
+</section>
+
+
+
+<!-- ======================================
+     SCREEN 5
+     PAYMENT
+======================================= -->
+
+<section
+    id="paymentScreen"
+    class="workflow-screen"
+>
+
+    <div class="screen-card">
+
+
+        <div class="screen-header">
+
+            <h2>
+                Donation Service Fee
+            </h2>
+
+
+            <p>
+                Complete the payment to initiate
+                logistics and delivery.
+            </p>
+
+        </div>
+
+
+
+        <!-- PAYMENT SUMMARY -->
+
+        <!-- DONATION AMOUNT -->
+
+<div class="donation-amount-box">
+
+    <label for="donationAmount">
+        Support Amount
+    </label>
+
+    <div class="amount-input-wrap">
+
+        <span>₹</span>
+
+        <input
+            id="donationAmount"
+            type="number"
+            min="50"
+            step="1"
+            value="100"
+            placeholder="Enter amount"
+            inputmode="numeric"
+        >
+
+    </div>
+
+    <div class="amount-hint">
+        Minimum contribution: ₹50
+    </div>
+
+    <div class="quick-amounts">
+
+        <button
+            type="button"
+            data-amount="50">
+            ₹50
+        </button>
+
+        <button
+            type="button"
+            data-amount="100">
+            ₹100
+        </button>
+
+        <button
+            type="button"
+            data-amount="250">
+            ₹250
+        </button>
+
+        <button
+            type="button"
+            data-amount="500">
+            ₹500
+        </button>
+
+        <button
+            type="button"
+            data-amount="1000">
+            ₹1000
+        </button>
+
+    </div>
+
+</div>
+
+
+
+        <!-- PAYMENT OPTIONS -->
+
+        <div class="payment-grid">
+
+
+            <!-- UPI -->
+
+            <button
+                class="payment-option"
+                type="button"
+                data-method="upi"
+            >
+
+                <i class="fa-brands fa-google-pay"></i>
+
+                UPI
+
+            </button>
+
+
+
+            <!-- CARD -->
+
+            <button
+                class="payment-option"
+                type="button"
+                data-method="card"
+            >
+
+                <i class="fa-solid fa-credit-card"></i>
+
+                Card
+
+            </button>
+
+
+
+            <!-- WALLET -->
+
+            <button
+                class="payment-option"
+                type="button"
+                data-method="wallet"
+            >
+
+                <i class="fa-solid fa-wallet"></i>
+
+                Wallet
+
+            </button>
+
+
+
+            <!-- NET BANKING -->
+
+            <button
+                class="payment-option"
+                type="button"
+                data-method="bank"
+            >
+
+                <i class="fa-solid fa-building-columns"></i>
+
+                Net Banking
+
+            </button>
+
+
+        </div>
+
+
+
+        <!-- PAYMENT ERROR -->
+
+        <div
+            id="paymentError"
+            class="error-message"
+            role="alert"
+            aria-live="polite"
+        ></div>
+
+
+
+        <div class="screen-footer">
+
+
+            <button
+                id="paymentBackButton"
+                class="secondary-button"
+                type="button"
+            >
+
+                <i class="fa-solid fa-arrow-left"></i>
+
+                Back
+
+            </button>
+
+
+
+            <button
+                id="paymentNextButton"
+                class="next-button"
+                type="button"
+            >
+
+                Proceed to Payment
+
+                <i class="fa-solid fa-arrow-right"></i>
+
+            </button>
+
+
+        </div>
+
+
+    </div>
+
+</section>
+
+
+
+<!-- ======================================
+     SCREEN 6
+     SCRATCH REWARD
+======================================= -->
+
+<section
+    id="rewardScreen"
+    class="workflow-screen"
+>
+
+    <div class="screen-card">
+
+
+        <div class="screen-header">
+
+            <h2>
+                Congratulations 🎉
+            </h2>
+
+
+            <p>
+                Your donation has been successfully
+                registered. Scratch the reward card
+                to reveal your surprise.
+            </p>
+
+        </div>
+
+
+
+        <div class="scratch-layout">
+
+
+            <div
+                id="scratchCard"
+                class="scratch-card"
+            >
+
+
+                <!-- HIDDEN REWARD -->
+
+                <div class="reward-hidden">
+
+                    <h2>
+                        Reward Unlocked
+                    </h2>
+
+
+                    <h1 id="rewardTitle">
+                        ₹100 OFF
+                    </h1>
+
+
+                    <p id="rewardBrand">
+                        Partner Brand Reward
+                    </p>
+
+                </div>
+
+
+
+                <!-- SCRATCH SURFACE -->
+
+                <div
+                    id="scratchSurface"
+                    class="scratch-surface"
+                >
+
+                    Scratch Here
+
+                </div>
+
+
+                <!-- ACTUAL CANVAS USED BY THE NEW JS -->
+
+                <canvas
+                    id="scratchCanvas"
+                    aria-label="Scratch reward card"
+                ></canvas>
+
+
+            </div>
+
+
+        </div>
+
+
+
+        <div class="screen-footer">
+
+
+            <div class="privacy-note">
+
+                <i class="fa-solid fa-gift"></i>
+
+                <span>
+                    Scratch the card to unlock your
+                    donation reward.
+                </span>
+
+            </div>
+
+
+            <button
+                id="rewardNextButton"
+                class="next-button"
+                type="button"
+                disabled
+            >
+
+                Continue
+
+                <i class="fa-solid fa-arrow-right"></i>
+
+            </button>
+
+
+        </div>
+
+
+    </div>
+
+</section>
+<!-- ======================================
+     SCREEN 7
+     NGO & DELIVERY ASSIGNMENT
+======================================= -->
+
+<section
+    id="assignmentScreen"
+    class="workflow-screen"
+>
+
+    <div class="screen-card">
+
+
+        <!-- HEADER -->
+
+        <div class="screen-header">
+
+            <h2>
+                Assigning Logistics
+            </h2>
+
+
+            <p>
+                NutriCycle AI is automatically locating
+                the nearest NGO and the best delivery partner.
+            </p>
+
+        </div>
+
+
+
+        <!-- ASSIGNMENT STATUS -->
+
+        <div
+            id="assignmentStatus"
+            class="assignment-status"
+        >
+
+            <i
+                class="fa-solid fa-spinner fa-spin"
+            ></i>
+
+
+            <span>
+                Matching donation with the delivery network...
+            </span>
+
+        </div>
+
+
+
+        <!-- ASSIGNMENT GRID -->
+
+        <div class="assignment-grid">
+
+
+            <!-- NGO -->
+
+            <div class="assignment-card">
+
+                <div class="assignment-icon">
+
+                    <i
+                        class="fa-solid fa-building-user"
+                    ></i>
+
+                </div>
+
+
+                <h3>
+                    Assigned NGO
+                </h3>
+
+
+                <div id="assignedNGO">
+                    Searching...
+                </div>
+
+            </div>
+
+
+
+            <!-- DELIVERY PARTNER -->
+
+            <div class="assignment-card">
+
+                <div class="assignment-icon">
+
+                    <i
+                        class="fa-solid fa-user-check"
+                    ></i>
+
+                </div>
+
+
+                <h3>
+                    Delivery Partner
+                </h3>
+
+
+                <div id="assignedAgent">
+                    Searching...
+                </div>
+
+            </div>
+
+
+
+            <!-- QUANTITY -->
+
+            <div class="assignment-card">
+
+                <div class="assignment-icon">
+
+                    <i
+                        class="fa-solid fa-weight-hanging"
+                    ></i>
+
+                </div>
+
+
+                <h3>
+                    Donation Quantity
+                </h3>
+
+
+                <div id="assignmentQuantity">
+                    Calculating...
+                </div>
+
+            </div>
+
+
+
+            <!-- VEHICLE -->
+
+            <div class="assignment-card">
+
+                <div class="assignment-icon">
+
+                    <i
+                        class="fa-solid fa-truck-fast"
+                    ></i>
+
+                </div>
+
+
+                <h3>
+                    Vehicle
+                </h3>
+
+
+                <div id="assignedVehicle">
+                    Selecting...
+                </div>
+
+
+                <small
+                    id="vehicleReason"
+                    class="vehicle-reason"
+                >
+                    Evaluating quantity...
+                </small>
+
+            </div>
+
+
+
+            <!-- ETA -->
+
+            <div class="assignment-card">
+
+                <div class="assignment-icon">
+
+                    <i
+                        class="fa-solid fa-clock"
+                    ></i>
+
+                </div>
+
+
+                <h3>
+                    Estimated Pickup
+                </h3>
+
+
+                <div id="pickupETA">
+                    Calculating...
+                </div>
+
+            </div>
+
+
+
+            <!-- ASSIGNMENT RULE -->
+
+            <div class="assignment-card">
+
+                <div class="assignment-icon">
+
+                    <i
+                        class="fa-solid fa-scale-balanced"
+                    ></i>
+
+                </div>
+
+
+                <h3>
+                    Vehicle Rule
+                </h3>
+
+
+                <div
+                    id="vehicleRule"
+                >
+                    Based on donation quantity
+                </div>
+
+            </div>
+
+
+        </div>
+
+
+
+        <!-- ASSIGNMENT FOOTER -->
+
+        <div class="screen-footer">
+
+
+            <div class="privacy-note">
+
+                <i
+                    class="fa-solid fa-route"
+                ></i>
+
+
+                <span>
+                    Vehicle selection is based on
+                    the validated donation quantity.
+                </span>
+
+            </div>
+
+
+
+            <button
+                id="assignmentNextButton"
+                class="next-button"
+                type="button"
+                disabled
+            >
+
+                Continue
+
+                <i
+                    class="fa-solid fa-arrow-right"
+                ></i>
+
+            </button>
+
+
+        </div>
+
+
+    </div>
+
+</section>
+
+
+
+<!-- ======================================
+     SCREEN 8
+     LIVE TRACKING
+======================================= -->
+
+<section
+    id="trackingScreen"
+    class="workflow-screen"
+>
+
+    <div class="screen-card">
+
+
+        <!-- HEADER -->
+
+        <div class="screen-header">
+
+            <h2>
+                Live Donation Tracking
+            </h2>
+
+
+            <p>
+                Track your donation from pickup
+                until successful delivery.
+            </p>
+
+        </div>
+
+
+
+        <!-- TRACKING LAYOUT -->
+
+        <div class="tracking-layout">
+
+
+            <!-- ==============================
+                 MAP
+            =============================== -->
+
+            <div class="map-container">
+
+
+                <div
+                    id="trackingMap"
+                >
+
+
+                    <div class="map-placeholder">
+
+                        <i
+                            class="fa-solid fa-map-location-dot"
+                        ></i>
+
+
+                        <h3>
+                            Live Map
+                        </h3>
+
+
+                        <p>
+                            Your delivery route will
+                            appear here.
+                        </p>
+
+                    </div>
+
+
+                </div>
+
+
+            </div>
+
+
+
+            <!-- ==============================
+                 TRACKING SIDEBAR
+            =============================== -->
+
+            <div class="tracking-sidebar">
+
+
+                <!-- DRIVER -->
+
+                <div class="driver-card">
+
+
+                    <div class="driver-avatar">
+
+                        <i
+                            class="fa-solid fa-user"
+                        ></i>
+
+                    </div>
+
+
+                    <div>
+
+                        <h3
+                            id="driverName"
+                        >
+                            Driver Name
+                        </h3>
+
+
+                        <p
+                            id="driverPhone"
+                        >
+                            +91 XXXXX XXXXX
+                        </p>
+
+                    </div>
+
+
+                </div>
+
+
+
+                <!-- TRACKING INFORMATION -->
+
+                <div class="tracking-info">
+
+
+                    <!-- VEHICLE -->
+
+                    <div class="tracking-row">
+
+                        <span>
+                            Vehicle
+                        </span>
+
+
+                        <strong
+                            id="trackingVehicle"
+                        >
+                            --
+                        </strong>
+
+                    </div>
+
+
+
+                    <!-- VEHICLE NUMBER -->
+
+                    <div class="tracking-row">
+
+                        <span>
+                            Vehicle Number
+                        </span>
+
+
+                        <strong
+                            id="vehicleNumber"
+                        >
+                            --
+                        </strong>
+
+                    </div>
+
+
+
+                    <!-- NGO -->
+
+                    <div class="tracking-row">
+
+                        <span>
+                            Destination NGO
+                        </span>
+
+
+                        <strong
+                            id="trackingNGO"
+                        >
+                            --
+                        </strong>
+
+                    </div>
+
+
+
+                    <!-- STATUS -->
+
+                    <div class="tracking-row">
+
+                        <span>
+                            Current Status
+                        </span>
+
+
+                        <strong
+                            id="trackingStatus"
+                        >
+                            Waiting for Pickup
+                        </strong>
+
+                    </div>
+
+
+
+                    <!-- ETA -->
+
+                    <div class="tracking-row">
+
+                        <span>
+                            ETA
+                        </span>
+
+
+                        <strong
+                            id="trackingETA"
+                        >
+                            --
+                        </strong>
+
+                    </div>
+
+
+
+                    <!-- DISTANCE -->
+
+                    <div class="tracking-row">
+
+                        <span>
+                            Remaining Distance
+                        </span>
+
+
+                        <strong
+                            id="trackingDistance"
+                        >
+                            --
+                        </strong>
+
+                    </div>
+
+
+                </div>
+
+
+
+                <!-- LIVE INDICATOR -->
+
+                <div
+                    class="tracking-live-status"
+                >
+
+                    <span
+                        class="live-dot"
+                    ></span>
+
+
+                    <span>
+                        Live Tracking Active
+                    </span>
+
+                </div>
+
+
+            </div>
+
+
+        </div>
+
+
+
+        <!-- ==============================
+             TIMELINE
+        =============================== -->
+
+        <div class="tracking-timeline">
+
+
+            <!-- CREATED -->
+
+            <div
+                class="timeline-item active"
+            >
+
+                <div class="timeline-dot"></div>
+
+
+                <div>
+                    Donation Created
+                </div>
+
+            </div>
+
+
+
+            <!-- NGO -->
+
+            <div
+                class="timeline-item"
+            >
+
+                <div class="timeline-dot"></div>
+
+
+                <div>
+                    NGO Assigned
+                </div>
+
+            </div>
+
+
+
+            <!-- DRIVER -->
+
+            <div
+                class="timeline-item"
+            >
+
+                <div class="timeline-dot"></div>
+
+
+                <div>
+                    Driver Assigned
+                </div>
+
+            </div>
+
+
+
+            <!-- PICKUP -->
+
+            <div
+                class="timeline-item"
+            >
+
+                <div class="timeline-dot"></div>
+
+
+                <div>
+                    Pickup Complete
+                </div>
+
+            </div>
+
+
+
+            <!-- DELIVERED -->
+
+            <div
+                class="timeline-item"
+            >
+
+                <div class="timeline-dot"></div>
+
+
+                <div>
+                    Delivered
+                </div>
+
+            </div>
+
+
+        </div>
+
+
+
+        <!-- TRACKING STATUS MESSAGE -->
+
+        <div
+            id="trackingStatusMessage"
+            class="status-message"
+        >
+            Waiting for delivery assignment...
+        </div>
+
+
+
+        <!-- FOOTER -->
+
+        <div class="screen-footer">
+
+
+            <div class="privacy-note">
+
+                <i
+                    class="fa-solid fa-location-dot"
+                ></i>
+
+
+                <span>
+                    Follow the delivery vehicle
+                    in real time.
+                </span>
+
+            </div>
+
+
+
+            <button
+                id="dashboardButton"
+                class="next-button"
+                type="button"
+            >
+
+                Return to Dashboard
+
+                <i
+                    class="fa-solid fa-house"
+                ></i>
+
+            </button>
+
+
+        </div>
+
+
+    </div>
+
+</section>
+<!-- ======================================
+     GLOBAL LOADING
+======================================= -->
+
+<div
+    id="loadingOverlay"
+    class="loading-overlay"
+>
+
+    <div class="loading-box">
+
+
+        <div class="loader">
+        </div>
+
+
+        <h2>
+            Please Wait...
+        </h2>
+
+
+        <p id="loadingMessage">
+            Processing...
+        </p>
+
+
+    </div>
+
+</div>
+
+
+
+<!-- ======================================
+     GLOBAL SUCCESS MODAL
+======================================= -->
+
+<div
+    id="successModal"
+    class="success-modal"
+>
+
+    <div class="success-card">
+
+
+        <div class="success-icon">
+
+            <i
+                class="fa-solid fa-circle-check"
+            ></i>
+
+        </div>
+
+
+        <h2>
+            Success
+        </h2>
+
+
+        <p id="successMessage">
+            Operation completed successfully.
+        </p>
+
+
+        <button
+            id="closeSuccessButton"
+            class="next-button"
+            type="button"
+        >
+
+            Continue
+
+            <i
+                class="fa-solid fa-arrow-right"
+            ></i>
+
+        </button>
+
+
+    </div>
+
+</div>
+
+
+
+<!-- ======================================
+     LEAFLET JS
+======================================= -->
+
+<script
+    src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+    crossorigin="anonymous"
+></script>
+
+<script
+    src="../js/ai-api.js"
+></script>
+
+<script
+    src="../js/donation.js"
+></script>
+
+</body>
+</html>

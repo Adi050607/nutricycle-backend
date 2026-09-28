@@ -10,9 +10,15 @@
     },
 
     "context": {
+        "pageTitle": "NutriCycle AI",
+        "metaDescription": "Choose your region and language to personalize your NutriCycle AI experience.",
+        "brandSubtitle": "Smart Food Rescue",
+        "globalExperience": "Global Experience",
         "welcome": "Welcome to NutriCycle AI",
         "subtitle": "Choose your region and language to personalize your NutriCycle experience.",
         "country": "Country / Region",
+        "countryPlaceholder": "Search country or region",
+        "clearCountry": "Clear country search",
         "language": "Language",
         "currency": "Currency",
         "languageHint": "Your selected language controls the NutriCycle interface.",

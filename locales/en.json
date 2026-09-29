@@ -28,19 +28,35 @@
     },
 
     "signup": {
+        "pageTitle": "NutriCycle AI | Create Account",
+        "metaDescription": "Create your NutriCycle AI account and join the smart hyperlocal food rescue ecosystem.",
+        "loadingTitle": "Please Wait",
+        "loadingText": "Preparing your NutriCycle AI account...",
+        "brandSubtitle": "Smart Hyperlocal Food Rescue Ecosystem",
+
+        "progressAccount": "Account",
+        "progressProfile": "Profile",
+        "progressRole": "Role",
+        "progressReview": "Review",
+        "progressFinish": "Finish",
+
         "createAccount": "Create Your Account",
         "accountSubtitle": "Set up your secure NutriCycle AI login.",
+
         "email": "Email Address",
         "password": "Password",
         "confirmPassword": "Confirm Password",
         "mobileNumber": "Mobile Number",
+
         "profile": "Complete Your Profile",
         "profileSubtitle": "Tell us a little about yourself.",
+
         "fullName": "Full Name",
         "gender": "Gender",
         "dateOfBirth": "Date of Birth",
         "preferredLanguage": "Preferred Language",
         "preferredCurrency": "Preferred Currency",
+
         "administrativeArea": "State / Province / Region / Equivalent",
         "district": "District / County / Equivalent",
         "municipality": "City / Town / Village",
@@ -51,11 +67,101 @@
         "passwordPlaceholder": "Create a strong password",
         "confirmPasswordPlaceholder": "Re-enter your password",
         "phonePlaceholder": "Enter mobile number",
+
         "fullNamePlaceholder": "Enter your full name",
         "administrativeAreaPlaceholder": "Enter your state, province, region or equivalent",
         "districtPlaceholder": "Enter your district, county or equivalent",
         "municipalityPlaceholder": "Enter city, town or village",
         "localityPlaceholder": "Enter locality or neighbourhood",
-        "postalCodePlaceholder": "Enter your postal code"
+        "postalCodePlaceholder": "Enter your postal code",
+
+        "passwordStrength": "Password strength",
+        "selectCountry": "Select Country",
+        "phoneHelp": "Your number is used for account security, OTP verification and important NutriCycle notifications.",
+
+        "selectGender": "Select Gender",
+        "genderMale": "Male",
+        "genderFemale": "Female",
+        "genderOther": "Other",
+        "genderPreferNot": "Prefer not to say",
+
+        "selectLanguage": "Select Language",
+        "selectCurrency": "Select Currency",
+
+        "preferenceHint": "These preferences are recommended based on your selected country. You can change them anytime.",
+
+        "roleTitle": "Choose Your Role",
+        "roleSubtitle": "Select how you want to participate in the NutriCycle AI ecosystem.",
+
+        "roleDonorTitle": "Food Donor",
+        "roleDonorDescription": "Donate surplus food from homes, restaurants, hotels, events, canteens and businesses.",
+
+        "roleNgoTitle": "NGO",
+        "roleNgoDescription": "Receive donated food and distribute it safely to people in need.",
+
+        "roleAgentTitle": "Delivery Agent",
+        "roleAgentDescription": "Collect food from donors and deliver it safely to NGOs.",
+
+        "donorFoodSourceLabel": "What is your primary food source?",
+        "selectFoodSource": "Select Food Source",
+        "foodSourceHousehold": "Household / Home",
+        "foodSourceRestaurant": "Restaurant / Cafe",
+        "foodSourceHotel": "Hotel",
+        "foodSourceBanquet": "Banquet / Wedding Hall",
+        "foodSourceCatering": "Catering Business",
+        "foodSourceBakery": "Bakery / Food Shop",
+        "foodSourceGrocery": "Grocery / Supermarket",
+        "foodSourceCorporate": "Corporate / Office",
+        "foodSourceCollege": "College / School / Institution",
+        "foodSourceCanteen": "Canteen / Mess",
+        "foodSourceEvent": "Event / Function",
+        "foodSourceManufacturer": "Food Manufacturer",
+        "foodSourceOther": "Other",
+
+        "donorOperatingAreaLabel": "Where do you primarily operate?",
+        "donorOperatingAreaPlaceholder": "e.g. Wakad, Hinjawadi, Pimpri",
+        "donorOperatingAreaHint": "This helps NutriCycle AI find nearby NGOs and plan efficient pickups.",
+
+        "ngoName": "NGO Name",
+        "ngoNamePlaceholder": "Enter NGO name",
+        "ngoRegistration": "Registration Number",
+        "ngoRegistrationPlaceholder": "Enter registration number",
+
+        "vehicleType": "Vehicle Type",
+        "selectVehicle": "Select Vehicle",
+        "vehicleBike": "Bike",
+        "vehicleScooter": "Scooter",
+        "vehicleCar": "Car",
+        "vehicleTempo": "Tempo",
+        "vehicleMiniTruck": "Mini Truck",
+
+        "licenseNumber": "Driving License Number",
+        "licenseNumberPlaceholder": "Enter driving license number",
+
+        "reviewTitle": "Review Your Information",
+        "reviewSubtitle": "Check your details before creating your account.",
+
+        "reviewAccount": "Account",
+        "reviewEmail": "Email",
+        "reviewMobile": "Mobile",
+
+        "reviewProfile": "Profile",
+        "reviewName": "Name",
+        "reviewGender": "Gender",
+        "reviewDateOfBirth": "Date of Birth",
+        "reviewLocation": "Location",
+        "reviewPincode": "Pincode",
+
+        "reviewParticipation": "Participation",
+        "reviewRole": "Role",
+
+        "createAccountButton": "Create Account",
+
+        "successTitle": "Welcome to NutriCycle AI!",
+        "successMessage": "Your account has been created successfully. You can now access your dashboard and begin making an impact by reducing food waste.",
+        "successProfile": "Profile Completed",
+        "successSecurity": "Account Secured",
+        "successImpact": "Ready to Reduce Food Waste",
+        "goToDashboard": "Go To Dashboard"
     }
 }

@@ -80,6 +80,51 @@ function createTranslationInstruction({ sourceLocale, targetLocale, texts }) {
         JSON.stringify(texts)
     ].join("\n");
 }
+async function requestMyMemoryTranslations({
+    sourceLocale,
+    targetLocale,
+    texts
+}) {
+    const source =
+        safeString(sourceLocale)
+            .split("-")[0]
+            .toLowerCase();
+
+    const target =
+        safeString(targetLocale)
+            .split("-")[0]
+            .toLowerCase();
+
+    const translations = [];
+
+    for (const text of texts) {
+        const url =
+            "https://api.mymemory.translated.net/get" +
+            `?q=${encodeURIComponent(text)}` +
+            `&langpair=${encodeURIComponent(source)}|${encodeURIComponent(target)}`;
+
+        const response = await fetch(url);
+
+        if (!response.ok) {
+            throw new Error(
+                `MyMemory returned HTTP ${response.status}.`
+            );
+        }
+
+        const data = await response.json();
+
+        const translated =
+            safeString(
+                data?.responseData?.translatedText
+            ).trim();
+
+        translations.push(
+            translated || text
+        );
+    }
+
+    return translations;
+}
 
 module.exports = function registerTranslationRoutes({ app, client }) {
     if (!app) {
@@ -155,58 +200,106 @@ module.exports = function registerTranslationRoutes({ app, client }) {
                 });
             }
 
-            if (!client || !process.env.OPENAI_API_KEY) {
-                return res.status(503).json({
-                    success: false,
-                    error: "Translation provider is not configured."
-                });
-            }
+                       let normalizedTranslations = null;
 
-            const model =
-                process.env.OPENAI_TRANSLATION_MODEL ||
-                process.env.FOOD_AI_MODEL ||
-                "gpt-5.6-luna";
+            /*
+             * Primary provider:
+             * OpenAI, when configured.
+             */
+            if (
+                client &&
+                process.env.OPENAI_API_KEY
+            ) {
+                try {
+                    const model =
+                        process.env.OPENAI_TRANSLATION_MODEL ||
+                        process.env.FOOD_AI_MODEL ||
+                        "gpt-5.6-luna";
 
-            const response = await client.responses.create({
-                model,
-                input: [
-                    {
-                        role: "system",
-                        content: [
-                            {
-                                type: "input_text",
-                                text: "You are NutriCycle AI's production UI localization engine. Output only valid JSON."
-                            }
-                        ]
-                    },
-                    {
-                        role: "user",
-                        content: [
-                            {
-                                type: "input_text",
-                                text: createTranslationInstruction({
-                                    sourceLocale,
-                                    targetLocale,
-                                    texts
-                                })
-                            }
-                        ]
+                    const response =
+                        await client.responses.create({
+                            model,
+                            input: [
+                                {
+                                    role: "system",
+                                    content: [
+                                        {
+                                            type: "input_text",
+                                            text:
+                                                "You are NutriCycle AI's production UI localization engine. Output only valid JSON."
+                                        }
+                                    ]
+                                },
+                                {
+                                    role: "user",
+                                    content: [
+                                        {
+                                            type: "input_text",
+                                            text:
+                                                createTranslationInstruction({
+                                                    sourceLocale,
+                                                    targetLocale,
+                                                    texts
+                                                })
+                                        }
+                                    ]
+                                }
+                            ]
+                        });
+
+                    const translations =
+                        extractJsonArray(
+                            response.output_text
+                        );
+
+                    if (
+                        translations.length !==
+                        texts.length
+                    ) {
+                        throw new Error(
+                            `Translation provider returned ${translations.length} items; expected ${texts.length}.`
+                        );
                     }
-                ]
-            });
 
-            const translations = extractJsonArray(response.output_text);
+                    normalizedTranslations =
+                        translations.map(
+                            (translated, index) => {
+                                const value =
+                                    safeString(
+                                        translated
+                                    );
 
-            if (translations.length !== texts.length) {
-                throw new Error(
-                    `Translation provider returned ${translations.length} items; expected ${texts.length}.`
-                );
+                                return (
+                                    value ||
+                                    texts[index]
+                                );
+                            }
+                        );
+
+                } catch (openAIError) {
+
+                    console.warn(
+                        "NutriCycle AI — OpenAI translation unavailable. Using prototype fallback:",
+                        openAIError?.message ||
+                        openAIError
+                    );
+                }
             }
 
-            const normalizedTranslations = translations.map((translated, index) => {
-                const value = safeString(translated);
-                return value || texts[index];
-            });
+            /*
+             * Prototype fallback:
+             * MyMemory is used only when the
+             * primary provider is unavailable.
+             */
+            if (!normalizedTranslations) {
+
+                normalizedTranslations =
+                    await requestMyMemoryTranslations({
+                        sourceLocale,
+                        targetLocale,
+                        texts
+                    });
+            }
 
             return res.json({
                 success: true,

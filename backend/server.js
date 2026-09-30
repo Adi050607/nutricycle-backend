@@ -140,7 +140,17 @@ const client =
                   OPENAI_API_KEY
           })
         : null;
+/* ============================================================
+   GLOBAL TRANSLATION GATEWAY
+============================================================ */
 
+const registerTranslationRoutes =
+    require("./translation-service");
+
+registerTranslationRoutes({
+    app,
+    client
+});
 
 /* ============================================================
    COMMON ERROR HANDLER

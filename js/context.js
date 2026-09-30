@@ -5,19 +5,12 @@ import I18n from "./i18n.js";
 /* ============================================================
    NutriCycle AI
    GLOBAL CONTEXT GATEWAY
-   Version 2.0
-   CLDR-powered country / language / currency selection
-============================================================ */
-
-
-/* ============================================================
-   CONFIGURATION
-============================================================ */
+   CLDR-backed country / language / currency selection
+   ============================================================ */
 
 const CONFIG = Object.freeze({
 
     storage: Object.freeze({
-
         locale:
             "nutricycle_locale",
 
@@ -29,13 +22,10 @@ const CONFIG = Object.freeze({
 
         configured:
             "nutricycle_context_configured"
-
     }),
-
 
     homePath:
         "/html/home.html",
-
 
     metadata: Object.freeze({
 
@@ -51,8 +41,7 @@ const CONFIG = Object.freeze({
         localeManifest:
             "/locales/manifest.json"
 
-    }),
-
+    })
 
 });
 
@@ -66,51 +55,26 @@ const state = {
     metadata:
         null,
 
-
-    /*
-       Translation locale metadata declared
-       in locales/manifest.json.
-
-       This never limits the language selector.
-    */
-
     translationLocales:
         [],
-
-
-    /*
-       Worldwide language catalog generated
-       from CLDR language names.
-    */
 
     languageCatalog:
         [],
 
-
-    /*
-       Compatibility alias retained for
-       existing application logic.
-    */
-
     locales:
         [],
-
 
     countryCatalog:
         [],
 
-
     selectedCountry:
         "",
-
 
     selectedLocale:
         "",
 
-
     selectedCurrency:
         "",
-
 
     initialized:
         false
@@ -127,30 +91,41 @@ const dom = {
     countrySelect:
         null,
 
+    countrySearch:
+        null,
+
+    countryResults:
+        null,
+
+    countryClear:
+        null,
 
     languageSelect:
         null,
 
+    languageSearch:
+        null,
+
+    languageResults:
+        null,
+
+    languageClear:
+        null,
 
     currencySelect:
         null,
 
-
     continueButton:
         null,
-
 
     error:
         null,
 
-
     detectedLocation:
         null,
 
-
     detectedText:
         null,
-
 
     countryHint:
         null
@@ -164,52 +139,70 @@ const dom = {
 
 function cacheDOM() {
 
-    dom.countrySelect =
-        document.getElementById(
-            "countrySelect"
-        );
+    const ids = {
 
+        countrySelect:
+            "countrySelect",
 
-    dom.languageSelect =
-        document.getElementById(
-            "languageSelect"
-        );
+        countrySearch:
+            "countrySearch",
 
+        countryResults:
+            "countryResults",
 
-    dom.currencySelect =
-        document.getElementById(
-            "currencySelect"
-        );
+        countryClear:
+            "countryClear",
 
+        languageSelect:
+            "languageSelect",
 
-    dom.continueButton =
-        document.getElementById(
-            "continueButton"
-        );
+        languageSearch:
+            "languageSearch",
 
+        languageResults:
+            "languageResults",
 
-    dom.error =
-        document.getElementById(
-            "contextError"
-        );
+        languageClear:
+            "languageClear",
 
+        currencySelect:
+            "currencySelect",
 
-    dom.detectedLocation =
-        document.getElementById(
-            "detectedLocation"
-        );
+        continueButton:
+            "continueButton",
 
+        error:
+            "contextError",
 
-    dom.detectedText =
-        document.getElementById(
-            "detectedText"
-        );
+        detectedLocation:
+            "detectedLocation",
 
+        detectedText:
+            "detectedText",
 
-    dom.countryHint =
-        document.getElementById(
+        countryHint:
             "countryHint"
-        );
+
+    };
+
+
+    Object.entries(
+        ids
+    ).forEach(
+        (
+            [
+                key,
+                id
+            ]
+        ) => {
+
+            dom[key] =
+                document.getElementById(
+                    id
+                );
+
+        }
+    );
 
 }
 
@@ -219,7 +212,7 @@ function cacheDOM() {
 ============================================================ */
 
 function showError(
-    message
+    message = ""
 ) {
 
     if (
@@ -232,8 +225,7 @@ function showError(
 
 
     dom.error.textContent =
-        message ||
-        "";
+        message;
 
 
     dom.error.classList.toggle(
@@ -303,7 +295,7 @@ function setStored(
 
 
 /* ============================================================
-   FETCH JSON
+   JSON FETCH
 ============================================================ */
 
 async function fetchJson(
@@ -314,10 +306,8 @@ async function fetchJson(
         await fetch(
             url,
             {
-
                 cache:
                     "no-cache"
-
             }
         );
 
@@ -359,10 +349,13 @@ function normalizeLocaleCode(
 
     try {
 
-        return Intl
-            .getCanonicalLocales(
-                locale
-            )[0];
+        return (
+            Intl
+                .getCanonicalLocales(
+                    locale
+                )[0] ||
+            ""
+        );
 
     }
 
@@ -402,15 +395,6 @@ function normalizeLanguageCode(
                 "-"
             );
 
-
-    /*
-       CLDR language names can contain
-       language + script/variant entries.
-
-       For the language selector we retain
-       canonical language identifiers and
-       useful script-specific identifiers.
-    */
 
     try {
 
@@ -463,26 +447,13 @@ function normalizeLanguageCode(
 
     catch {
 
-        /*
-           Some CLDR language identifiers are
-           broader language identifiers that are
-           still useful even when Intl rejects
-           their exact legacy representation.
-        */
-
-        if (
+        return (
             /^[a-z]{2,3}$/i.test(
                 cleaned
             )
-        ) {
-
-            return cleaned
-                .toLowerCase();
-
-        }
-
-
-        return "";
+                ? cleaned.toLowerCase()
+                : ""
+        );
 
     }
 
@@ -490,25 +461,172 @@ function normalizeLanguageCode(
 
 
 /* ============================================================
-   LANGUAGE DISPLAY NAME
+   DIRECTION
+   No hardcoded RTL language list.
 ============================================================ */
 
-function getLanguageDisplayName(
-    languageCode,
-    displayLocale = "en"
+function getDirection(
+    localeCode
 ) {
 
-    const normalized =
-        normalizeLanguageCode(
-            languageCode
-        );
+    try {
+
+        if (
+            typeof I18n.getDirection ===
+                "function"
+        ) {
+
+            const direction =
+                I18n.getDirection(
+                    localeCode
+                );
+
+
+            if (
+                direction === "ltr" ||
+                direction === "rtl"
+            ) {
+
+                return direction;
+
+            }
+
+        }
+
+    }
+
+    catch {
+
+        /* Continue to platform CLDR data. */
+
+    }
+
+
+    try {
+
+        const locale =
+            new Intl.Locale(
+                localeCode
+            );
+
+
+        const direction =
+            locale.textInfo
+                ?.direction;
+
+
+        if (
+            direction === "ltr" ||
+            direction === "rtl"
+        ) {
+
+            return direction;
+
+        }
+
+    }
+
+    catch {
+
+        /* Generic fallback below. */
+
+    }
+
+
+    return "ltr";
+
+}
+
+
+/* ============================================================
+   COUNTRY FLAG
+============================================================ */
+
+function getCountryFlag(
+    countryCode
+) {
+
+    if (
+        !/^[A-Z]{2}$/.test(
+            countryCode ||
+            ""
+        )
+    ) {
+
+        return "🌍";
+
+    }
+
+
+    return countryCode
+        .split("")
+        .map(
+            character =>
+                String.fromCodePoint(
+                    127397 +
+                    character.charCodeAt(
+                        0
+                    )
+                )
+        )
+        .join("");
+
+}
+
+
+/* ============================================================
+   LANGUAGE NAMES
+============================================================ */
+
+function getEnglishLanguageName(
+    code,
+    rawCode,
+    rawName
+) {
+
+    const cldrName =
+        typeof rawName ===
+            "string"
+            ? rawName.trim()
+            : "";
 
 
     if (
-        !normalized
+        cldrName &&
+        cldrName
+            .toLocaleLowerCase() !==
+            String(
+                rawCode
+            )
+                .trim()
+                .toLocaleLowerCase()
     ) {
 
-        return languageCode;
+        return cldrName;
+
+    }
+
+
+    const direct =
+        state.metadata
+            ?.languageNames
+            ?.[
+                code
+            ];
+
+
+    if (
+        typeof direct ===
+            "string" &&
+        direct.trim() &&
+        direct
+            .trim()
+            .toLocaleLowerCase() !==
+            code
+                .toLocaleLowerCase()
+    ) {
+
+        return direct.trim();
 
     }
 
@@ -520,31 +638,27 @@ function getLanguageDisplayName(
                 "function"
         ) {
 
-            const displayNames =
+            const result =
                 new Intl.DisplayNames(
                     [
-                        normalizeLocaleCode(
-                            displayLocale
-                        ) ||
                         "en"
                     ],
                     {
-
                         type:
                             "language"
-
                     }
-                );
-
-
-            const result =
-                displayNames.of(
-                    normalized
-                );
+                )
+                    .of(
+                        code
+                    );
 
 
             if (
+                result &&
                 result
+                    .toLocaleLowerCase() !==
+                    code
+                        .toLocaleLowerCase()
             ) {
 
                 return result;
@@ -557,51 +671,20 @@ function getLanguageDisplayName(
 
     catch {
 
-        /* Continue to CLDR fallback. */
+        /* Continue to code fallback. */
 
     }
 
 
-    return (
-        state.metadata
-            ?.languageNames
-            ?.[
-                normalized
-            ] ||
-        normalized
-    );
+    return code;
 
 }
 
 
-/* ============================================================
-   NATIVE LANGUAGE NAME
-============================================================ */
-
 function getNativeLanguageName(
-    languageCode
+    code,
+    englishName
 ) {
-
-    const normalized =
-        normalizeLanguageCode(
-            languageCode
-        );
-
-
-    if (
-        !normalized
-    ) {
-
-        return languageCode;
-
-    }
-
-
-    /*
-       Ask the browser's CLDR-backed Intl
-       implementation to display the language
-       in its own language where possible.
-    */
 
     try {
 
@@ -610,31 +693,33 @@ function getNativeLanguageName(
                 "function"
         ) {
 
-            const displayNames =
+            const result =
                 new Intl.DisplayNames(
                     [
-                        normalized
+                        code
                     ],
                     {
-
                         type:
-                            "language"
+                            "language",
 
+                        fallback:
+                            "code"
                     }
-                );
-
-
-            const nativeName =
-                displayNames.of(
-                    normalized
-                );
+                )
+                    .of(
+                        code
+                    );
 
 
             if (
-                nativeName
+                result &&
+                result
+                    .toLocaleLowerCase() !==
+                    code
+                        .toLocaleLowerCase()
             ) {
 
-                return nativeName;
+                return result;
 
             }
 
@@ -644,21 +729,73 @@ function getNativeLanguageName(
 
     catch {
 
-        /* Continue to English CLDR name. */
+        /* Continue to CLDR English name. */
 
     }
 
 
-    return getLanguageDisplayName(
-        normalized,
-        "en"
+    return (
+        englishName ||
+        code
+    );
+
+}
+
+
+function getLanguageOptionLabel(
+    language
+) {
+
+    if (
+        !language
+    ) {
+
+        return "";
+
+    }
+
+
+    const nativeName =
+        language
+            .nativeName ||
+        "";
+
+
+    const englishName =
+        language
+            .name ||
+        "";
+
+
+    if (
+        nativeName &&
+        englishName &&
+        nativeName
+            .toLocaleLowerCase() !==
+            englishName
+                .toLocaleLowerCase()
+    ) {
+
+        return (
+            `${nativeName} — ${englishName}`
+        );
+
+    }
+
+
+    return (
+        nativeName ||
+        englishName ||
+        language.code ||
+        ""
     );
 
 }
 
 
 /* ============================================================
-   LANGUAGE CATALOG FROM CLDR
+   LANGUAGE CATALOG
+   CLDR is the source of the catalog.
 ============================================================ */
 
 function buildLanguageCatalog() {
@@ -677,142 +814,134 @@ function buildLanguageCatalog() {
         new Set();
 
 
-    Object.keys(
+    Object.entries(
         languageNames
-    )
-        .forEach(
-            rawCode => {
+    ).forEach(
+        (
+            [
+                rawCode,
+                rawName
+            ]
+        ) => {
 
-
-                const code =
-                    normalizeLanguageCode(
-                        rawCode
-                    );
-
-
-                if (
-                    !code ||
-                    seen.has(
-                        code
-                    )
-                ) {
-
-                    return;
-
-                }
-
-
-                const parts =
-                    code.split(
-                        "-"
-                    );
-
-
-                const language =
-                    parts[0] ||
-                    "";
-
-
-                /*
-                   Keep only valid language identifiers.
-                   Internal CLDR metadata keys that are not valid
-                   language identifiers naturally fall out during
-                   canonicalization and validation.
-                */
-
-                if (
-                    !/^[a-z]{2,3}$/i.test(
-                        language
-                    )
-                ) {
-
-                    return;
-
-                }
-
-
-                const englishName =
-                    getLanguageDisplayName(
-                        code,
-                        "en"
-                    );
-
-
-                const nativeName =
-                    getNativeLanguageName(
-                        code
-                    );
-
-
-                catalog.push({
-
-                    code:
-                        code,
-
-                    language:
-                        language.toLowerCase(),
-
-                    script:
-                        parts[1] &&
-                        /^[A-Z][a-z]{3}$/
-                            .test(
-                                parts[1]
-                            )
-                            ? parts[1]
-                            : "",
-
-                    name:
-                        englishName ||
-                        code,
-
-                    nativeName:
-                        nativeName ||
-                        englishName ||
-                        code,
-
-                    direction:
-                        I18n.getDirection
-                            ? I18n.getDirection(
-                                code
-                            )
-                            : "ltr"
-
-                });
-
-
-                seen.add(
-                    code
+            const code =
+                normalizeLanguageCode(
+                    rawCode
                 );
 
+
+            if (
+                !code ||
+                seen.has(
+                    code
+                )
+            ) {
+
+                return;
+
             }
-        );
+
+
+            const baseLanguage =
+                code
+                    .split(
+                        "-"
+                    )[0] ||
+                "";
+
+
+            if (
+                !/^[a-z]{2,3}$/i.test(
+                    baseLanguage
+                )
+            ) {
+
+                return;
+
+            }
+
+
+            const englishName =
+                getEnglishLanguageName(
+                    code,
+                    rawCode,
+                    rawName
+                );
+
+
+            const nativeName =
+                getNativeLanguageName(
+                    code,
+                    englishName
+                );
+
+
+            catalog.push({
+
+                code:
+
+                    code,
+
+                language:
+
+                    baseLanguage
+                        .toLowerCase(),
+
+                name:
+
+                    englishName,
+
+                nativeName:
+
+                    nativeName,
+
+                direction:
+
+                    getDirection(
+                        code
+                    ),
+
+                translationAvailable:
+
+                    state
+                        .translationLocales
+                        .some(
+                            item =>
+                                normalizeLocaleCode(
+                                    item?.code
+                                ) ===
+                                normalizeLocaleCode(
+                                    code
+                                )
+                        )
+
+            });
+
+
+            seen.add(
+                code
+            );
+
+        }
+    );
 
 
     catalog.sort(
         (
             first,
             second
-        ) => {
-
-            const firstName =
+        ) =>
+            (
                 first.nativeName ||
                 first.name ||
-                first.code;
-
-
-            const secondName =
+                first.code
+            ).localeCompare(
                 second.nativeName ||
                 second.name ||
-                second.code;
-
-
-            return firstName.localeCompare(
-                secondName,
+                second.code,
                 I18n.getLocale?.() ||
                     "en"
-            );
-
-        }
+            )
     );
 
 
@@ -820,20 +949,9 @@ function buildLanguageCatalog() {
         catalog;
 
 
-    /*
-       Compatibility:
-
-       Older parts of this module use
-       state.locales.
-
-       Keep it synchronized with the
-       full CLDR language catalog.
-    */
-
     state.locales =
         catalog.map(
             entry => ({
-
                 code:
                     entry.code,
 
@@ -847,42 +965,27 @@ function buildLanguageCatalog() {
                     entry.direction,
 
                 translationAvailable:
-                    state.translationLocales
-                        .some(
-                            translation =>
-                                normalizeLocaleCode(
-                                    translation.code
-                                ) ===
-                                normalizeLocaleCode(
-                                    entry.code
-                                )
-                        )
-
+                    entry.translationAvailable
             })
         );
 
 
-    return state.languageCatalog;
+    return catalog;
 
 }
 
 
 /* ============================================================
-   LOAD METADATA
+   METADATA
 ============================================================ */
 
 async function loadMetadata() {
 
     const [
-
         territoryData,
-
         currencyData,
-
         languageData,
-
         manifest
-
     ] = await Promise.all([
 
         fetchJson(
@@ -911,29 +1014,27 @@ async function loadMetadata() {
     state.metadata = {
 
         territoryInfo:
+
             territoryData
                 ?.supplemental
-                ?.territoryInfo
-            ||
+                ?.territoryInfo ||
             {},
 
-
         currencyRegions:
+
             currencyData
                 ?.supplemental
                 ?.currencyData
-                ?.region
-            ||
+                ?.region ||
             {},
 
-
         languageNames:
+
             languageData
                 ?.main
                 ?.en
                 ?.localeDisplayNames
-                ?.languages
-            ||
+                ?.languages ||
             {}
 
     };
@@ -950,44 +1051,689 @@ async function loadMetadata() {
 
     buildLanguageCatalog();
 
+}
 
-    return state.metadata;
+
+/* ============================================================
+   SEARCH STYLES
+============================================================ */
+
+function injectSearchStyles() {
+
+    if (
+        document.getElementById(
+            "nutricycle-context-search-styles"
+        )
+    ) {
+
+        return;
+
+    }
+
+
+    const style =
+        document.createElement(
+            "style"
+        );
+
+
+    style.id =
+        "nutricycle-context-search-styles";
+
+
+    style.textContent = `
+
+        .context-search-wrapper {
+            position: relative;
+            width: 100%;
+        }
+
+        .context-search {
+            width: 100%;
+            min-height: 56px;
+            border: 1px solid #d8e3dc;
+            border-radius: 14px;
+            background: #ffffff;
+            color: #162b20;
+            padding: 0 52px 0 48px;
+            font-family: inherit;
+            font-size: 16px;
+            outline: none;
+            box-sizing: border-box;
+        }
+
+        .context-search:focus {
+            border-color: #16a34a;
+            box-shadow:
+                0 0 0 4px
+                rgba(
+                    22,
+                    163,
+                    74,
+                    0.10
+                );
+        }
+
+        .context-search-icon {
+            position: absolute;
+            left: 18px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #6b7280;
+            pointer-events: none;
+            z-index: 2;
+        }
+
+        .context-search-clear {
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 36px;
+            height: 36px;
+            border: 0;
+            border-radius: 10px;
+            background: transparent;
+            color: #6b7280;
+            cursor: pointer;
+            z-index: 3;
+        }
+
+        .context-search-clear:hover {
+            background: #f3f4f6;
+            color: #111827;
+        }
+
+        .context-search-results {
+            position: absolute;
+            top: calc(100% + 8px);
+            left: 0;
+            right: 0;
+            max-height: 320px;
+            overflow-y: auto;
+            background: #ffffff;
+            border: 1px solid #d8e3dc;
+            border-radius: 14px;
+            box-shadow:
+                0 16px 35px
+                rgba(
+                    13,
+                    74,
+                    42,
+                    0.12
+                ),
+                0 4px 12px
+                rgba(
+                    13,
+                    74,
+                    42,
+                    0.06
+                );
+            z-index: 9999;
+        }
+
+        .context-search-result {
+            width: 100%;
+            min-height: 48px;
+            border: 0;
+            background: #ffffff;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 10px 16px;
+            text-align: left;
+            color: #162b20;
+            font-family: inherit;
+            font-size: 14px;
+            cursor: pointer;
+            box-sizing: border-box;
+        }
+
+        .context-search-result:hover,
+        .context-search-result:focus {
+            background: #f0fdf4;
+            outline: none;
+        }
+
+        .context-search-result-icon {
+            width: 30px;
+            flex: 0 0 30px;
+            text-align: center;
+            font-size: 18px;
+        }
+
+        .context-search-result-name {
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .context-search-result-code {
+            margin-left: auto;
+            color: #64748b;
+            font-size: 12px;
+            flex: 0 0 auto;
+        }
+
+        .context-search-no-results {
+            padding: 16px;
+            color: #64748b;
+            font-size: 13px;
+            text-align: center;
+        }
+
+        .context-search-native-select {
+            display: none !important;
+        }
+
+    `;
+
+
+    document.head.appendChild(
+        style
+    );
 
 }
 
 
 /* ============================================================
-   COUNTRY FLAG
+   SEARCH CONTROL BUILDER
 ============================================================ */
 
-function getCountryFlag(
-    countryCode
-) {
+function buildSearchControl({
+    select,
+    inputId,
+    resultsId,
+    clearId,
+    placeholder,
+    iconClass
+}) {
 
     if (
-        !countryCode ||
-        countryCode.length !==
-            2
+        !select ||
+        !select.parentNode
     ) {
 
-        return "🌍";
+        return null;
 
     }
 
 
-    return countryCode
-        .toUpperCase()
-        .split("")
-        .map(
-            character =>
-                String.fromCodePoint(
-                    127397 +
-                    character.charCodeAt(
-                        0
-                    )
-                )
+    let input =
+        document.getElementById(
+            inputId
+        );
+
+
+    let results =
+        document.getElementById(
+            resultsId
+        );
+
+
+    let clear =
+        document.getElementById(
+            clearId
+        );
+
+
+    let wrapper =
+        input?.closest(
+            ".context-search-wrapper"
+        ) ||
+        results?.closest(
+            ".context-search-wrapper"
+        ) ||
+        null;
+
+
+    if (
+        !wrapper
+    ) {
+
+        wrapper =
+            document.createElement(
+                "div"
+            );
+
+
+        wrapper.className =
+            "context-search-wrapper";
+
+
+        select.parentNode.insertBefore(
+            wrapper,
+            select
+        );
+
+    }
+
+
+    if (
+        !input
+    ) {
+
+        const icon =
+            document.createElement(
+                "i"
+            );
+
+
+        icon.className =
+            `${iconClass} context-search-icon`;
+
+
+        wrapper.appendChild(
+            icon
+        );
+
+
+        input =
+            document.createElement(
+                "input"
+            );
+
+
+        input.id =
+            inputId;
+
+
+        input.type =
+            "text";
+
+
+        input.className =
+            "context-search";
+
+
+        input.autocomplete =
+            "off";
+
+
+        input.placeholder =
+            placeholder;
+
+
+        input.setAttribute(
+            "role",
+            "combobox"
+        );
+
+
+        input.setAttribute(
+            "aria-autocomplete",
+            "list"
+        );
+
+
+        input.setAttribute(
+            "aria-expanded",
+            "false"
+        );
+
+    }
+
+
+    input.classList.add(
+        "context-search"
+    );
+
+
+    if (
+        !input.placeholder
+    ) {
+
+        input.placeholder =
+            placeholder;
+
+    }
+
+
+    if (
+        !wrapper.contains(
+            input
         )
-        .join("");
+    ) {
+
+        wrapper.appendChild(
+            input
+        );
+
+    }
+
+
+    if (
+        !clear
+    ) {
+
+        clear =
+            document.createElement(
+                "button"
+            );
+
+
+        clear.type =
+            "button";
+
+
+        clear.id =
+            clearId;
+
+
+        clear.className =
+            "context-search-clear";
+
+
+        clear.hidden =
+            true;
+
+
+        clear.innerHTML =
+            '<i class="fa-solid fa-xmark"></i>';
+
+
+        clear.setAttribute(
+            "aria-label",
+            "Clear selection"
+        );
+
+    }
+
+
+    clear.classList.add(
+        "context-search-clear"
+    );
+
+
+    if (
+        !wrapper.contains(
+            clear
+        )
+    ) {
+
+        wrapper.appendChild(
+            clear
+        );
+
+    }
+
+
+    if (
+        !results
+    ) {
+
+        results =
+            document.createElement(
+                "div"
+            );
+
+
+        results.id =
+            resultsId;
+
+
+        results.className =
+            "context-search-results";
+
+
+        results.hidden =
+            true;
+
+
+        results.setAttribute(
+            "role",
+            "listbox"
+        );
+
+    }
+
+
+    results.classList.add(
+        "context-search-results"
+    );
+
+
+    if (
+        !wrapper.contains(
+            results
+        )
+    ) {
+
+        wrapper.appendChild(
+            results
+        );
+
+    }
+
+
+    /*
+       Only actual native SELECT controls
+       are hidden here.
+
+       countrySelect is an INPUT and remains
+       the internal country value.
+    */
+
+    if (
+        select.tagName ===
+            "SELECT"
+    ) {
+
+        select.classList.add(
+            "context-search-native-select"
+        );
+
+    }
+
+
+    const label =
+        document.querySelector(
+            `label[for="${select.id}"]`
+        );
+
+
+    if (
+        label
+    ) {
+
+        label.setAttribute(
+            "for",
+            inputId
+        );
+
+    }
+
+
+    return {
+
+        input,
+
+        results,
+
+        clear
+
+    };
+
+}
+
+
+/* ============================================================
+   SEARCH RESULTS
+============================================================ */
+
+function renderResults(
+    container,
+    items,
+    type
+) {
+
+    if (
+        !container
+    ) {
+
+        return;
+
+    }
+
+
+    container.innerHTML =
+        "";
+
+
+    if (
+        !items.length
+    ) {
+
+        const empty =
+            document.createElement(
+                "div"
+            );
+
+
+        empty.className =
+            "context-search-no-results";
+
+
+        empty.textContent =
+            type ===
+                "country"
+                ? "No countries or regions found."
+                : "No languages found.";
+
+
+        container.appendChild(
+            empty
+        );
+
+
+        return;
+
+    }
+
+
+    items.forEach(
+        item => {
+
+            const button =
+                document.createElement(
+                    "button"
+                );
+
+
+            button.type =
+                "button";
+
+
+            button.className =
+                "context-search-result";
+
+
+            button.setAttribute(
+                "role",
+                "option"
+            );
+
+
+            button.addEventListener(
+                "mousedown",
+                event => {
+
+                    event.preventDefault();
+
+                }
+            );
+
+
+            const icon =
+                document.createElement(
+                    "span"
+                );
+
+
+            icon.className =
+                "context-search-result-icon";
+
+
+            icon.textContent =
+                type ===
+                    "country"
+                    ? item.flag
+                    : "A";
+
+
+            const name =
+                document.createElement(
+                    "span"
+                );
+
+
+            name.className =
+                "context-search-result-name";
+
+
+            name.textContent =
+                type ===
+                    "country"
+                    ? item.name
+                    : getLanguageOptionLabel(
+                        item
+                    );
+
+
+            const code =
+                document.createElement(
+                    "span"
+                );
+
+
+            code.className =
+                "context-search-result-code";
+
+
+            code.textContent =
+                item.code;
+
+
+            button.append(
+                icon,
+                name,
+                code
+            );
+
+
+            button.addEventListener(
+                "click",
+                () => {
+
+                    if (
+                        type ===
+                            "country"
+                    ) {
+
+                        selectCountry(
+                            item
+                        );
+
+                    }
+
+                    else {
+
+                        selectLanguage(
+                            item
+                        );
+
+                    }
+
+                }
+            );
+
+
+            container.appendChild(
+                button
+            );
+
+        }
+    );
 
 }
 
@@ -999,8 +1745,7 @@ function getCountryFlag(
 function getCountryCatalog() {
 
     if (
-        state.countryCatalog
-            .length
+        state.countryCatalog.length
     ) {
 
         return state.countryCatalog;
@@ -1008,19 +1753,20 @@ function getCountryCatalog() {
     }
 
 
-    let regionNames;
+    let regionNames =
+        null;
 
 
     try {
 
         regionNames =
             new Intl.DisplayNames(
-                ["en"],
+                [
+                    "en"
+                ],
                 {
-
                     type:
                         "region"
-
                 }
             );
 
@@ -1034,7 +1780,7 @@ function getCountryCatalog() {
     }
 
 
-    const countries =
+    state.countryCatalog =
         Object.keys(
             state.metadata
                 ?.territoryInfo ||
@@ -1042,23 +1788,26 @@ function getCountryCatalog() {
         )
         .filter(
             code =>
-                /^[A-Z]{2}$/
-                    .test(
-                        code
-                    )
+                /^[A-Z]{2}$/.test(
+                    code
+                )
         )
         .map(
             code => ({
 
-                code,
+                code:
+
+                    code,
 
                 name:
+
                     regionNames?.of(
                         code
                     ) ||
                     code,
 
                 flag:
+
                     getCountryFlag(
                         code
                     )
@@ -1076,17 +1825,872 @@ function getCountryCatalog() {
         );
 
 
-    state.countryCatalog =
-        countries;
+    return state.countryCatalog;
+
+}
 
 
-    return countries;
+/* ============================================================
+   COUNTRY SEARCH
+============================================================ */
+
+function filterCountries(
+    searchTerm = ""
+) {
+
+    const term =
+        searchTerm
+            .trim()
+            .toLocaleLowerCase();
+
+
+    const countries =
+        getCountryCatalog();
+
+
+    return (
+        !term
+            ? countries.slice(
+                0,
+                50
+            )
+            : countries
+                .filter(
+                    country =>
+                        `${country.name} ${country.code}`
+                            .toLocaleLowerCase()
+                            .includes(
+                                term
+                            )
+                )
+                .slice(
+                    0,
+                    50
+                )
+    );
+
+}
+
+
+function openCountryResults() {
+
+    if (
+        !dom.countryResults
+    ) {
+
+        return;
+
+    }
+
+
+    renderResults(
+        dom.countryResults,
+        filterCountries(
+            dom.countrySearch?.value ||
+            ""
+        ),
+        "country"
+    );
+
+
+    dom.countryResults.hidden =
+        false;
+
+
+    dom.countrySearch?.setAttribute(
+        "aria-expanded",
+        "true"
+    );
+
+}
+
+
+function closeCountryResults() {
+
+    if (
+        !dom.countryResults
+    ) {
+
+        return;
+
+    }
+
+
+    dom.countryResults.hidden =
+        true;
+
+
+    dom.countrySearch?.setAttribute(
+        "aria-expanded",
+        "false"
+    );
+
+}
+
+
+function selectCountry(
+    country
+) {
+
+    if (
+        !country ||
+        !dom.countrySelect
+    ) {
+
+        return;
+
+    }
+
+
+    /*
+       countrySelect is an internal hidden
+       INPUT. Store the code only.
+    */
+
+    dom.countrySelect.value =
+        country.code;
+
+
+    state.selectedCountry =
+        country.code;
+
+
+    if (
+        dom.countrySearch
+    ) {
+
+        dom.countrySearch.value =
+            `${country.flag} ${country.name}`;
+
+    }
+
+
+    if (
+        dom.countryClear
+    ) {
+
+        dom.countryClear.hidden =
+            false;
+
+    }
+
+
+    if (
+        dom.countryHint
+    ) {
+
+        dom.countryHint.textContent =
+            country.name;
+
+    }
+
+
+    applyCountry(
+        country.code
+    );
+
+
+    closeCountryResults();
+
+}
+
+
+/* ============================================================
+   LANGUAGE SEARCH
+============================================================ */
+
+function filterLanguages(
+    searchTerm = ""
+) {
+
+    const term =
+        searchTerm
+            .trim()
+            .toLocaleLowerCase();
+
+
+    const languages =
+        state.languageCatalog;
+
+
+    return (
+        !term
+            ? languages.slice(
+                0,
+                50
+            )
+            : languages
+                .filter(
+                    language =>
+                        `${language.name} ${language.nativeName} ${language.code}`
+                            .toLocaleLowerCase()
+                            .includes(
+                                term
+                            )
+                )
+                .slice(
+                    0,
+                    50
+                )
+    );
+
+}
+
+
+function openLanguageResults() {
+
+    if (
+        !dom.languageResults
+    ) {
+
+        return;
+
+    }
+
+
+    renderResults(
+        dom.languageResults,
+        filterLanguages(
+            dom.languageSearch?.value ||
+            ""
+        ),
+        "language"
+    );
+
+
+    dom.languageResults.hidden =
+        false;
+
+
+    dom.languageSearch?.setAttribute(
+        "aria-expanded",
+        "true"
+    );
+
+}
+
+
+function closeLanguageResults() {
+
+    if (
+        !dom.languageResults
+    ) {
+
+        return;
+
+    }
+
+
+    dom.languageResults.hidden =
+        true;
+
+
+    dom.languageSearch?.setAttribute(
+        "aria-expanded",
+        "false"
+    );
+
+}
+
+
+function selectLanguage(
+    language
+) {
+
+    if (
+        !language ||
+        !dom.languageSelect
+    ) {
+
+        return;
+
+    }
+
+
+    dom.languageSelect.value =
+        language.code;
+
+
+    state.selectedLocale =
+        language.code;
+
+
+    if (
+        dom.languageSearch
+    ) {
+
+        dom.languageSearch.value =
+            getLanguageOptionLabel(
+                language
+            );
+
+
+        dom.languageSearch.setAttribute(
+            "dir",
+            language.direction
+        );
+
+    }
+
+
+    if (
+        dom.languageClear
+    ) {
+
+        dom.languageClear.hidden =
+            false;
+
+    }
+
+
+    closeLanguageResults();
+
+}
+
+
+/* ============================================================
+   SEARCH SETUP
+============================================================ */
+
+function setupSearchControls() {
+
+    injectSearchStyles();
+
+
+    const countryControl =
+        buildSearchControl({
+
+            select:
+                dom.countrySelect,
+
+            inputId:
+                "countrySearch",
+
+            resultsId:
+                "countryResults",
+
+            clearId:
+                "countryClear",
+
+            placeholder:
+                "Search country or region",
+
+            iconClass:
+                "fa-solid fa-earth-americas"
+
+        });
+
+
+    if (
+        countryControl
+    ) {
+
+        dom.countrySearch =
+            countryControl.input;
+
+        dom.countryResults =
+            countryControl.results;
+
+        dom.countryClear =
+            countryControl.clear;
+
+    }
+
+
+    const languageControl =
+        buildSearchControl({
+
+            select:
+                dom.languageSelect,
+
+            inputId:
+                "languageSearch",
+
+            resultsId:
+                "languageResults",
+
+            clearId:
+                "languageClear",
+
+            placeholder:
+                "Search language or code",
+
+            iconClass:
+                "fa-solid fa-language"
+
+        });
+
+
+    if (
+        languageControl
+    ) {
+
+        dom.languageSearch =
+            languageControl.input;
+
+        dom.languageResults =
+            languageControl.results;
+
+        dom.languageClear =
+            languageControl.clear;
+
+    }
+
+}
+
+
+/* ============================================================
+   RECOMMENDED LANGUAGE
+============================================================ */
+
+function safeLanguagePopulationCode(
+    code
+) {
+
+    if (
+        typeof code !==
+            "string"
+    ) {
+
+        return "";
+
+    }
+
+
+    const converted =
+        code.replace(
+            /_/g,
+            "-"
+        );
+
+
+    return (
+        normalizeLanguageCode(
+            converted
+        ) ||
+        converted
+            .toLowerCase()
+    );
+
+}
+
+
+function recommendLanguage(
+    countryCode
+) {
+
+    const population =
+        state.metadata
+            ?.territoryInfo
+            ?.[
+                countryCode
+            ]
+            ?.languagePopulation;
+
+
+    if (
+        !population
+    ) {
+
+        return "";
+
+    }
+
+
+    const availableCodes =
+        new Set(
+            state.languageCatalog.map(
+                item =>
+                    item.code
+            )
+        );
+
+
+    const candidates =
+        Object.entries(
+            population
+        )
+        .map(
+            (
+                [
+                    code,
+                    info
+                ]
+            ) => {
+
+                const exactCode =
+                    safeLanguagePopulationCode(
+                        code
+                    );
+
+
+                const baseCode =
+                    exactCode
+                        ?.split(
+                            "-"
+                        )[0]
+                        ?.toLowerCase() ||
+                    "";
+
+
+                return {
+
+                    exactCode,
+
+                    baseCode,
+
+                    population:
+                        Number(
+                            info
+                                ?._populationPercent ||
+                            0
+                        ),
+
+                    official:
+                        info
+                            ?._officialStatus ||
+                        ""
+
+                };
+
+            }
+        )
+        .filter(
+            candidate =>
+                Boolean(
+                    candidate.baseCode
+                )
+        )
+        .sort(
+            (
+                first,
+                second
+            ) => {
+
+                const rank =
+                    value =>
+                        value ===
+                            "official"
+                            ? 2
+                            : value ===
+                                "official_regional"
+                                ? 1
+                                : 0;
+
+
+                return (
+                    rank(
+                        second.official
+                    ) -
+                    rank(
+                        first.official
+                    ) ||
+                    second.population -
+                    first.population
+                );
+
+            }
+        );
+
+
+    for (
+        const candidate
+        of candidates
+    ) {
+
+        if (
+            candidate.exactCode &&
+            availableCodes.has(
+                candidate.exactCode
+            )
+        ) {
+
+            return candidate.exactCode;
+
+        }
+
+
+        if (
+            candidate.baseCode &&
+            availableCodes.has(
+                candidate.baseCode
+            )
+        ) {
+
+            return candidate.baseCode;
+
+        }
+
+    }
+
+
+    return "";
+
+}
+
+
+/* ============================================================
+   RECOMMENDED CURRENCY
+============================================================ */
+
+function recommendCurrency(
+    countryCode
+) {
+
+    const regions =
+        state.metadata
+            ?.currencyRegions
+            ?.[
+                countryCode
+            ];
+
+
+    if (
+        !Array.isArray(
+            regions
+        )
+    ) {
+
+        return "";
+
+    }
+
+
+    const currencies =
+        regions
+            .flatMap(
+                region =>
+                    Object.entries(
+                        region
+                    )
+                    .map(
+                        (
+                            [
+                                code,
+                                info
+                            ]
+                        ) => ({
+
+                            code,
+
+                            info
+
+                        })
+                    )
+            )
+            .filter(
+                item => {
+
+                    if (
+                        item.info
+                            ?._tender ===
+                        "false"
+                    ) {
+
+                        return false;
+
+                    }
+
+
+                    return (
+                        !item.info
+                            ?._to
+                    );
+
+                }
+            );
+
+
+    return (
+        currencies[0]
+            ?.code ||
+        ""
+    );
+
+}
+
+
+/* ============================================================
+   APPLY COUNTRY
+============================================================ */
+
+function applyCountry(
+    countryCode
+) {
+
+    const country =
+        state.countryCatalog
+            .find(
+                item =>
+                    item.code ===
+                    countryCode
+            );
+
+
+    if (
+        !country
+    ) {
+
+        return;
+
+    }
+
+
+    state.selectedCountry =
+        countryCode;
+
+
+    if (
+        dom.countrySearch
+    ) {
+
+        dom.countrySearch.value =
+            `${country.flag} ${country.name}`;
+
+    }
+
+
+    if (
+        dom.countryClear
+    ) {
+
+        dom.countryClear.hidden =
+            false;
+
+    }
+
+
+    if (
+        dom.countryHint
+    ) {
+
+        dom.countryHint.textContent =
+            country.name;
+
+    }
+
+
+    const recommendedLanguage =
+        recommendLanguage(
+            countryCode
+        );
+
+
+    if (
+        recommendedLanguage &&
+        dom.languageSelect
+    ) {
+
+        const option =
+            Array.from(
+                dom.languageSelect
+                    .options
+            )
+            .find(
+                item =>
+                    item.value ===
+                    recommendedLanguage
+            );
+
+
+        if (
+            option
+        ) {
+
+            dom.languageSelect.value =
+                option.value;
+
+
+            state.selectedLocale =
+                option.value;
+
+
+            const language =
+                state.languageCatalog
+                    .find(
+                        item =>
+                            item.code ===
+                            option.value
+                    );
+
+
+            if (
+                language &&
+                dom.languageSearch
+            ) {
+
+                dom.languageSearch.value =
+                    getLanguageOptionLabel(
+                        language
+                    );
+
+
+                dom.languageSearch.setAttribute(
+                    "dir",
+                    language.direction
+                );
+
+
+                if (
+                    dom.languageClear
+                ) {
+
+                    dom.languageClear.hidden =
+                        false;
+
+                }
+
+            }
+
+        }
+
+    }
+
+
+    const recommendedCurrency =
+        recommendCurrency(
+            countryCode
+        );
+
+
+    if (
+        recommendedCurrency &&
+        dom.currencySelect
+    ) {
+
+        const option =
+            Array.from(
+                dom.currencySelect
+                    .options
+            )
+            .find(
+                item =>
+                    item.value ===
+                    recommendedCurrency
+            );
+
+
+        if (
+            option
+        ) {
+
+            dom.currencySelect.value =
+                option.value;
+
+
+            state.selectedCurrency =
+                option.value;
+
+        }
+
+    }
 
 }
 
 
 /* ============================================================
    POPULATE COUNTRIES
+   countrySelect is an INPUT, never a SELECT.
 ============================================================ */
 
 function populateCountries() {
@@ -1100,103 +2704,24 @@ function populateCountries() {
     }
 
 
-    const countries =
-        getCountryCatalog();
-
-
-    dom.countrySelect.innerHTML =
+    dom.countrySelect.value =
         "";
 
 
-    const placeholder =
-        document.createElement(
-            "option"
-        );
-
-
-    placeholder.value =
-        "";
-
-
-    placeholder.textContent =
-        "Select Country / Region";
-
-
-    placeholder.disabled =
-        true;
-
-
-    placeholder.selected =
-        true;
-
-
-    dom.countrySelect.appendChild(
-        placeholder
-    );
-
-
-    countries.forEach(
-        country => {
-
-            const option =
-                document.createElement(
-                    "option"
-                );
-
-
-            option.value =
-                country.code;
-
-
-            option.textContent =
-                `${country.flag} ${country.name}`;
-
-
-            option.dataset.countryName =
-                country.name;
-
-
-            dom.countrySelect
-                .appendChild(
-                    option
-                );
-
-        }
+    renderResults(
+        dom.countryResults,
+        getCountryCatalog().slice(
+            0,
+            50
+        ),
+        "country"
     );
 
 }
 
 
 /* ============================================================
-   LANGUAGE AVAILABILITY LABEL
-============================================================ */
-
-function getLanguageOptionLabel(
-    locale
-) {
-
-    const nativeName =
-        locale.nativeName ||
-        locale.name ||
-        locale.code;
-
-
-    /*
-       For now all CLDR languages are
-       selectable.
-
-       Translation availability is preserved
-       as metadata but does not artificially
-       remove languages from the catalog.
-    */
-
-    return nativeName;
-
-}
-
-
-/* ============================================================
-   AVAILABLE LANGUAGE CATALOG
+   POPULATE LANGUAGES
 ============================================================ */
 
 function populateLanguages() {
@@ -1206,24 +2731,6 @@ function populateLanguages() {
     ) {
 
         return;
-
-    }
-
-
-    /*
-       Rebuild from the CLDR catalog rather
-       than from manifest.locales.
-
-       The manifest only describes actual
-       translation files.
-    */
-
-    if (
-        !state.languageCatalog
-            .length
-    ) {
-
-        buildLanguageCatalog();
 
     }
 
@@ -1254,85 +2761,70 @@ function populateLanguages() {
         true;
 
 
-    dom.languageSelect
-        .appendChild(
-            placeholder
-        );
+    dom.languageSelect.appendChild(
+        placeholder
+    );
 
 
-    state.languageCatalog
-        .slice()
-        .sort(
-            (
-                first,
-                second
-            ) =>
-                (
-                    first.nativeName ||
-                    first.name ||
-                    first.code
-                ).localeCompare(
-                    second.nativeName ||
-                    second.name ||
-                    second.code,
-                    I18n.getLocale?.() ||
-                        "en"
-                )
-        )
-        .forEach(
-            locale => {
+    state.languageCatalog.forEach(
+        language => {
 
-                const option =
-                    document.createElement(
-                        "option"
-                    );
+            const option =
+                document.createElement(
+                    "option"
+                );
 
 
-                option.value =
-                    locale.code;
+            option.value =
+                language.code;
 
 
-                option.textContent =
-                    getLanguageOptionLabel(
-                        locale
-                    );
+            option.textContent =
+                getLanguageOptionLabel(
+                    language
+                );
 
 
-                option.dataset.languageName =
-                    locale.name ||
-                    locale.code;
+            option.dataset.languageName =
+                language.name;
 
 
-                option.dataset.nativeName =
-                    locale.nativeName ||
-                    locale.name ||
-                    locale.code;
+            option.dataset.nativeName =
+                language.nativeName;
 
 
-                option.dataset.direction =
-                    locale.direction ||
-                    "ltr";
+            option.dataset.direction =
+                language.direction;
 
 
-                option.dataset.translationAvailable =
-                    locale.translationAvailable
-                        ? "true"
-                        : "false";
+            option.dataset.translationAvailable =
+                language.translationAvailable
+                    ? "true"
+                    : "false";
 
 
-                dom.languageSelect
-                    .appendChild(
-                        option
-                    );
+            dom.languageSelect.appendChild(
+                option
+            );
 
-            }
-        );
+        }
+    );
+
+
+    renderResults(
+        dom.languageResults,
+        state.languageCatalog.slice(
+            0,
+            50
+        ),
+        "language"
+    );
 
 }
 
 
 /* ============================================================
-   CURRENCY CATALOG
+   POPULATE CURRENCIES
 ============================================================ */
 
 function populateCurrencies() {
@@ -1383,7 +2875,8 @@ function populateCurrencies() {
     }
 
 
-    let currencyNames;
+    let currencyNames =
+        null;
 
 
     try {
@@ -1391,14 +2884,13 @@ function populateCurrencies() {
         currencyNames =
             new Intl.DisplayNames(
                 [
+                    I18n.getLocale?.() ||
                     navigator.language ||
                     "en"
                 ],
                 {
-
                     type:
                         "currency"
-
                 }
             );
 
@@ -1434,10 +2926,9 @@ function populateCurrencies() {
         true;
 
 
-    dom.currencySelect
-        .appendChild(
-            placeholder
-        );
+    dom.currencySelect.appendChild(
+        placeholder
+    );
 
 
     currencies
@@ -1465,542 +2956,183 @@ function populateCurrencies() {
                     }`;
 
 
-                dom.currencySelect
-                    .appendChild(
-                        option
-                    );
-
-            }
-        );
-
-}
-
-
-/* ============================================================
-   RECOMMENDED LANGUAGE
-============================================================ */
-
-function recommendLanguage(
-    countryCode
-) {
-
-    const territory =
-        state.metadata
-            ?.territoryInfo
-            ?.[countryCode];
-
-
-    const population =
-        territory
-            ?.languagePopulation;
-
-
-    if (
-        !population
-    ) {
-
-        return "";
-
-    }
-
-
-    const availableCodes =
-        new Set(
-            state.languageCatalog
-                .map(
-                    item =>
-                        item.code
-                )
-        );
-
-
-    const candidates =
-        Object.entries(
-            population
-        )
-        .map(
-            (
-                [
-                    code,
-                    info
-                ]
-            ) => {
-
-                const exactCode =
-                    safeLanguagePopulationCode(
-                        code
-                    );
-
-
-                const baseCode =
-                    exactCode
-                        ?.split(
-                            "-"
-                        )[0]
-                        ?.toLowerCase()
-                    ||
-                    "";
-
-
-                return {
-
-                    exactCode,
-
-                    baseCode,
-
-                    population:
-                        Number(
-                            info
-                                ?._populationPercent
-                            ||
-                            0
-                        ),
-
-                    official:
-                        info
-                            ?._officialStatus
-                        ||
-                        ""
-
-                };
-
-            }
-        )
-        .filter(
-            candidate =>
-                Boolean(
-                    candidate.baseCode
-                )
-        )
-        .sort(
-            (
-                first,
-                second
-            ) => {
-
-                const officialFirst =
-                    first.official ===
-                        "official"
-                        ? 2
-                        : first.official ===
-                            "official_regional"
-                            ? 1
-                            : 0;
-
-
-                const officialSecond =
-                    second.official ===
-                        "official"
-                        ? 2
-                        : second.official ===
-                            "official_regional"
-                            ? 1
-                            : 0;
-
-
-                if (
-                    officialSecond !==
-                    officialFirst
-                ) {
-
-                    return (
-                        officialSecond -
-                        officialFirst
-                    );
-
-                }
-
-
-                return (
-                    second.population -
-                    first.population
+                dom.currencySelect.appendChild(
+                    option
                 );
 
             }
         );
 
-
-    for (
-        const candidate
-        of candidates
-    ) {
-
-        if (
-            candidate.exactCode &&
-            availableCodes.has(
-                candidate.exactCode
-            )
-        ) {
-
-            return candidate.exactCode;
-
-        }
-
-
-        if (
-            candidate.baseCode &&
-            availableCodes.has(
-                candidate.baseCode
-            )
-        ) {
-
-            return candidate.baseCode;
-
-        }
-
-    }
-
-
-    return "";
-
 }
 
 
 /* ============================================================
-   SAFE LANGUAGE POPULATION CODE
+   RESTORE SAVED CONTEXT
 ============================================================ */
 
-function safeLanguagePopulationCode(
-    code
-) {
+function restoreContext() {
+
+    const savedCountry =
+        getStored(
+            CONFIG.storage.country
+        );
+
+
+    const savedLocale =
+        getStored(
+            CONFIG.storage.locale
+        );
+
+
+    const savedCurrency =
+        getStored(
+            CONFIG.storage.currency
+        );
+
+
+    /*
+       Country is an internal INPUT.
+       Validate against the CLDR catalog directly.
+    */
 
     if (
-        typeof code !==
-            "string"
+        savedCountry &&
+        state.countryCatalog.some(
+            country =>
+                country.code ===
+                savedCountry
+        )
     ) {
 
-        return "";
+        const country =
+            state.countryCatalog.find(
+                item =>
+                    item.code ===
+                    savedCountry
+            );
+
+
+        if (
+            country
+        ) {
+
+            selectCountry(
+                country
+            );
+
+        }
 
     }
 
 
     /*
-       CLDR territoryInfo commonly uses
-       forms such as:
-
-       en
-       hi
-       pt
-       zh
-       zh_Hant
-
-       Normalize those into
-       BCP-47-compatible forms.
+       Language is a real SELECT.
+       Array.from(options) is valid here.
     */
 
-    const converted =
-        code.replace(
-            /_/g,
-            "-"
-        );
-
-
-    return (
-        normalizeLanguageCode(
-            converted
-        ) ||
-        converted
-            .toLowerCase()
-    );
-
-}
-
-
-/* ============================================================
-   RECOMMENDED CURRENCY
-============================================================ */
-
-function recommendCurrency(
-    countryCode
-) {
-
-    const regions =
-        state.metadata
-            ?.currencyRegions
-            ?.[countryCode];
-
-
     if (
-        !Array.isArray(
-            regions
-        )
-    ) {
-
-        return "";
-
-    }
-
-
-    const currentCurrencies =
-        regions
-            .flatMap(
-                entry =>
-                    Object.entries(
-                        entry
-                    )
-                    .map(
-                        (
-                            [
-                                code,
-                                info
-                            ]
-                        ) => ({
-
-                            code,
-
-                            info
-
-                        })
-                    )
-            )
-            .filter(
-                item => {
-
-                    if (
-                        item.info
-                            ?._tender ===
-                        "false"
-                    ) {
-
-                        return false;
-
-                    }
-
-
-                    return (
-                        !item.info?._to
-                    );
-
-                }
-            );
-
-
-    return (
-        currentCurrencies[0]
-            ?.code ||
-        ""
-    );
-
-}
-
-
-/* ============================================================
-   BROWSER REGION
-============================================================ */
-
-function detectBrowserRegion() {
-
-    try {
-
-        const browserLocale =
-            navigator.language ||
-            "";
-
-
-        return (
-            new Intl.Locale(
-                browserLocale
-            ).region ||
-            ""
-        );
-
-    }
-
-    catch {
-
-        return "";
-
-    }
-
-}
-
-
-/* ============================================================
-   APPLY COUNTRY DEFAULTS
-============================================================ */
-
-function applyCountry(
-    countryCode
-) {
-
-    state.selectedCountry =
-        countryCode;
-
-
-    const locale =
-        recommendLanguage(
-            countryCode
-        );
-
-
-    if (
-        locale &&
+        savedLocale &&
         dom.languageSelect
     ) {
 
-        const exists =
+        const normalizedSavedLocale =
+            normalizeLocaleCode(
+                savedLocale
+            );
+
+
+        const option =
             Array.from(
                 dom.languageSelect
                     .options
-            ).some(
-                option =>
-                    option.value ===
-                    locale
+            )
+            .find(
+                item =>
+                    normalizeLocaleCode(
+                        item.value
+                    ) ===
+                    normalizedSavedLocale
             );
 
 
         if (
-            exists
+            option
         ) {
 
-            dom.languageSelect
-                .value =
-                locale;
+            const language =
+                state.languageCatalog
+                    .find(
+                        item =>
+                            item.code ===
+                            option.value
+                    );
 
-            state.selectedLocale =
-                locale;
+
+            if (
+                language
+            ) {
+
+                selectLanguage(
+                    language
+                );
+
+            }
 
         }
 
     }
 
 
-    const currency =
-        recommendCurrency(
-            countryCode
-        );
-
+    /*
+       Currency is a real SELECT.
+    */
 
     if (
-        currency &&
+        savedCurrency &&
         dom.currencySelect
     ) {
 
-        const exists =
+        const option =
             Array.from(
                 dom.currencySelect
                     .options
-            ).some(
-                option =>
-                    option.value ===
-                    currency
+            )
+            .find(
+                item =>
+                    item.value ===
+                    savedCurrency
             );
 
 
         if (
-            exists
+            option
         ) {
 
-            dom.currencySelect
-                .value =
-                currency;
+            dom.currencySelect.value =
+                option.value;
+
 
             state.selectedCurrency =
-                currency;
+                option.value;
 
         }
 
     }
 
 
-    const selectedOption =
-        dom.countrySelect
-            ?.selectedOptions
-            ?.[0];
-
-
-    if (
-        dom.countryHint
-    ) {
-
-        dom.countryHint.textContent =
-            selectedOption
-                ?.dataset
-                ?.countryName ||
-            "";
-
-    }
-
-}
-
-
-/* ============================================================
-   DETECTED REGION DISPLAY
-============================================================ */
-
-function showDetectedRegion(
-    countryCode
-) {
+    /*
+       Do not display "Region detected"
+       for saved preferences or browser locale.
+    */
 
     if (
-        !dom.detectedLocation ||
-        !dom.detectedText
+        dom.detectedLocation
     ) {
 
-        return;
+        dom.detectedLocation.hidden =
+            true;
 
     }
-
-
-    const country =
-        getCountryCatalog()
-            .find(
-                item =>
-                    item.code ===
-                    countryCode
-            );
-
-
-    if (
-        !country
-    ) {
-
-        return;
-
-    }
-
-
-    dom.detectedText.textContent =
-        `${country.flag} ${country.name}`;
-
-
-    dom.detectedLocation.hidden =
-        false;
-
-}
-
-
-/* ============================================================
-   TRANSLATION AVAILABILITY
-============================================================ */
-
-function hasTranslationFile(
-    locale
-) {
-
-    const normalized =
-        normalizeLocaleCode(
-            locale
-        );
-
-
-    if (
-        !normalized
-    ) {
-
-        return false;
-
-    }
-
-
-    return state.translationLocales
-        .some(
-            item =>
-                normalizeLocaleCode(
-                    item.code
-                ) ===
-                normalized
-        );
 
 }
 
@@ -2043,6 +3175,9 @@ async function continueContext() {
         );
 
 
+        dom.countrySearch?.focus();
+
+
         return;
 
     }
@@ -2055,6 +3190,9 @@ async function continueContext() {
         showError(
             "Please select your language."
         );
+
+
+        dom.languageSearch?.focus();
 
 
         return;
@@ -2099,15 +3237,6 @@ async function continueContext() {
         state.selectedCurrency =
             currency;
 
-
-        /*
-           Set the requested locale.
-
-           When the corresponding translation
-           file does not exist yet, i18n.js will
-           retain the selected locale and fall
-           back to English messages.
-        */
 
         await I18n.setLocale(
             locale
@@ -2174,188 +3303,281 @@ async function continueContext() {
 
 
 /* ============================================================
-   EXISTING CONTEXT
-============================================================ */
-
-function hasExistingContext() {
-
-    return (
-
-        getStored(
-            CONFIG.storage.configured
-        ) ===
-            "true"
-
-        &&
-
-        Boolean(
-            getStored(
-                CONFIG.storage.locale
-            )
-        )
-
-    );
-
-}
-
-
-/* ============================================================
-   RESTORE EXISTING CONTEXT
-============================================================ */
-
-function restoreContext() {
-
-    const savedCountry =
-        getStored(
-            CONFIG.storage.country
-        );
-
-
-    const savedLocale =
-        getStored(
-            CONFIG.storage.locale
-        );
-
-
-    const savedCurrency =
-        getStored(
-            CONFIG.storage.currency
-        );
-
-
-    if (
-        savedCountry &&
-        dom.countrySelect &&
-        Array.from(
-            dom.countrySelect
-                .options
-        ).some(
-            option =>
-                option.value ===
-                savedCountry
-        )
-    ) {
-
-        dom.countrySelect.value =
-            savedCountry;
-
-
-        state.selectedCountry =
-            savedCountry;
-
-    }
-
-
-    if (
-        savedCurrency &&
-        dom.currencySelect &&
-        Array.from(
-            dom.currencySelect
-                .options
-        ).some(
-            option =>
-                option.value ===
-                savedCurrency
-        )
-    ) {
-
-        dom.currencySelect.value =
-            savedCurrency;
-
-
-        state.selectedCurrency =
-            savedCurrency;
-
-    }
-
-
-    if (
-        savedLocale &&
-        dom.languageSelect &&
-        Array.from(
-            dom.languageSelect
-                .options
-        ).some(
-            option =>
-                option.value ===
-                savedLocale
-        )
-    ) {
-
-        dom.languageSelect.value =
-            savedLocale;
-
-
-        state.selectedLocale =
-            savedLocale;
-
-    }
-
-
-    if (
-        savedCountry
-    ) {
-
-        showDetectedRegion(
-            savedCountry
-        );
-
-    }
-
-}
-
-
-/* ============================================================
    EVENTS
 ============================================================ */
 
 function initializeEvents() {
 
-    dom.countrySelect
-        ?.addEventListener(
-            "change",
-            () => {
+    /*
+       COUNTRY SEARCH
+    */
 
-                applyCountry(
-                    dom.countrySelect
+    dom.countrySearch?.addEventListener(
+        "focus",
+        openCountryResults
+    );
+
+
+    dom.countrySearch?.addEventListener(
+        "input",
+        () => {
+
+            if (
+                dom.countrySelect
+            ) {
+
+                dom.countrySelect.value =
+                    "";
+
+            }
+
+
+            state.selectedCountry =
+                "";
+
+
+            if (
+                dom.countryClear
+            ) {
+
+                dom.countryClear.hidden =
+                    !dom.countrySearch
+                        .value;
+
+            }
+
+
+            renderResults(
+                dom.countryResults,
+                filterCountries(
+                    dom.countrySearch
                         .value
-                );
+                ),
+                "country"
+            );
+
+
+            openCountryResults();
+
+        }
+    );
+
+
+    dom.countrySearch?.addEventListener(
+        "keydown",
+        event => {
+
+            if (
+                event.key ===
+                "Escape"
+            ) {
+
+                closeCountryResults();
 
             }
-        );
+
+        }
+    );
 
 
-    dom.languageSelect
-        ?.addEventListener(
-            "change",
-            () => {
+    dom.countryClear?.addEventListener(
+        "click",
+        () => {
 
-                state.selectedLocale =
-                    dom.languageSelect
+            dom.countrySearch.value =
+                "";
+
+            dom.countrySelect.value =
+                "";
+
+            state.selectedCountry =
+                "";
+
+            dom.countryClear.hidden =
+                true;
+
+            if (
+                dom.countryHint
+            ) {
+
+                dom.countryHint.textContent =
+                    "";
+
+            }
+
+            openCountryResults();
+
+            dom.countrySearch.focus();
+
+        }
+    );
+
+
+    /*
+       LANGUAGE SEARCH
+    */
+
+    dom.languageSearch?.addEventListener(
+        "focus",
+        openLanguageResults
+    );
+
+
+    dom.languageSearch?.addEventListener(
+        "input",
+        () => {
+
+            dom.languageSelect.value =
+                "";
+
+            state.selectedLocale =
+                "";
+
+
+            if (
+                dom.languageClear
+            ) {
+
+                dom.languageClear.hidden =
+                    !dom.languageSearch
                         .value;
 
             }
-        );
 
 
-    dom.currencySelect
-        ?.addEventListener(
-            "change",
-            () => {
+            renderResults(
+                dom.languageResults,
+                filterLanguages(
+                    dom.languageSearch
+                        .value
+                ),
+                "language"
+            );
 
-                state.selectedCurrency =
-                    dom.currencySelect
-                        .value;
+
+            openLanguageResults();
+
+        }
+    );
+
+
+    dom.languageSearch?.addEventListener(
+        "keydown",
+        event => {
+
+            if (
+                event.key ===
+                "Escape"
+            ) {
+
+                closeLanguageResults();
 
             }
-        );
+
+        }
+    );
 
 
-    dom.continueButton
-        ?.addEventListener(
-            "click",
-            continueContext
-        );
+    dom.languageClear?.addEventListener(
+        "click",
+        () => {
+
+            dom.languageSearch.value =
+                "";
+
+            dom.languageSelect.value =
+                "";
+
+            state.selectedLocale =
+                "";
+
+            dom.languageSearch.removeAttribute(
+                "dir"
+            );
+
+            dom.languageClear.hidden =
+                true;
+
+            openLanguageResults();
+
+            dom.languageSearch.focus();
+
+        }
+    );
+
+
+    /*
+       CLOSE SEARCH MENUS OUTSIDE THE CONTROL
+    */
+
+    document.addEventListener(
+        "click",
+        event => {
+
+            const countryWrapper =
+                dom.countrySearch
+                    ?.closest(
+                        ".context-search-wrapper"
+                    );
+
+
+            const languageWrapper =
+                dom.languageSearch
+                    ?.closest(
+                        ".context-search-wrapper"
+                    );
+
+
+            if (
+                countryWrapper &&
+                !countryWrapper.contains(
+                    event.target
+                )
+            ) {
+
+                closeCountryResults();
+
+            }
+
+
+            if (
+                languageWrapper &&
+                !languageWrapper.contains(
+                    event.target
+                )
+            ) {
+
+                closeLanguageResults();
+
+            }
+
+        }
+    );
+
+
+    /*
+       CURRENCY
+    */
+
+    dom.currencySelect?.addEventListener(
+        "change",
+        () => {
+
+            state.selectedCurrency =
+                dom.currencySelect.value;
+
+        }
+    );
+
+
+    /*
+       CONTINUE
+    */
+
+    dom.continueButton?.addEventListener(
+        "click",
+        continueContext
+    );
 
 }
 
@@ -2372,95 +3594,63 @@ async function initialize() {
     try {
 
         /*
-           Initialize the upgraded global
-           internationalization engine first.
+           Region detection is intentionally not used here.
+           The context page should reflect the user's choice,
+           not silently convert browser locale into a country.
+        */
 
-           This gives us:
+        if (
+            dom.detectedLocation
+        ) {
 
-           - locale normalization
-           - CLDR language names
-           - RTL detection
-           - locale fallback
-           - Intl formatting
+            dom.detectedLocation.hidden =
+                true;
+
+        }
+
+
+        /*
+           Build visible search controls first.
+        */
+
+        setupSearchControls();
+
+
+        /*
+           Initialize global i18n.
         */
 
         await I18n.initialize();
 
 
+        /*
+           Load CLDR + translation metadata.
+        */
+
         await loadMetadata();
 
 
-        populateCountries();
-
-
         /*
-           IMPORTANT:
-
-           Languages now come from CLDR,
-           not only from manifest.locales.
+           Build controls.
         */
 
-        populateLanguages();
+        populateCountries();
 
+        populateLanguages();
 
         populateCurrencies();
 
 
-        const detectedRegion =
-            detectBrowserRegion();
-
-
-        const savedCountry =
-            getStored(
-                CONFIG.storage
-                    .country
-            );
-
-
-        const initialCountry =
-            savedCountry ||
-            detectedRegion ||
-            "";
-
-
-        if (
-            initialCountry &&
-            dom.countrySelect &&
-            Array.from(
-                dom.countrySelect
-                    .options
-            ).some(
-                option =>
-                    option.value ===
-                    initialCountry
-            )
-        ) {
-
-            dom.countrySelect
-                .value =
-                initialCountry;
-
-
-            applyCountry(
-                initialCountry
-            );
-
-
-            if (
-                !savedCountry
-            ) {
-
-                showDetectedRegion(
-                    initialCountry
-                );
-
-            }
-
-        }
-
+        /*
+           Restore saved preferences only.
+        */
 
         restoreContext();
 
+
+        /*
+           Attach events after DOM is ready.
+        */
 
         initializeEvents();
 
@@ -2474,18 +3664,15 @@ async function initialize() {
             {
 
                 languages:
-                    state
-                        .languageCatalog
-                        .length,
-
-                translationLocales:
-                    state
-                        .translationLocales
+                    state.languageCatalog
                         .length,
 
                 countries:
-                    state
-                        .countryCatalog
+                    state.countryCatalog
+                        .length,
+
+                translationLocales:
+                    state.translationLocales
                         .length,
 
                 cldr:
@@ -2509,6 +3696,16 @@ async function initialize() {
         showError(
             "We could not load the global settings. Please refresh the page."
         );
+
+
+        if (
+            dom.continueButton
+        ) {
+
+            dom.continueButton.disabled =
+                false;
+
+        }
 
     }
 

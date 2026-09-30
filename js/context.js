@@ -54,25 +54,6 @@ const CONFIG = Object.freeze({
     }),
 
 
-    languageCatalog: Object.freeze({
-
-        /*
-           The CLDR languageNames file is the authoritative
-           catalog source for the language selector.
-
-           Translation availability is intentionally separate
-           from language availability.
-        */
-
-        exclude: Object.freeze([
-
-            "root",
-            "und"
-
-        ])
-
-    })
-
 });
 
 
@@ -87,8 +68,10 @@ const state = {
 
 
     /*
-       Actual translation locales declared
+       Translation locale metadata declared
        in locales/manifest.json.
+
+       This never limits the language selector.
     */
 
     translationLocales:
@@ -700,19 +683,6 @@ function buildLanguageCatalog() {
         .forEach(
             rawCode => {
 
-                if (
-                    CONFIG
-                        .languageCatalog
-                        .exclude
-                        .includes(
-                            rawCode
-                        )
-                ) {
-
-                    return;
-
-                }
-
 
                 const code =
                     normalizeLanguageCode(
@@ -744,8 +714,10 @@ function buildLanguageCatalog() {
 
 
                 /*
-                   Ignore internal CLDR keys
-                   that are not useful to users.
+                   Keep only valid language identifiers.
+                   Internal CLDR metadata keys that are not valid
+                   language identifiers naturally fall out during
+                   canonicalization and validation.
                 */
 
                 if (

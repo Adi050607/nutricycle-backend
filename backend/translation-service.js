@@ -80,11 +80,14 @@ function createTranslationInstruction({ sourceLocale, targetLocale, texts }) {
         JSON.stringify(texts)
     ].join("\n");
 }
-async function requestMyMemoryTranslations({
+async function requestPrototypeTranslations({
     sourceLocale,
     targetLocale,
     texts
 }) {
+    const translate =
+        require("googletrans").default;
+
     const source =
         safeString(sourceLocale)
             .split("-")[0]
@@ -95,35 +98,28 @@ async function requestMyMemoryTranslations({
             .split("-")[0]
             .toLowerCase();
 
-    const translations = [];
+    const result =
+        await translate(
+            texts,
+            target,
+            source
+        );
 
-    for (const text of texts) {
-        const url =
-            "https://api.mymemory.translated.net/get" +
-            `?q=${encodeURIComponent(text)}` +
-            `&langpair=${encodeURIComponent(source)}|${encodeURIComponent(target)}`;
-
-        const response = await fetch(url);
-
-        if (!response.ok) {
-            throw new Error(
-                `MyMemory returned HTTP ${response.status}.`
-            );
-        }
-
-        const data = await response.json();
-
-        const translated =
-            safeString(
-                data?.responseData?.translatedText
-            ).trim();
-
-        translations.push(
-            translated || text
+    if (
+        !result ||
+        !Array.isArray(result.textArray) ||
+        result.textArray.length !== texts.length
+    ) {
+        throw new Error(
+            "Prototype translation provider returned an invalid result."
         );
     }
 
-    return translations;
+    return result.textArray.map(
+        (translated, index) =>
+            safeString(translated) ||
+            texts[index]
+    );
 }
 
 module.exports = function registerTranslationRoutes({ app, client }) {
@@ -294,7 +290,7 @@ module.exports = function registerTranslationRoutes({ app, client }) {
             if (!normalizedTranslations) {
 
                 normalizedTranslations =
-                    await requestMyMemoryTranslations({
+                    await requestPrototypeTranslations({
                         sourceLocale,
                         targetLocale,
                         texts
